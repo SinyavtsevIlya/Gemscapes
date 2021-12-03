@@ -4,6 +4,6 @@ namespace Client
 {
     public struct Position
     {
-        public Vector2 Value;
+        public Vector2 Value;        
     }
 }

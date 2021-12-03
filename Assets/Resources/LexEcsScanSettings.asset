@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ClientNamespaceTag: Client
   _clientAssemblyNames:
-  - Assembly-CSharp
-  _assemblyDefinitions: []
+  - Source
+  _assemblyDefinitions:
+  - {fileID: 5897886265953266890, guid: 24cd60a3408a07e4386390472339fa13, type: 3}

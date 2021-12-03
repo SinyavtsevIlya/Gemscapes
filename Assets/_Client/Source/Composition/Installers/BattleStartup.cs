@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Client
 {
-    public class Battle : TargetWorldAttribute, IDefaultWorldAttribute { }
+    public class Battle : TargetWorldAttribute { }
 
     class BattleStartup : MonoBehaviour
     {

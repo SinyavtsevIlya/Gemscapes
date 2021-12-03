@@ -6,6 +6,11 @@ namespace Client.Match
     public struct Grid
     {
         public int[,] Value;
+
+        public Grid(int[,] value)
+        {
+            Value = value;
+        }
     }
 
     public static class GridExtensions

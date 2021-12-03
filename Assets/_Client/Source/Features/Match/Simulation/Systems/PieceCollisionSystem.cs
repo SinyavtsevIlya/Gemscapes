@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Client.Match
 {
+    [Battle]
     public sealed class PieceCollisionSystem : EcsSystemBase
     {
         protected override void OnUpdate()
@@ -25,6 +26,7 @@ namespace Client.Match
 
                     if (hasPieceArived)
                     {
+                        piecePosition = cellPosition;
                         Del<FallingTag>(pieceEntity);
                     }
                 }

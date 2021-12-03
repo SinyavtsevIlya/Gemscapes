@@ -12,7 +12,7 @@ namespace Client
 
             Add<AppState>(appEntity).Value = AppState.Type.Preload;
             // Later we can wait for asynchronous loading some assets.
-            Add<ChangeStateRequest>(appEntity).Value = AppState.Type.Core;
+            Add<ChangeStateRequest>(appEntity).Value = AppState.Type.Battle;
         }
 
         protected override void OnUpdate()

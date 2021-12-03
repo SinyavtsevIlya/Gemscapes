@@ -8,7 +8,8 @@
         {
             Preload,
             Lobby,
-            Core
+            Core,
+            Battle
         }   
     }
 }
