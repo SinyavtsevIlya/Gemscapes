@@ -36,13 +36,14 @@ namespace Client.Match
                 }
                 return false;
             }
+            Debug.Log("blocking by level bounds");
             return true;
         }
 
         public static bool IsInsideBounds(this Grid grid, Vector2Int position)
         {
-            return position.x > 0 &&
-                   position.y > 0 && 
+            return position.x >= 0 &&
+                   position.y >= 0 && 
                    position.x < grid.Value.GetLength(0) &&
                    position.y < grid.Value.GetLength(1);
         }

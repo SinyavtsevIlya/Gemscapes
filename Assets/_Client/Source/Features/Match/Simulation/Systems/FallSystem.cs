@@ -4,12 +4,15 @@ using UnityEngine;
 namespace Client.Match
 {
     [Battle]
+    [UpdateBefore(typeof(PieceCollisionSystem))]
     public sealed class FallSystem : EcsSystemBase
     {
-        private const float G = .5f;
+        private const float G = .2f;
 
         protected override void OnUpdate()
         {
+            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
+
             foreach (var pieceEntity in Filter()
             .With<Position>()
             .With<CellLink>()

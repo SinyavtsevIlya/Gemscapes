@@ -26,7 +26,32 @@ namespace Client.Match
             .End())
             {
                 ref var view = ref Get<Mono<MovablePieceView>>(pieceEntity).Value;
-                //view.SetMovableState(Has<FallingTag>(pieceEntity));
+                view.SetMovableState(Has<FallingTag>(pieceEntity));
+            }
+
+            foreach (var pieceEntity in Filter()
+            .With<CellLinkUpdatedEvent>()
+            .End())
+            {
+                ref var cellLinkUpdatedEvent = ref Get<CellLinkUpdatedEvent>(pieceEntity);
+                ref var view = ref Get<Mono<MovablePieceView>>(pieceEntity).Value;
+                ref var grid = ref Get<Grid>(pieceEntity);
+
+                ref var cellPositionPrevious = ref Get<CellPosition>(cellLinkUpdatedEvent.PreviousCell).Value;
+                ref var cellPositionCurrent = ref Get<CellPosition>(cellLinkUpdatedEvent.CurrentCell).Value;
+
+                var one = new Vector3(cellPositionPrevious.x, cellPositionPrevious.y, 0f);
+                var two = new Vector3(cellPositionCurrent.x, cellPositionCurrent.y, 0f);
+                Debug.DrawLine(one, two, Color.green, .01f);
+            }
+
+            foreach (var pieceEntity in Filter()
+            .With<Mono<MovablePieceView>>()
+            .With<CreatedEvent>()
+            .End())
+            {
+                ref var view = ref Get<Mono<MovablePieceView>>(pieceEntity).Value;
+                view.Clicked += () => { Add<FallingTag>(pieceEntity); };
             }
         }
     }

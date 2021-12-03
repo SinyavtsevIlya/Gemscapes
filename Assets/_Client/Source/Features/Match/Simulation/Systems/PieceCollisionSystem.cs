@@ -27,6 +27,7 @@ namespace Client.Match
                     if (hasPieceArived)
                     {
                         piecePosition = cellPosition;
+                        Get<Velocity>(pieceEntity).Value = Vector3.zero;
                         Del<FallingTag>(pieceEntity);
                     }
                 }

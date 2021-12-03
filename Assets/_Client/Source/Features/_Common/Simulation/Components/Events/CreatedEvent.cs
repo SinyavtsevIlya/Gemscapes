@@ -3,6 +3,7 @@
 namespace Client
 {
     [OneFrame]
+    [AllWorld]
     public struct CreatedEvent
     {
         

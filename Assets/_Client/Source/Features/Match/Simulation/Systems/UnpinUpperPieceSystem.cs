@@ -24,9 +24,8 @@ namespace Client.Match
                         {
                             if (!Has<FallingTag>(upperPieceEntity))
                             {
-                                
+                                Add<FallingTag>(upperPieceEntity);
                             }
-                            Add<FallingTag>(upperPieceEntity);
                         }
                     }
                 }

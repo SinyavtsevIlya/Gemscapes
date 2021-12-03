@@ -14,7 +14,7 @@ namespace Client.Match
 
             var piecePrefab = Resources.Load<MovablePieceView>("piece");
 
-            var size = new Vector2Int(20, 30);
+            var size = new Vector2Int(35, 35);
             var grid = new Grid(new int[size.x, size.y]);
 
             for (int row = 0; row < size.y; row++)
@@ -27,7 +27,7 @@ namespace Client.Match
                     Add<GravityDirection>(cellEntity).Value = Vector2Int.down;
                     Add<Grid>(cellEntity) = grid;
 
-                    if (row > 5 && row <= 10)
+                    if (Random.value > .5f)
                     {
                         continue;
                     }
@@ -41,11 +41,9 @@ namespace Client.Match
                     Add<Grid>(pieceEntity) = grid;
                     Add<Mono<MovablePieceView>>(pieceEntity).Value = pieceView;
                     Add<PieceLink>(cellEntity).Value = World.PackEntity(pieceEntity);
+                    Add<CreatedEvent>(pieceEntity);
                     
-                    if (row == 11)
-                    {
-                        Add<FallingTag>(pieceEntity);
-                    }
+                    Add<FallingTag>(pieceEntity);
                 }
             }
 

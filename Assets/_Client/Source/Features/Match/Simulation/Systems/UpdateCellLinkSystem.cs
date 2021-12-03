@@ -32,7 +32,7 @@ namespace Client.Match
                     };
 
                     Del<PieceLink>(cellLink.Value);
-                    Add<PieceLink>(cellEntity).Value = World.PackEntity(cellEntity);
+                    Add<PieceLink>(cellEntity).Value = World.PackEntity(pieceEntity);
 
                     cellLink.Value = cellEntity;
                 }
