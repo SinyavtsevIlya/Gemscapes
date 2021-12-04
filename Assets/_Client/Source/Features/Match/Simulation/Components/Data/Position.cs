@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
+using Unity.Mathematics.FixedPoint;
 
 namespace Client
 {
     public struct Position
     {
-        public Vector2 Value;        
+        public fp2 Value;        
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Nanory.Lex;
 using Nanory.Lex.Conversion;
 using UnityEngine;
+using Unity.Mathematics.FixedPoint;
 
 namespace Client.Match
 {
@@ -17,7 +18,7 @@ namespace Client.Match
             .End())
             {
                 ref var view = ref Get<Mono<MovablePieceView>>(pieceEntity).Value;
-                view.SetPosition(Get<Position>(pieceEntity).Value);
+                view.SetPosition(Get<Position>(pieceEntity).Value.ToVector2());
             }
 
             foreach (var pieceEntity in Filter()
@@ -40,9 +41,9 @@ namespace Client.Match
                 ref var cellPositionPrevious = ref Get<CellPosition>(cellLinkUpdatedEvent.PreviousCell).Value;
                 ref var cellPositionCurrent = ref Get<CellPosition>(cellLinkUpdatedEvent.CurrentCell).Value;
 
-                var one = new Vector3(cellPositionPrevious.x, cellPositionPrevious.y, 0f);
-                var two = new Vector3(cellPositionCurrent.x, cellPositionCurrent.y, 0f);
-                Debug.DrawLine(one, two, Color.green, .01f);
+                var one = new Vector3((float)cellPositionPrevious.x, (float)cellPositionPrevious.y, 0f);
+                var two = new Vector3((float)cellPositionCurrent.x, (float)cellPositionCurrent.y, 0f);
+                //Debug.DrawLine(one, two, Color.green, .01f);
             }
 
             foreach (var pieceEntity in Filter()
@@ -54,5 +55,13 @@ namespace Client.Match
                 view.Clicked += () => { Add<FallingTag>(pieceEntity); };
             }
         }
+    }
+}
+
+public static class VectorExtensions
+{
+    public static Vector2 ToVector2(this fp2 fp2)
+    {
+        return new Vector2((float)fp2.x, (float)fp2.y);
     }
 }

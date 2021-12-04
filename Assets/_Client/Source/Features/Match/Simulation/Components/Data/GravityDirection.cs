@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
+using Unity.Mathematics.FixedPoint;
 
 namespace Client
 {
     public struct GravityDirection
     {
-        public Vector2Int Value;
+        public fp2 Value;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Nanory.Lex;
 using UnityEngine;
+using Unity.Mathematics.FixedPoint;
 
 namespace Client.Match
 {
@@ -7,7 +8,7 @@ namespace Client.Match
     [UpdateBefore(typeof(PieceCollisionSystem))]
     public sealed class FallSystem : EcsSystemBase
     {
-        private const float G = .2f;
+        private const decimal G = 1.5m;
 
         protected override void OnUpdate()
         {
@@ -20,7 +21,7 @@ namespace Client.Match
             .End())
             {
                 ref var cellEntity = ref Get<CellLink>(pieceEntity).Value;
-                Get<Velocity>(pieceEntity).Value += (Vector2)Get<GravityDirection>(cellEntity).Value * G * Time.deltaTime;
+                Get<Velocity>(pieceEntity).Value += Get<GravityDirection>(cellEntity).Value * G * (fp)Time.fixedDeltaTime;
                 Get<Position>(pieceEntity).Value += Get<Velocity>(pieceEntity).Value;
             }
         }

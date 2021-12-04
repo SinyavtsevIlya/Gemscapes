@@ -1,5 +1,6 @@
 ﻿using Nanory.Lex;
 using Nanory.Lex.Conversion;
+using Unity.Mathematics.FixedPoint;
 using UnityEngine;
 
 namespace Client.Match
@@ -14,7 +15,7 @@ namespace Client.Match
 
             var piecePrefab = Resources.Load<MovablePieceView>("piece");
 
-            var size = new Vector2Int(35, 35);
+            var size = new Vector2Int(20, 20);
             var grid = new Grid(new int[size.x, size.y]);
 
             for (int row = 0; row < size.y; row++)
@@ -23,8 +24,8 @@ namespace Client.Match
                 {
                     var cellEntity = World.NewEntity();
                     grid.Value[column, row] = cellEntity;
-                    Add<CellPosition>(cellEntity).Value = new Vector2Int(column, row);
-                    Add<GravityDirection>(cellEntity).Value = Vector2Int.down;
+                    Add<CellPosition>(cellEntity).Value = new fp2(column, row);
+                    Add<GravityDirection>(cellEntity).Value = new fp2(0, -1);
                     Add<Grid>(cellEntity) = grid;
 
                     if (Random.value > .5f)
@@ -35,7 +36,7 @@ namespace Client.Match
                     var pieceView = Object.Instantiate(piecePrefab);
                     var pieceEntity = World.NewEntity();
                     pieceView.SetLabel(pieceEntity.ToString());
-                    Add<Position>(pieceEntity).Value = new Vector2(column, row);
+                    Add<Position>(pieceEntity).Value = new fp2(column, row);
                     Add<Velocity>(pieceEntity);
                     Add<CellLink>(pieceEntity).Value = cellEntity;
                     Add<Grid>(pieceEntity) = grid;
@@ -43,7 +44,7 @@ namespace Client.Match
                     Add<PieceLink>(cellEntity).Value = World.PackEntity(pieceEntity);
                     Add<CreatedEvent>(pieceEntity);
                     
-                    Add<FallingTag>(pieceEntity);
+                    //Add<FallingTag>(pieceEntity);
                 }
             }
 

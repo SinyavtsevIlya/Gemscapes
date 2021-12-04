@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Nanory.Lex;
+using Unity.Mathematics.FixedPoint;
 
 namespace Client.Match
 {
@@ -15,18 +16,18 @@ namespace Client.Match
 
     public static class GridExtensions
     {
-        public static bool TryGetCell(this Grid grid, Vector2Int position, out int cellEntity)
+        public static bool TryGetCell(this Grid grid, fp2 position, out int cellEntity)
         {
             cellEntity = -1;
-            if (grid.IsInsideBounds(position))
+            if (grid.IsInsideBounds((int)position.x, (int)position.y))
             {
-                cellEntity = grid.Value[position.x, position.y];
+                cellEntity = grid.Value[(int)position.x, (int)position.y];
                 return true;
             }
             return false;
         }
 
-        public static bool IsBlocking(this Grid grid, EcsWorld world, Vector2Int position, Vector2Int direction)
+        public static bool IsBlocking(this Grid grid, EcsWorld world, fp2 position, fp2 direction)
         {
             if (grid.TryGetCell(position + direction, out var cellEntity))
             {
@@ -36,16 +37,15 @@ namespace Client.Match
                 }
                 return false;
             }
-            Debug.Log("blocking by level bounds");
             return true;
         }
 
-        public static bool IsInsideBounds(this Grid grid, Vector2Int position)
+        public static bool IsInsideBounds(this Grid grid, int x, int y)
         {
-            return position.x >= 0 &&
-                   position.y >= 0 && 
-                   position.x < grid.Value.GetLength(0) &&
-                   position.y < grid.Value.GetLength(1);
+            return x >= 0 &&
+                   y >= 0 && 
+                   x < grid.Value.GetLength(0) &&
+                   y < grid.Value.GetLength(1);
         }
     }
 }

@@ -9,6 +9,10 @@ namespace Client.Match
     {
         [SerializeField] TMP_Text _label;
 
+        Vector2 _from;
+        Vector2 _to;
+        float _t;
+
         public event Action Clicked;
 
         public void SetLabel(string labelText)
@@ -18,7 +22,10 @@ namespace Client.Match
 
         public void SetPosition(Vector2 value)
         {
-            transform.position = value;
+            _t = 0f;
+            _from = transform.position;
+            transform.position = _from;
+            _to = value;
         }
 
         public void SetMovableState(bool state)
@@ -34,6 +41,12 @@ namespace Client.Match
         public void OnPointerClick(PointerEventData eventData)
         {
             Clicked?.Invoke();
+        }
+
+        private void Update()
+        {
+            _t += Time.deltaTime / Time.fixedDeltaTime;
+            transform.position = Vector2.Lerp(_from, _to, _t);
         }
     }
 }

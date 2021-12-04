@@ -1,5 +1,6 @@
 ﻿using Nanory.Lex;
 using UnityEngine;
+using Unity.Mathematics.FixedPoint;
 
 namespace Client.Match
 {
@@ -18,7 +19,7 @@ namespace Client.Match
                 ref var cellLink = ref Get<CellLink>(pieceEntity);
                 ref var position = ref Get<Position>(pieceEntity).Value;
                 ref var grid = ref Get<Grid>(pieceEntity);
-                var roundedPiecePosition = Vector2Int.RoundToInt(position);
+                var roundedPiecePosition = fpmath.round(position);
 
                 if (grid.TryGetCell(roundedPiecePosition, out var cellEntity))
                 {
@@ -32,7 +33,10 @@ namespace Client.Match
                     };
 
                     Del<PieceLink>(cellLink.Value);
-                    Add<PieceLink>(cellEntity).Value = World.PackEntity(pieceEntity);
+                    if (!Has<PieceLink>(cellEntity))
+                    {
+                        Add<PieceLink>(cellEntity).Value = World.PackEntity(pieceEntity);
+                    }
 
                     cellLink.Value = cellEntity;
                 }

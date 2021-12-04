@@ -1,9 +1,11 @@
 ﻿using Nanory.Lex;
 using UnityEngine;
+using Unity.Mathematics.FixedPoint;
 
 namespace Client.Match
 {
     [Battle]
+    [UpdateBefore(typeof(UpdateCellLinkSystem))]
     public sealed class PieceCollisionSystem : EcsSystemBase
     {
         protected override void OnUpdate()
@@ -21,13 +23,13 @@ namespace Client.Match
 
                 if (grid.IsBlocking(World, cellPosition, cellGravityDirection))
                 {
-                    var hasPieceArived = cellGravityDirection.sqrMagnitude >=
-                        (cellGravityDirection + cellPosition - piecePosition).sqrMagnitude;
+                    var hasPieceArived = fpmath.lengthsq(cellGravityDirection) >=
+                        fpmath.lengthsq(cellGravityDirection + cellPosition - piecePosition);
 
                     if (hasPieceArived)
                     {
                         piecePosition = cellPosition;
-                        Get<Velocity>(pieceEntity).Value = Vector3.zero;
+                        Get<Velocity>(pieceEntity).Value = fp2.zero;
                         Del<FallingTag>(pieceEntity);
                     }
                 }

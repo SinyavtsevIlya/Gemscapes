@@ -27,7 +27,7 @@ namespace Client
             _systems.Init();
         }
 
-        void Update()
+        void FixedUpdate()
         {
             _systems?.Run();
         }
