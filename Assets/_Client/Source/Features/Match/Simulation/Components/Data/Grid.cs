@@ -36,7 +36,6 @@ namespace Client.Match
                 }
                 return false;
             }
-            Debug.Log("blocking by level bounds");
             return true;
         }
 

@@ -17,7 +17,7 @@ namespace Client.Match
             .End())
             {
                 ref var view = ref Get<Mono<MovablePieceView>>(pieceEntity).Value;
-                view.SetPosition(Get<Position>(pieceEntity).Value);
+                view.SetPosition(Get<Position>(pieceEntity).Value.ToVector2());
             }
 
             foreach (var pieceEntity in Filter()

@@ -19,7 +19,6 @@ namespace Client.Match
                 {
                     if (World.TryGet<PieceLink>(upperCellEntity, out var upperPieceLink))
                     {
-                        Debug.Log($"upperCellEntity is {upperCellEntity}");
                         if (upperPieceLink.Value.Unpack(World, out var upperPieceEntity))
                         {
                             if (!Has<FallingTag>(upperPieceEntity))

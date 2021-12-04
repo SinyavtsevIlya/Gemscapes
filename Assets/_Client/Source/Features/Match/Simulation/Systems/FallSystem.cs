@@ -20,8 +20,8 @@ namespace Client.Match
             .End())
             {
                 ref var cellEntity = ref Get<CellLink>(pieceEntity).Value;
-                Get<Velocity>(pieceEntity).Value += (Vector2)Get<GravityDirection>(cellEntity).Value * G * Time.deltaTime;
-                Get<Position>(pieceEntity).Value += Get<Velocity>(pieceEntity).Value;
+                Get<Velocity>(pieceEntity).Value.Value += Get<GravityDirection>(cellEntity).Value;
+                Get<Position>(pieceEntity).Value.Value += Get<Velocity>(pieceEntity).Value.Value;
             }
         }
     }

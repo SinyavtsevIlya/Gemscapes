@@ -35,15 +35,15 @@ namespace Client.Match
                     var pieceView = Object.Instantiate(piecePrefab);
                     var pieceEntity = World.NewEntity();
                     pieceView.SetLabel(pieceEntity.ToString());
-                    Add<Position>(pieceEntity).Value = new Vector2(column, row);
-                    Add<Velocity>(pieceEntity);
+                    Add<Position>(pieceEntity).Value = new Vector2IntScaled(column, row, 20);
+                    Add<Velocity>(pieceEntity).Value = new Vector2IntScaled(0, 0, 20);
                     Add<CellLink>(pieceEntity).Value = cellEntity;
                     Add<Grid>(pieceEntity) = grid;
                     Add<Mono<MovablePieceView>>(pieceEntity).Value = pieceView;
                     Add<PieceLink>(cellEntity).Value = World.PackEntity(pieceEntity);
                     Add<CreatedEvent>(pieceEntity);
                     
-                    Add<FallingTag>(pieceEntity);
+                    //Add<FallingTag>(pieceEntity);
                 }
             }
 
