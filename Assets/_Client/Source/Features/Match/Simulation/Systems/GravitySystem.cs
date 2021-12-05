@@ -28,7 +28,7 @@ namespace Client.Match
                     velocity.SetFromVector2Int(gravityDirection);
                 }
 
-                Get<Position>(pieceEntity).Value.Value += Get<Velocity>(pieceEntity).Value.Value;
+                Get<Position>(pieceEntity).Value.Value += velocity.Value;
             }
         }
     }

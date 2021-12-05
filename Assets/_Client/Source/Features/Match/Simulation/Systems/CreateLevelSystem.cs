@@ -1,6 +1,7 @@
 ﻿using Nanory.Lex;
 using Nanory.Lex.Conversion;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Client.Match
 {
@@ -18,6 +19,9 @@ namespace Client.Match
 
             var size = new Vector2Int(11 , 11);
             var subGridSize = 5;
+
+            Assert.IsTrue(subGridSize % 2 != 0, "Sub-grid size should be odd");
+
             var grid = new Grid(new int[size.x, size.y]);
 
             for (int row = 0; row < size.y; row++)
