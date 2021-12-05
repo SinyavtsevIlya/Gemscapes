@@ -14,8 +14,9 @@ namespace Client.Match
             {
                 ref var cellLinkUpdatedEvent = ref Get<CellLinkUpdatedEvent>(pieceEntity);
                 ref var grid = ref Get<Grid>(pieceEntity);
+                ref var previousCellGravity = ref Get<GravityDirection>(cellLinkUpdatedEvent.PreviousCell);
 
-                if (grid.TryGetCell(Get<CellPosition>(cellLinkUpdatedEvent.PreviousCell).Value + Vector2Int.up, out var upperCellEntity))
+                if (grid.TryGetCell(Get<CellPosition>(cellLinkUpdatedEvent.PreviousCell).Value - previousCellGravity.Value, out var upperCellEntity))
                 {
                     if (World.TryGet<PieceLink>(upperCellEntity, out var upperPieceLink))
                     {

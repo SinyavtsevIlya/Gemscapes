@@ -21,7 +21,7 @@ namespace Client
             _systems.Add(_sorter.GetSortedSystems());
 
 #if UNITY_EDITOR
-            //_systems.Add(new Nanory.Lex.UnityEditorIntegration.EcsWorldDebugSystem());
+            _systems.Add(new Nanory.Lex.UnityEditorIntegration.EcsWorldDebugSystem());
 #endif
 
             _systems.Init();

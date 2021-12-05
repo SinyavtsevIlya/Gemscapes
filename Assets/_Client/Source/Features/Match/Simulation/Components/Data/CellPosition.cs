@@ -11,36 +11,40 @@ namespace Client
 public struct Vector2IntScaled
 {
     public Vector2Int Value;
-    private readonly int _divisor;
+    public readonly int Divisor;
 
     public Vector2IntScaled(Vector2Int value, int divisor)
     {
         Value = value * divisor;
-        _divisor = divisor;
+        Divisor = divisor;
     }
 
     public Vector2IntScaled(int x, int y, int divisor)
     {
         Value = new Vector2Int(x, y) * divisor;
-        _divisor = divisor;
+        Divisor = divisor;
     }
 
-    public Vector2Int ToVector2Int()
+    public void SetFromVector2(Vector2 value)
     {
-        return Value / _divisor;
+        Value = Vector2Int.RoundToInt(value * Divisor);
     }
 
-    public Vector2 ToVector2()
+    public void SetFromVector2Int(Vector2Int value)
     {
-        return (Vector2) Value / _divisor;
-    }
-
-    public void FromVector2(Vector2 value)
-    {
-        Value = Vector2Int.RoundToInt(value * _divisor);
+        Value = value * Divisor;
     }
 }
 
 public static class VectorScaledExtensions
 {
+    public static Vector2Int ToVector2Int(this Vector2IntScaled vector2IntScaled)
+    {
+        return Vector2Int.RoundToInt(ToVector2(vector2IntScaled));
+    }
+
+    public static Vector2 ToVector2(this Vector2IntScaled vector2IntScaled)
+    {
+        return (Vector2)vector2IntScaled.Value / vector2IntScaled.Divisor;
+    }
 }

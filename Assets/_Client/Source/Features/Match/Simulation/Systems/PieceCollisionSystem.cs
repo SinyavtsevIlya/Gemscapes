@@ -21,17 +21,15 @@ namespace Client.Match
 
                 if (grid.IsBlocking(World, cellPosition, cellGravityDirection))
                 {
+                    var hasPieceArived = cellGravityDirection.sqrMagnitude >=
+                        (cellGravityDirection + cellPosition - piecePosition.ToVector2Int()).sqrMagnitude;
 
-                }
-
-                var hasPieceArived = cellGravityDirection.sqrMagnitude >=
-                    (cellGravityDirection + cellPosition - piecePosition.ToVector2Int()).sqrMagnitude;
-
-                if (hasPieceArived)
-                {
-                    piecePosition.FromVector2(cellPosition);
-                    Get<Velocity>(pieceEntity).Value.Value = Vector2Int.zero;
-                    Del<FallingTag>(pieceEntity);
+                    if (hasPieceArived)
+                    {
+                        piecePosition.SetFromVector2(cellPosition);
+                        Get<Velocity>(pieceEntity).Value.Value = Vector2Int.zero;
+                        Del<FallingTag>(pieceEntity);
+                    }
                 }
             }
         }

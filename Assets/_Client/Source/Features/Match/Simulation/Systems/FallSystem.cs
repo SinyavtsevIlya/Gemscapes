@@ -4,7 +4,6 @@ using UnityEngine;
 namespace Client.Match
 {
     [Battle]
-    [UpdateBefore(typeof(PieceCollisionSystem))]
     public sealed class FallSystem : EcsSystemBase
     {
         private const float G = .2f;
@@ -19,8 +18,16 @@ namespace Client.Match
             .With<FallingTag>()
             .End())
             {
+                ref var velocity = ref Get<Velocity>(pieceEntity).Value;
                 ref var cellEntity = ref Get<CellLink>(pieceEntity).Value;
-                Get<Velocity>(pieceEntity).Value.Value += Get<GravityDirection>(cellEntity).Value;
+                ref var gravity = ref Get<GravityDirection>(cellEntity).Value;
+                velocity.Value += gravity;
+
+                if (velocity.ToVector2().magnitude >= 1)
+                {
+                    velocity.SetFromVector2Int(gravity * 3);
+                }
+
                 Get<Position>(pieceEntity).Value.Value += Get<Velocity>(pieceEntity).Value.Value;
             }
         }

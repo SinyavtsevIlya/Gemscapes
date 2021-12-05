@@ -5,9 +5,14 @@ using System;
 
 namespace Client.Match
 {
-	public class MovablePieceView : MonoBehaviour, IPointerClickHandler
+    public class MovablePieceView : MonoBehaviour, IPointerClickHandler
     {
         [SerializeField] TMP_Text _label;
+        [SerializeField] bool _lerpEnabled;
+
+        Vector2 _from;
+        Vector2 _to;
+        float _t;
 
         public event Action Clicked;
 
@@ -18,7 +23,18 @@ namespace Client.Match
 
         public void SetPosition(Vector2 value)
         {
-            transform.position = value;
+            if (_lerpEnabled)
+            {
+                _t = 0f;
+                _from = transform.position;
+                transform.position = _from;
+                _to = value;
+            }
+            else
+            {
+                transform.position = value;
+            }
+
         }
 
         public void SetMovableState(bool state)
@@ -34,6 +50,15 @@ namespace Client.Match
         public void OnPointerClick(PointerEventData eventData)
         {
             Clicked?.Invoke();
+        }
+
+        private void Update()
+        {
+            if (_lerpEnabled)
+            {
+                _t += Time.deltaTime / Time.fixedDeltaTime;
+                transform.position = Vector2.Lerp(_from, _to, _t);
+            }
         }
     }
 }
