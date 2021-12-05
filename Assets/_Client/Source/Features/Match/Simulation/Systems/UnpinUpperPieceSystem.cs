@@ -8,23 +8,26 @@ namespace Client.Match
     {
         protected override void OnUpdate()
         {
+            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
+
             foreach (var pieceEntity in Filter()
-            .With<CellLinkUpdatedEvent>()
+            .With<FallingTag>()
             .End())
             {
-                ref var cellLinkUpdatedEvent = ref Get<CellLinkUpdatedEvent>(pieceEntity);
                 ref var grid = ref Get<Grid>(pieceEntity);
-                ref var previousCellGravity = ref Get<GravityDirection>(cellLinkUpdatedEvent.PreviousCell);
+                ref var cellEntity = ref Get<CellLink>(pieceEntity).Value;
+                ref var cellGravity = ref Get<GravityDirection>(cellEntity).Value;
+                ref var cellPosition = ref Get<CellPosition>(cellEntity).Value;
 
-                if (grid.TryGetCell(Get<CellPosition>(cellLinkUpdatedEvent.PreviousCell).Value - previousCellGravity.Value, out var upperCellEntity))
+                if (grid.TryGetCell(cellPosition - cellGravity, out var previousCellEntity))
                 {
-                    if (World.TryGet<PieceLink>(upperCellEntity, out var upperPieceLink))
+                    if (World.TryGet<PieceLink>(previousCellEntity, out var upperPieceLink))
                     {
                         if (upperPieceLink.Value.Unpack(World, out var upperPieceEntity))
                         {
                             if (!Has<FallingTag>(upperPieceEntity))
                             {
-                                Add<FallingTag>(upperPieceEntity);
+                                later.Add<FallingTag>(upperPieceEntity);
                             }
                         }
                     }

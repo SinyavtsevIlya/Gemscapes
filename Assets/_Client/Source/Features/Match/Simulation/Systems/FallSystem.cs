@@ -25,7 +25,7 @@ namespace Client.Match
 
                 if (velocity.ToVector2().magnitude >= 1)
                 {
-                    velocity.SetFromVector2Int(gravity * 3);
+                    velocity.SetFromVector2Int(gravity);
                 }
 
                 Get<Position>(pieceEntity).Value.Value += Get<Velocity>(pieceEntity).Value.Value;

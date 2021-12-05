@@ -21,14 +21,26 @@ namespace Client.Match
 
                 if (grid.IsBlocking(World, cellPosition, cellGravityDirection))
                 {
-                    var hasPieceArived = cellGravityDirection.sqrMagnitude >=
-                        (cellGravityDirection + cellPosition - piecePosition.ToVector2Int()).sqrMagnitude;
-
-                    if (hasPieceArived)
+                    if (grid.TryGetCell(cellPosition + cellGravityDirection, out var nextCellEntity))
                     {
-                        piecePosition.SetFromVector2(cellPosition);
-                        Get<Velocity>(pieceEntity).Value.Value = Vector2Int.zero;
-                        Del<FallingTag>(pieceEntity);
+                        if (World.TryGet<PieceLink>(nextCellEntity, out var blockingPieceLink))
+                        {
+                            if (blockingPieceLink.Value.Unpack(World, out var blockingPieceEntity))
+                            {
+                                if (!Has<FallingTag>(blockingPieceEntity))
+                                {
+                                    var hasPieceArived = cellGravityDirection.sqrMagnitude >=
+                                        (cellGravityDirection + cellPosition - piecePosition.ToVector2Int()).sqrMagnitude;
+
+                                    if (hasPieceArived)
+                                    {
+                                        piecePosition.SetFromVector2(cellPosition);
+                                        Get<Velocity>(pieceEntity).Value.Value = Vector2Int.zero;
+                                        Del<FallingTag>(pieceEntity);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
