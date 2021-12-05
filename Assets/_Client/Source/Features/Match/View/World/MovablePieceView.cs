@@ -7,12 +7,16 @@ namespace Client.Match
 {
     public class MovablePieceView : MonoBehaviour, IPointerClickHandler
     {
-        [SerializeField] TMP_Text _label;
-        [SerializeField] bool _lerpEnabled;
+        [SerializeField] private TMP_Text _label;
+        [SerializeField] private bool _lerpEnabled;
 
-        Vector2 _from;
-        Vector2 _to;
-        float _t;
+        private Vector2 _from;
+        private Vector2 _to;
+        private float _t;
+
+        private Vector2 _previousPosition;
+        private bool _dumpingEnabled;
+        private Vector2 _springOrigin;
 
         public event Action Clicked;
 
@@ -23,28 +27,28 @@ namespace Client.Match
 
         public void SetPosition(Vector2 value)
         {
+            _previousPosition = transform.position;
+
             if (_lerpEnabled)
             {
                 _t = 0f;
                 _from = transform.position;
-                transform.position = _from;
                 _to = value;
             }
             else
             {
                 transform.position = value;
             }
-
         }
 
         public void SetMovableState(bool state)
         {
-            //GetComponent<MeshRenderer>().material.color = state ? Color.white : Color.black;
-        }
+            if (state == false)
+            {
+                
+            }
 
-        public void SetStartMovementState()
-        {
-            GetComponent<MeshRenderer>().material.color = Color.red;
+            _dumpingEnabled = state;
         }
 
         public void OnPointerClick(PointerEventData eventData)
@@ -58,6 +62,13 @@ namespace Client.Match
             {
                 _t += Time.deltaTime / Time.fixedDeltaTime;
                 transform.position = Vector2.Lerp(_from, _to, _t);
+            }
+
+            if (_dumpingEnabled)
+            {
+                var delta = (Vector2)transform.position - _previousPosition;
+
+                
             }
         }
     }

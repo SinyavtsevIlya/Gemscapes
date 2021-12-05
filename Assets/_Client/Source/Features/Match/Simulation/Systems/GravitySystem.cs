@@ -4,9 +4,9 @@ using UnityEngine;
 namespace Client.Match
 {
     [Battle]
-    public sealed class FallSystem : EcsSystemBase
+    public sealed class GravitySystem : EcsSystemBase
     {
-        private const float G = .2f;
+        private const int GravityAmount = 1;
 
         protected override void OnUpdate()
         {
@@ -20,12 +20,12 @@ namespace Client.Match
             {
                 ref var velocity = ref Get<Velocity>(pieceEntity).Value;
                 ref var cellEntity = ref Get<CellLink>(pieceEntity).Value;
-                ref var gravity = ref Get<GravityDirection>(cellEntity).Value;
-                velocity.Value += gravity;
+                ref var gravityDirection = ref Get<GravityDirection>(cellEntity).Value;
+                velocity.Value += gravityDirection * GravityAmount;
 
-                if (velocity.ToVector2().magnitude >= 1)
+                if (velocity.IsGreaterThanDivisor())
                 {
-                    velocity.SetFromVector2Int(gravity);
+                    velocity.SetFromVector2Int(gravityDirection);
                 }
 
                 Get<Position>(pieceEntity).Value.Value += Get<Velocity>(pieceEntity).Value.Value;

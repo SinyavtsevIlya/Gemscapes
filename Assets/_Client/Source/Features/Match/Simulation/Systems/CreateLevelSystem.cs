@@ -17,6 +17,7 @@ namespace Client.Match
             var cellPrefab = Resources.Load<CellView>("cell");
 
             var size = new Vector2Int(11 , 11);
+            var subGridSize = 5;
             var grid = new Grid(new int[size.x, size.y]);
 
             for (int row = 0; row < size.y; row++)
@@ -44,8 +45,8 @@ namespace Client.Match
                     var pieceView = Object.Instantiate(piecePrefab);
                     var pieceEntity = World.NewEntity();
                     pieceView.SetLabel(pieceEntity.ToString());
-                    Add<Position>(pieceEntity).Value = new Vector2IntScaled(column, row, 5);
-                    Add<Velocity>(pieceEntity).Value = new Vector2IntScaled(0, 0, 5);
+                    Add<Position>(pieceEntity).Value = new Vector2IntScaled(column, row, subGridSize);
+                    Add<Velocity>(pieceEntity).Value = new Vector2IntScaled(0, 0, subGridSize);
                     Add<CellLink>(pieceEntity).Value = cellEntity;
                     Add<Grid>(pieceEntity) = grid;
                     Add<Mono<MovablePieceView>>(pieceEntity).Value = pieceView;

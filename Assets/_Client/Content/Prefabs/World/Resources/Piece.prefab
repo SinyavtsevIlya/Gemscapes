@@ -279,4 +279,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _label: {fileID: 2524751137441966001}
-  _lerpEnabled: 0
+  _lerpEnabled: 1

@@ -34,6 +34,11 @@ public struct Vector2IntScaled
     {
         Value = value * Divisor;
     }
+
+    public bool IsGreaterThanDivisor()
+    {
+        return Value.sqrMagnitude >= Divisor * Divisor;
+    }
 }
 
 public static class VectorScaledExtensions
