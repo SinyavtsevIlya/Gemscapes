@@ -17,8 +17,8 @@ namespace Client.Match
             var piecePrefab = Resources.Load<MovablePieceView>("piece");
             var cellPrefab = Resources.Load<CellView>("cell");
 
-            var size = new Vector2Int(11 , 25);
-            var subGridSize = 25;
+            var size = new Vector2Int(14 , 9);
+            var subGridSize = 35;
 
             Assert.IsTrue(subGridSize % 2 != 0, "Sub-grid size should be odd");
 
