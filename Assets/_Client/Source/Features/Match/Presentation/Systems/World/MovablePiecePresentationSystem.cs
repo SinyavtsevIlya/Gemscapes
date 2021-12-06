@@ -13,7 +13,7 @@ namespace Client.Match
             foreach (var pieceEntity in Filter()
             .With<Mono<MovablePieceView>>()
             .With<Position>()
-            //.With<FallingTag>()
+            .With<FallingTag>()
             .End())
             {
                 ref var view = ref Get<Mono<MovablePieceView>>(pieceEntity).Value;
@@ -22,11 +22,12 @@ namespace Client.Match
 
             foreach (var pieceEntity in Filter()
             .With<Mono<MovablePieceView>>()
-            .With<Position>()
+            .With<StoppedEvent>()
             .End())
             {
                 ref var view = ref Get<Mono<MovablePieceView>>(pieceEntity).Value;
-                view.SetMovableState(Has<FallingTag>(pieceEntity));
+                view.SetPosition(Get<Position>(pieceEntity).Value.ToVector2());
+                view.SetAsStopped();
             }
 
             foreach (var pieceEntity in Filter()

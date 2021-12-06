@@ -8,6 +8,8 @@ namespace Client.Match
     {
         protected override void OnUpdate()
         {
+            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
+
             foreach (var pieceEntity in Filter()
             .With<Position>()
             .With<FallingTag>()
@@ -52,6 +54,7 @@ namespace Client.Match
                         piecePosition.SetFromVector2(cellPosition);
                         Get<Velocity>(pieceEntity).Value.Value = Vector2Int.zero;
                         Del<FallingTag>(pieceEntity);
+                        Add<StoppedEvent>(pieceEntity);
                     }
                 }
             }

@@ -6,7 +6,7 @@ using UnityEngine.Assertions;
 namespace Client.Match
 {
     [Battle]
-    [UpdateInGroup(typeof(InitializationSystemGroup))]
+    //[UpdateInGroup(typeof(InitializationSystemGroup))]
     public sealed class CreateLevelSystem : EcsSystemBase
     {
         protected override void OnCreate()
@@ -18,7 +18,7 @@ namespace Client.Match
             var cellPrefab = Resources.Load<CellView>("cell");
 
             var size = new Vector2Int(11 , 11);
-            var subGridSize = 5;
+            var subGridSize = 25;
 
             Assert.IsTrue(subGridSize % 2 != 0, "Sub-grid size should be odd");
 
@@ -38,17 +38,18 @@ namespace Client.Match
                     cellView.SetLabel(cellEntity.ToString());
                     cellView.transform.position = new Vector3Int(column, row, 0);
 
-                    //if (Random.value > .5f)
-                    //{
-                    //    continue;
-                    //}
+                    if (Random.value > .95f)
+                    {
+                        continue;
+                    }
 
-                    if (row < size.y / 2)
+                    if (row < size.y / 2 && Random.value > .15f)
                         continue;
 
                     var pieceView = Object.Instantiate(piecePrefab);
                     var pieceEntity = World.NewEntity();
                     pieceView.SetLabel(pieceEntity.ToString());
+                    pieceView.SetPosition(new Vector2Int(column, row));
                     Add<Position>(pieceEntity).Value = new Vector2IntScaled(column, row, subGridSize);
                     Add<Velocity>(pieceEntity).Value = new Vector2IntScaled(0, 0, subGridSize);
                     Add<CellLink>(pieceEntity).Value = cellEntity;

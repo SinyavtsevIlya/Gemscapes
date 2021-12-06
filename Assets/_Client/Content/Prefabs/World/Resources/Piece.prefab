@@ -230,6 +230,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _label: {fileID: 2524751137441966001}
   _lerpEnabled: 1
+  _dumperCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: -2.270935
+      outSlope: -2.270935
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.3636145
+    - serializedVersion: 3
+      time: 0.22849761
+      value: -0.029835232
+      inSlope: 1.4041134
+      outSlope: 1.4041134
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.5456067
+      outWeight: 0.24167375
+    - serializedVersion: 3
+      time: 0.5712632
+      value: -0.0085093845
+      inSlope: 0.057849813
+      outSlope: 0.057849813
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.36329326
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.0006296462
+      outSlope: -0.0006296462
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.26836416
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _dumperDuration: 1
+  _currentDumperPhase: 1
 --- !u!1 &7363604685578253204
 GameObject:
   m_ObjectHideFlags: 0
