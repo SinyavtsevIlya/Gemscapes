@@ -230,7 +230,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _label: {fileID: 2524751137441966001}
   _lerpEnabled: 1
-  _dumperCurve:
+  _damperCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -272,7 +272,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _dumperDuration: 1
+  _damperDuration: 1
   _currentDumperPhase: 1
 --- !u!1 &7363604685578253204
 GameObject:

@@ -10,15 +10,15 @@ namespace Client.Match
         #region Dependencies
         [SerializeField] private TMP_Text _label;
         [SerializeField] private bool _lerpEnabled;
-        [SerializeField] private AnimationCurve _dumperCurve;
-        [SerializeField] private float _dumperDuration;
+        [SerializeField] private AnimationCurve _damperCurve;
+        [SerializeField] private float _damperDuration;
         #endregion
 
         #region State
         private Vector2 _from;
         private Vector2 _to;
         private float _t;
-        [SerializeField] private float _currentDumperPhase = 1;
+        private float _currentDamperPhase;
         #endregion
 
         #region API
@@ -40,7 +40,7 @@ namespace Client.Match
 
         public void SetAsStopped()
         {
-            _currentDumperPhase = 0;
+            _currentDamperPhase = 0;
         }
 
         public void SetLabel(string labelText)
@@ -55,6 +55,11 @@ namespace Client.Match
             Clicked?.Invoke();
         }
 
+        private void Awake()
+        {
+            _currentDamperPhase = _damperDuration;
+        }
+
         private void Update()
         {
             if (_lerpEnabled)
@@ -62,10 +67,10 @@ namespace Client.Match
                 _t += Time.deltaTime / Time.fixedDeltaTime;
                 transform.position = Vector2.Lerp(_from, _to, _t);
             }
-            if (_currentDumperPhase <= _dumperDuration)
+            if (_currentDamperPhase <= _damperDuration)
             {
-                transform.position += new Vector3(0f, _dumperCurve.Evaluate(_currentDumperPhase), 0f);
-                _currentDumperPhase += Time.deltaTime;
+                transform.position += new Vector3(0f, _damperCurve.Evaluate(_currentDamperPhase), 0f);
+                _currentDamperPhase += Time.deltaTime;
             }
         } 
         #endregion

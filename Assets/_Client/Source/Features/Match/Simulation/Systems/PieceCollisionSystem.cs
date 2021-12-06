@@ -21,30 +21,7 @@ namespace Client.Match
                 ref var cellGravityDirection = ref Get<GravityDirection>(cellEntity).Value;
                 ref var grid = ref Get<Grid>(pieceEntity);
 
-                var isColliding = false;
-
-                if (grid.IsBlocking(World, cellPosition, cellGravityDirection))
-                {
-                    if (grid.TryGetCell(cellPosition + cellGravityDirection, out var nextCellEntity))
-                    {
-                        if (TryGet<PieceLink>(nextCellEntity, out var blockingPieceLink))
-                        {
-                            if (blockingPieceLink.Value.Unpack(World, out var blockingPieceEntity))
-                            {
-                                if (!Has<FallingTag>(blockingPieceEntity))
-                                {
-                                    isColliding = true;
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        isColliding = true;
-                    }
-                }
-
-                if (isColliding)
+                if (IsColliding(cellPosition, cellGravityDirection, grid))
                 {
                     var hasPieceArived = cellGravityDirection.sqrMagnitude >=
                                         (cellGravityDirection + cellPosition - piecePosition.ToVector2Int()).sqrMagnitude;
@@ -58,6 +35,32 @@ namespace Client.Match
                     }
                 }
             }
+        }
+
+        private bool IsColliding(Vector2Int cellPosition, Vector2Int cellGravityDirection, Grid grid)
+        {
+            if (grid.IsBlocking(World, cellPosition, cellGravityDirection))
+            {
+                if (grid.TryGetCell(cellPosition + cellGravityDirection, out var nextCellEntity))
+                {
+                    if (TryGet<PieceLink>(nextCellEntity, out var blockingPieceLink))
+                    {
+                        if (blockingPieceLink.Value.Unpack(World, out var blockingPieceEntity))
+                        {
+                            if (!Has<FallingTag>(blockingPieceEntity))
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
