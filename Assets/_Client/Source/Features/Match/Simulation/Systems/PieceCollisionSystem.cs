@@ -21,7 +21,7 @@ namespace Client.Match
                 ref var cellGravityDirection = ref Get<GravityDirection>(cellEntity).Value;
                 ref var grid = ref Get<Grid>(pieceEntity);
 
-                if (IsColliding(cellPosition, cellGravityDirection, grid))
+                if (IsColliding(cellPosition, cellGravityDirection, grid, pieceEntity))
                 {
                     var hasPieceArived = cellGravityDirection.sqrMagnitude >=
                                         (cellGravityDirection + cellPosition - piecePosition.ToVector2Int()).sqrMagnitude;
@@ -37,7 +37,7 @@ namespace Client.Match
             }
         }
 
-        private bool IsColliding(Vector2Int cellPosition, Vector2Int cellGravityDirection, Grid grid)
+        private bool IsColliding(Vector2Int cellPosition, Vector2Int cellGravityDirection, Grid grid, int pieceEntity)
         {
             if (grid.IsBlocking(World, cellPosition, cellGravityDirection))
             {
@@ -50,6 +50,15 @@ namespace Client.Match
                             if (!Has<FallingTag>(blockingPieceEntity))
                             {
                                 return true;
+                            }
+                            else
+                            {
+                                ref var pieceVelocity = ref Get<Velocity>(pieceEntity).Value;
+                                ref var blockingPieceVolocity = ref Get<Velocity>(blockingPieceEntity).Value;
+                                if (pieceVelocity.Value.sqrMagnitude > blockingPieceVolocity.Value.sqrMagnitude)
+                                {
+                                    pieceVelocity.Value = blockingPieceVolocity.Value;
+                                }
                             }
                         }
                     }

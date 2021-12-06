@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 4992130909318922087}
   - component: {fileID: 7516157604549645095}
   m_Layer: 0
-  m_Name: Piece
+  m_Name: Piece0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -273,7 +273,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _damperDuration: 1
-  _currentDumperPhase: 1
 --- !u!1 &7363604685578253204
 GameObject:
   m_ObjectHideFlags: 0

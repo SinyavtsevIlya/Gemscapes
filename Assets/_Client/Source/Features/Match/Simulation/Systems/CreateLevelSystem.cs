@@ -17,12 +17,16 @@ namespace Client.Match
             var piecePrefab = Resources.Load<MovablePieceView>("piece");
             var cellPrefab = Resources.Load<CellView>("cell");
 
-            var size = new Vector2Int(14 , 9);
+            var size = new Vector2Int(12 , 12);
             var subGridSize = 35;
 
             Assert.IsTrue(subGridSize % 2 != 0, "Sub-grid size should be odd");
 
             var grid = new Grid(new int[size.x, size.y]);
+
+            var boardEntity = World.NewEntity();
+            Add<BoardTag>(boardEntity);
+            Add<Grid>(boardEntity) = grid;
 
             for (int row = 0; row < size.y; row++)
             {
@@ -33,6 +37,7 @@ namespace Client.Match
                     Add<CellPosition>(cellEntity).Value = new Vector2Int(column, row);
                     Add<GravityDirection>(cellEntity).Value = new Vector2Int(0, -1);
                     Add<Grid>(cellEntity) = grid;
+                    Add<BoardLink>(cellEntity).Value = boardEntity;
 
                     var cellView = Object.Instantiate(cellPrefab);
                     cellView.SetLabel(cellEntity.ToString());
@@ -46,8 +51,10 @@ namespace Client.Match
                     if (row < size.y / 2 && Random.value > .15f)
                         continue;
 
-                    var pieceView = Object.Instantiate(piecePrefab);
                     var pieceEntity = World.NewEntity();
+                    var pieceTypeId = Random.Range(0, 2);
+                    Add<PieceTypeId>(pieceEntity).Value = pieceTypeId;
+                    var pieceView = Object.Instantiate(Resources.Load<MovablePieceView>("piece" + pieceTypeId.ToString()));
                     pieceView.SetLabel(pieceEntity.ToString());
                     pieceView.SetPosition(new Vector2Int(column, row));
                     Add<Position>(pieceEntity).Value = new Vector2IntScaled(column, row, subGridSize);

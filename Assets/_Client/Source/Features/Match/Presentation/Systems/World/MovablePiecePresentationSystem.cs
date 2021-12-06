@@ -10,6 +10,17 @@ namespace Client.Match
     {
         protected override void OnUpdate()
         {
+            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
+
+            foreach (var pieceEntity in Filter()
+            .With<Mono<MovablePieceView>>()
+            .With<DestroyedEvent>()
+            .End())
+            {
+                ref var view = ref Get<Mono<MovablePieceView>>(pieceEntity).Value;
+                Object.Destroy(view.gameObject);
+            }
+
             foreach (var pieceEntity in Filter()
             .With<Mono<MovablePieceView>>()
             .With<Position>()
@@ -52,7 +63,11 @@ namespace Client.Match
             .End())
             {
                 ref var view = ref Get<Mono<MovablePieceView>>(pieceEntity).Value;
-                view.Clicked += () => { Add<FallingTag>(pieceEntity); };
+                view.Clicked += () => 
+                {
+                    Add<FallingTag>(pieceEntity); 
+                    //later.Add<DestroyedEvent>(pieceEntity);
+                };
             }
         }
     }
