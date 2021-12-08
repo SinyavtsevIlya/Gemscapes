@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine.EventSystems;
 using System;
+using DG.Tweening;
 
 namespace Client.Match
 {
@@ -11,6 +12,7 @@ namespace Client.Match
         [SerializeField] private TMP_Text _label;
         [SerializeField] private bool _lerpEnabled;
         [SerializeField] private AnimationCurve _damperCurve;
+        [SerializeField] private AnimationCurve _matchCurve;
         [SerializeField] private float _damperDuration;
         #endregion
 
@@ -38,6 +40,13 @@ namespace Client.Match
             }
         }
 
+        public void Destroy(float duration)
+        {
+            transform.DOScale(0f, duration)
+                .SetEase(_matchCurve)
+                .OnComplete(OnMatchAnimationComplete);
+        }
+
         public void SetAsStopped()
         {
             _currentDamperPhase = 0;
@@ -46,7 +55,14 @@ namespace Client.Match
         public void SetLabel(string labelText)
         {
             _label.text = labelText;
-        } 
+        }
+        #endregion
+
+        #region Private
+        private void OnMatchAnimationComplete()
+        {
+            Destroy(gameObject);
+        }
         #endregion
 
         #region Messages

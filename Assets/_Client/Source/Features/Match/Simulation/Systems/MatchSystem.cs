@@ -42,7 +42,7 @@ namespace Client.Match
                     //later.Add<>
                 }
             }
-
+            
             foreach (var boardEntity in Filter()
             .With<StoppedEvent>()
             .With<BoardTag>()
@@ -50,52 +50,65 @@ namespace Client.Match
             {
                 ref var grid = ref Get<Grid>(boardEntity);
 
-                var width = grid.Value.GetLength(0);
-                var height = grid.Value.GetLength(1);
-
-
                 var lastMatchedTypeId = -1;
-                for (int row = 0; row < height; row++)
-                {
-                    for (int column = 0; column < width; column++)
-                    {
-                        var cellEntity = grid.Value[column, row];
 
-                        if (TryGet<PieceLink>(cellEntity, out var pieceLink))
+                for (var iterationIdx = 0; iterationIdx < 2; iterationIdx++)
+                {
+                    var even = iterationIdx % 2;
+
+                    var width = grid.Value.GetLength(iterationIdx % 2);
+                    var height = grid.Value.GetLength((iterationIdx+1) % 2);
+
+                    for (var row = 0; row < height; row++)
+                    {
+                        for (var column = 0; column < width; column++)
                         {
-                            if (pieceLink.Value.Unpack(World, out var pieceEntity))
+                            var x = even == 0 ? column : row;
+                            var y = even == 0 ? row : column;
+                            var cellEntity = grid.Value[x, y];
+
+                            if (TryGet<PieceLink>(cellEntity, out var pieceLink))
                             {
-                                var pieceTypeId = Get<PieceTypeId>(pieceEntity).Value;
-                                if (pieceTypeId == lastMatchedTypeId)
+                                if (pieceLink.Value.Unpack(World, out var pieceEntity))
                                 {
-                                    _matches.Add(pieceEntity);
-                                    if (_matches.Count == 3)
+                                    var pieceTypeId = Get<PieceTypeId>(pieceEntity).Value;
+                                    if (pieceTypeId == lastMatchedTypeId)
                                     {
-                                        for (int idx = 0; idx < _matches.Count; idx++)
+                                        _matches.Add(pieceEntity);
+                                        if (_matches.Count >= 3)
                                         {
-                                            later.Add<MatchedEvent>(_matches[idx]);
+                                            for (int idx = 0; idx < _matches.Count; idx++)
+                                            {
+                                                var mathcedEntity = _matches[idx];
+
+                                                if (!Has<MatchedTag>(mathcedEntity))
+                                                {
+                                                    Add<MatchedTag>(mathcedEntity);
+                                                    later.AddDelayed<MatchedEvent>(10, mathcedEntity);
+                                                }
+                                            }
+                                            _matches.Clear();
+                                            lastMatchedTypeId = -1;
                                         }
+                                    }
+                                    else
+                                    {
                                         _matches.Clear();
-                                        lastMatchedTypeId = -1;
+                                        lastMatchedTypeId = pieceTypeId;
+                                        _matches.Add(pieceEntity);
                                     }
                                 }
-                                else
-                                {
-                                    _matches.Clear();
-                                    lastMatchedTypeId = pieceTypeId;
-                                    _matches.Add(pieceEntity);
-                                }
                             }
-                        }
-                        else
-                        {
-                            _matches.Clear();
-                            lastMatchedTypeId = -1;
-                        }
+                            else
+                            {
+                                _matches.Clear();
+                                lastMatchedTypeId = -1;
+                            }
 
+                        }
+                        _matches.Clear();
+                        lastMatchedTypeId = -1;
                     }
-                    _matches.Clear();
-                    lastMatchedTypeId = -1;
                 }
             }
 
@@ -103,7 +116,7 @@ namespace Client.Match
             .With<MatchedEvent>()
             .End())
             {
-                later.Add<DestroyedEvent>(pieceEntity);
+                later.AddDelayed<DestroyedEvent>(10, pieceEntity);
             }
 
             foreach (var pieceEntity in Filter()
@@ -114,8 +127,6 @@ namespace Client.Match
                 ref var cellEntity = ref Get<CellLink>(pieceEntity).Value;
                 Del<PieceLink>(cellEntity);
             }
-
-            
         }
 
     }

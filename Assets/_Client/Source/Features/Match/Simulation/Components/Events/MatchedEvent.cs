@@ -6,6 +6,6 @@ namespace Client
     [Battle]
     public struct MatchedEvent
     {
-        
+        [OneFrame] [Battle] public struct TimerCompleted { }
     }
 }

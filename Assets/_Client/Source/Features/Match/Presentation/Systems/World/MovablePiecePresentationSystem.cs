@@ -14,11 +14,11 @@ namespace Client.Match
 
             foreach (var pieceEntity in Filter()
             .With<Mono<MovablePieceView>>()
-            .With<DestroyedEvent>()
+            .With<MatchedEvent>()
             .End())
             {
                 ref var view = ref Get<Mono<MovablePieceView>>(pieceEntity).Value;
-                Object.Destroy(view.gameObject);
+                view.Destroy(UnityIdents.Time.FixedDelta * 10);
             }
 
             foreach (var pieceEntity in Filter()
