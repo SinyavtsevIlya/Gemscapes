@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Client.Match
 {
     [Battle]
-    public sealed class UnpinUpperPieceSystem : EcsSystemBase
+    public sealed class DropUpcomingPieceSystem : EcsSystemBase
     {
         protected override void OnUpdate()
         {
