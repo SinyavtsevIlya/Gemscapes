@@ -6,11 +6,9 @@ namespace Client.Match
 {
     public class PieceAuthoring : MonoBehaviour, IConvertGameObjectToEntity
     {
-        public void Convert(int entity, GameObjectConversionSystem converstionSystem)
+        public void Convert(int pieceEntity, GameObjectConversionSystem converstionSystem)
         {
             var world = converstionSystem.World;
-
-            var pieceEntity = world.NewEntity();
             
             var pieceView = GetComponent<MovablePieceView>();
             pieceView.SetLabel(pieceEntity.ToString());

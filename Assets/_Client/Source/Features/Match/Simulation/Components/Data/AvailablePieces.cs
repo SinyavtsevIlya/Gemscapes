@@ -8,7 +8,7 @@ namespace Client.Match
 
         public void AutoReset(ref AvailablePieces c)
         {
-            c.AutoReset(ref c);
+            Buffer.AutoReset(ref c.Buffer);
         }
     }
 }

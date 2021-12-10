@@ -58,7 +58,7 @@ namespace Client.Match
                     var pieceEntity = World.NewEntity();
                     var pieceTypeId = Random.Range(0, 2);
                     Add<PieceTypeId>(pieceEntity).Value = pieceTypeId;
-                    var pieceView = Object.Instantiate(Resources.Load<MovablePieceView>("piece" + pieceTypeId.ToString()));
+                    var pieceView = Object.Instantiate(Resources.Load<MovablePieceView>("piece" + (pieceTypeId == 0 ? "_book" : "_carrot")));
                     pieceView.SetLabel(pieceEntity.ToString());
                     pieceView.SetPosition(new Vector2Int(column, row));
                     Add<Position>(pieceEntity).Value = new Vector2IntScaled(column, row, SimConstants.GridSubdivison);

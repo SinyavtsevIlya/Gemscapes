@@ -12,6 +12,7 @@ namespace Client.Match
 
             foreach (var pieceEntity in Filter()
             .With<Position>()
+            .With<CellLink>()
             .With<FallingTag>()
             .End())
             {

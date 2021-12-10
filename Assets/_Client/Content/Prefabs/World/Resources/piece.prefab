@@ -181,8 +181,9 @@ GameObject:
   - component: {fileID: 7516157604549645095}
   - component: {fileID: 8859060616435240553}
   - component: {fileID: 3339954695097362076}
+  - component: {fileID: 6759411152808027326}
   m_Layer: 0
-  m_Name: Piece0
+  m_Name: piece
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -216,7 +217,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _label: {fileID: 2524751137441966001}
-  _lerpEnabled: 0
+  _lerpEnabled: 1
   _damperCurve:
     serializedVersion: 2
     m_Curve:
@@ -361,3 +362,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &6759411152808027326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5303461030124987454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37a1875adf5642d419a1030e0d6b6934, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -54,7 +54,7 @@ namespace Client.Match
 
                 var one = new Vector3(cellPositionPrevious.x, cellPositionPrevious.y, 0f);
                 var two = new Vector3(cellPositionCurrent.x, cellPositionCurrent.y, 0f);
-                Debug.DrawLine(one, two, Color.green, .01f);
+                //Debug.DrawLine(one, two, Color.green, .01f);
             }
 
             foreach (var pieceEntity in Filter()
@@ -62,8 +62,9 @@ namespace Client.Match
             .With<CreatedEvent>()
             .End())
             {
+                //Debug.Log($"piece created {Get<Position>(pieceEntity).Value.ToVector2()}");
                 ref var view = ref Get<Mono<MovablePieceView>>(pieceEntity).Value;
-                view.transform.position = (Get<Position>(pieceEntity).Value.ToVector2());
+                view.SetPosition(Get<Position>(pieceEntity).Value.ToVector2());
 
                 view.Clicked += () => 
                 {

@@ -28,6 +28,7 @@ namespace Client.Match
 
         public void SetPosition(Vector2 value)
         {
+            Debug.Log($"Set position {value}");
             if (_lerpEnabled)
             {
                 _t = 0f;
