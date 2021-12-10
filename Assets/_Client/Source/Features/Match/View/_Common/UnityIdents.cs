@@ -1,5 +1,9 @@
 ﻿namespace Client.Match
 {
+    public static class SimConstants
+    {
+        public const int GridSubdivison = 35;
+    }
     public static class UnityIdents
     {
         public static class Time

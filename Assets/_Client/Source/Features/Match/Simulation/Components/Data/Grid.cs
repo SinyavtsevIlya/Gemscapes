@@ -21,6 +21,12 @@ namespace Client.Match
             if (grid.IsInsideBounds(position))
             {
                 cellEntity = grid.Value[position.x, position.y];
+
+                if (cellEntity == -1)
+                {
+                    return false;
+                }
+
                 return true;
             }
             return false;

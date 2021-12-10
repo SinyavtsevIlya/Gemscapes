@@ -63,6 +63,8 @@ namespace Client.Match
             .End())
             {
                 ref var view = ref Get<Mono<MovablePieceView>>(pieceEntity).Value;
+                view.transform.position = (Get<Position>(pieceEntity).Value.ToVector2());
+
                 view.Clicked += () => 
                 {
                     Add<FallingTag>(pieceEntity); 

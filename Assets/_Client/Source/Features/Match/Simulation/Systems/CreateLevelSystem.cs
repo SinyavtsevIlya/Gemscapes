@@ -6,21 +6,25 @@ using UnityEngine.Assertions;
 namespace Client.Match
 {
     [Battle]
-    //[UpdateInGroup(typeof(InitializationSystemGroup))]
     public sealed class CreateLevelSystem : EcsSystemBase
     {
         protected override void OnCreate()
         {
             //var level = Resources.Load<GameObject>("level");
             //World.Convert(level, ConversionMode.Convert);
+            var board =  Object.FindObjectOfType<BoardAuthoring>().gameObject;
+            World.Convert(board);
+            //Generate();
+        }
 
+        private void Generate()
+        {
             var piecePrefab = Resources.Load<MovablePieceView>("piece");
             var cellPrefab = Resources.Load<CellView>("cell");
 
-            var size = new Vector2Int(12 , 12);
-            var subGridSize = 35;
+            var size = new Vector2Int(12, 12);
 
-            Assert.IsTrue(subGridSize % 2 != 0, "Sub-grid size should be odd");
+            Assert.IsTrue(SimConstants.GridSubdivison % 2 != 0, "Sub-grid size should be odd");
 
             var grid = new Grid(new int[size.x, size.y]);
 
@@ -57,20 +61,20 @@ namespace Client.Match
                     var pieceView = Object.Instantiate(Resources.Load<MovablePieceView>("piece" + pieceTypeId.ToString()));
                     pieceView.SetLabel(pieceEntity.ToString());
                     pieceView.SetPosition(new Vector2Int(column, row));
-                    Add<Position>(pieceEntity).Value = new Vector2IntScaled(column, row, subGridSize);
-                    Add<Velocity>(pieceEntity).Value = new Vector2IntScaled(0, 0, subGridSize);
+                    Add<Position>(pieceEntity).Value = new Vector2IntScaled(column, row, SimConstants.GridSubdivison);
+                    Add<Velocity>(pieceEntity).Value = new Vector2IntScaled(0, 0, SimConstants.GridSubdivison);
                     Add<CellLink>(pieceEntity).Value = cellEntity;
                     Add<Grid>(pieceEntity) = grid;
                     Add<Mono<MovablePieceView>>(pieceEntity).Value = pieceView;
                     Add<PieceLink>(cellEntity).Value = World.PackEntity(pieceEntity);
                     Add<CreatedEvent>(pieceEntity);
-                    
+
                     //Add<FallingTag>(pieceEntity);
                 }
             }
 
-            var halfSize = (Vector2) size / 2;
-            Camera.main.transform.position = new Vector3(halfSize.x- .5f, halfSize.y - .5f, -25);
+            var halfSize = (Vector2)size / 2;
+            Camera.main.transform.position = new Vector3(halfSize.x - .5f, halfSize.y - .5f, -25);
             Camera.main.orthographicSize = halfSize.y;
         }
 
