@@ -74,6 +74,7 @@ namespace Client.Match
                 world.Add<CellLink>(pieceEntity).Value = cellEntity;
                 world.Add<PieceLink>(cellEntity).Value = world.Dst.PackEntity(pieceEntity);
             }
+            world.Dst.LinkDebugGameobject(pieceEntity, pieceTr.gameObject);
             //world.Add<FallingTag>(pieceEntity);
         }
 

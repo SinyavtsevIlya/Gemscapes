@@ -63,13 +63,37 @@ namespace Client.Match
             .End())
             {
                 //Debug.Log($"piece created {Get<Position>(pieceEntity).Value.ToVector2()}");
+                var grid = Get<Grid>(pieceEntity);
                 ref var view = ref Get<Mono<MovablePieceView>>(pieceEntity).Value;
                 view.SetPosition(Get<Position>(pieceEntity).Value.ToVector2());
 
                 view.Clicked += () => 
                 {
-                    Add<FallingTag>(pieceEntity); 
+                    //Add<FallingTag>(pieceEntity); 
                     //later.Add<DestroyedEvent>(pieceEntity);
+                };
+
+                view.Draged += (dragDirection) => 
+                {
+                    Debug.Log($"dragDirection: {dragDirection}");
+                    if (grid.TryGetCell(Get<Position>(pieceEntity).Value.ToVector2Int() + dragDirection, out var cellEntity))
+                    {
+                        if (TryGet<PieceLink>(cellEntity, out var pieceLink))
+                        {
+                            if (pieceLink.Value.Unpack(World, out var targetPieceEntity))
+                            {
+                                Debug.Log("Add swap request");
+                                later.Add<SwapPieceRequest>(World.NewEntity()) = new SwapPieceRequest()
+                                {
+                                    PieceA = pieceEntity,
+                                    PieceB = targetPieceEntity
+                                };
+
+                                Get<Mono<MovablePieceView>>(pieceEntity).Value.SetPosition(Get<Position>(pieceEntity).Value.ToVector2Int() + dragDirection);
+                                Get<Mono<MovablePieceView>>(targetPieceEntity).Value.SetPosition(Get<Position>(pieceEntity).Value.ToVector2Int());
+                            }
+                        }
+                    }
                 };
             }
         }

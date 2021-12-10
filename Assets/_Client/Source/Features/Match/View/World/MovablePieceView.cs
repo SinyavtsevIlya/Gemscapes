@@ -6,7 +6,7 @@ using DG.Tweening;
 
 namespace Client.Match
 {
-    public class MovablePieceView : MonoBehaviour, IPointerClickHandler
+    public class MovablePieceView : MonoBehaviour, /*IPointerClickHandler,*/ IBeginDragHandler, IEndDragHandler, IDragHandler
     {
         #region Dependencies
         [SerializeField] private TMP_Text _label;
@@ -21,14 +21,15 @@ namespace Client.Match
         private Vector2 _to;
         private float _t;
         private float _currentDamperPhase;
+        private Vector2 _dragStartPosition;
         #endregion
 
         #region API
         public event Action Clicked;
+        public event Action<Vector2Int> Draged;
 
         public void SetPosition(Vector2 value)
         {
-            Debug.Log($"Set position {value}");
             if (_lerpEnabled)
             {
                 _t = 0f;
@@ -67,9 +68,24 @@ namespace Client.Match
         #endregion
 
         #region Messages
-        public void OnPointerClick(PointerEventData eventData)
+        //public void OnPointerClick(PointerEventData eventData)
+        //{
+        //    Clicked?.Invoke();
+        //}
+
+        public void OnDrag(PointerEventData eventData)
         {
-            Clicked?.Invoke();
+        }
+
+        public void OnBeginDrag(PointerEventData eventData)
+        {
+            _dragStartPosition = eventData.position;
+        }
+
+        public void OnEndDrag(PointerEventData eventData)
+        {
+            var dragDirection = Vector2Int.RoundToInt((eventData.position - _dragStartPosition).normalized);
+            Draged?.Invoke(dragDirection);
         }
 
         private void Awake()
@@ -89,7 +105,7 @@ namespace Client.Match
                 transform.position += new Vector3(0f, _damperCurve.Evaluate(_currentDamperPhase), 0f);
                 _currentDamperPhase += Time.deltaTime;
             }
-        } 
+        }
         #endregion
     }
 }

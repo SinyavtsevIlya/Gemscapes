@@ -42,12 +42,22 @@ namespace Client.Match
                     //later.Add<>
                 }
             }
-            
+
             foreach (var boardEntity in Filter()
+            .With<BoardTag>()
             .With<StoppedEvent>()
+            .End())
+            {
+                UnityEngine.Debug.Log("Add match request 1");
+                later.Add<MatchRequest>(boardEntity);
+            }
+
+            foreach (var boardEntity in Filter()
+            .With<MatchRequest>()
             .With<BoardTag>()
             .End())
             {
+                UnityEngine.Debug.Log("match board");
                 ref var grid = ref Get<Grid>(boardEntity);
 
                 var lastMatchedTypeId = -1;

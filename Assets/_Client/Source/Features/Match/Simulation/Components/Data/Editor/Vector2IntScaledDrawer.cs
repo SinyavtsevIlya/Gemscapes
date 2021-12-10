@@ -15,7 +15,7 @@ namespace Nanory.Lex.UnityEditorIntegration.Inspectors
         public void OnGUI(string label, object value, EcsWorld world, int entityId)
         {
             EditorGUILayout.Vector2IntField(label, ((Vector2IntScaled)value).Value);
-            EditorGUILayout.IntField(((Vector2IntScaled)value).Divisor, "divisor");
+            EditorGUILayout.IntField(new GUIContent() { text = "Divisor" }, ((Vector2IntScaled)value).Divisor);
         }
     }
 }
