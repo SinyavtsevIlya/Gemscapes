@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace Client.Match
 {
+    [Battle]
+    [PreserveAutoCreation]
     public sealed class GeneratePieceSystem : EcsSystemBase
     {
         protected override void OnUpdate()
@@ -32,9 +34,14 @@ namespace Client.Match
                             var piecePrefab = availablePieces.Values[index];
                             var newPieceEntity = World.Instantiate(piecePrefab);
 
-                            Get<Velocity>(newPieceEntity) = velocity;
-                            Get<Position>(newPieceEntity) = position;
+                            Add<PieceTypeId>(newPieceEntity).Value = piecePrefab;
+                            Add<Grid>(newPieceEntity) = grid;
+                            Add<Velocity>(newPieceEntity) = velocity;
+                            Add<Position>(newPieceEntity) = position;
                             Get<Position>(newPieceEntity).Value.Value -= gravityDirection.Value * position.Value.Divisor;
+
+                            Add<CellLink>(newPieceEntity).Value = tendingCellEntity;
+                            Add<CreatedEvent>(newPieceEntity);
                         }
                     }
                 }

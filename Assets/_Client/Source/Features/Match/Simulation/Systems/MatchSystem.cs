@@ -94,7 +94,7 @@ namespace Client.Match
                                                 if (!Has<MatchedTag>(mathcedEntity))
                                                 {
                                                     Add<MatchedTag>(mathcedEntity);
-                                                    later.AddDelayed<MatchedEvent>(10, mathcedEntity);
+                                                    later.AddDelayed<MatchedEvent>(10 /*+ idx * 7*/, mathcedEntity);
                                                 }
                                             }
                                             _matches.Clear();

@@ -3,7 +3,9 @@ using Nanory.Lex;
 using Nanory.Lex.Conversion;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
-
+#if UNITY_EDITOR
+using Nanory.Lex.UnityEditorIntegration;
+#endif
 namespace Client.Match
 {
     public class BoardAuthoring : MonoBehaviour, IConvertGameObjectToEntity
@@ -36,7 +38,7 @@ namespace Client.Match
 
             world.Add<BoardTag>(boardEntity);
             world.Add<Grid>(boardEntity) = grid;
-            var availablePiecesBuffer = world.Add<AvailablePieces>(boardEntity).Buffer;
+            ref var availablePiecesBuffer = ref world.Add<AvailablePieces>(boardEntity).Buffer;
             availablePiecesBuffer.Values = Buffer<int>.Pool.Pop();
             foreach (var pieceType in _pieceTypeLookup.Values)
             {
@@ -62,7 +64,7 @@ namespace Client.Match
 
         private void ConvertPieceEntity(GameObjectConversionSystem converstionSystem, EcsConversionWorldWrapper world, Grid grid, Transform pieceTr, Vector3Int pos)
         {
-            var pieceEntity = converstionSystem.Convert(pieceTr.gameObject);
+            var pieceEntity = converstionSystem.Convert(pieceTr.gameObject, ConversionMode.ConvertAndDestroy);
 
             world.Add<CreatedEvent>(pieceEntity);
             world.Add<PieceTypeId>(pieceEntity).Value = _pieceTypeLookup[pieceTr.name];
@@ -74,8 +76,7 @@ namespace Client.Match
                 world.Add<CellLink>(pieceEntity).Value = cellEntity;
                 world.Add<PieceLink>(cellEntity).Value = world.Dst.PackEntity(pieceEntity);
             }
-            world.Dst.LinkDebugGameobject(pieceEntity, pieceTr.gameObject);
-            //world.Add<FallingTag>(pieceEntity);
+            world.Add<FallingTag>(pieceEntity);
         }
 
         private static void ConvertCellEntity(int boardEntity, EcsConversionWorldWrapper world, Grid grid, Vector3Int pos)
@@ -86,6 +87,11 @@ namespace Client.Match
             world.Add<Grid>(cellEntity) = grid;
             world.Add<BoardLink>(cellEntity).Value = boardEntity;
             world.Add<CellPosition>(cellEntity).Value = new Vector2Int(pos.x, pos.y);
+
+            if (pos.y == grid.Value.GetLength(1) - 1)
+            {
+                world.Add<GeneratorTag>(cellEntity);
+            }
         }
 
         private void FillPieceTypesLookup(GameObjectConversionSystem converstionSystem)

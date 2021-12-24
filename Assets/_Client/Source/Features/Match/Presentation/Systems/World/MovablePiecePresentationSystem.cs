@@ -1,6 +1,9 @@
 ﻿using Nanory.Lex;
 using Nanory.Lex.Conversion;
 using UnityEngine;
+#if DEBUG
+using Nanory.Lex.UnityEditorIntegration;
+#endif
 
 namespace Client.Match
 {
@@ -45,26 +48,34 @@ namespace Client.Match
             .With<CellLinkUpdatedEvent>()
             .End())
             {
-                ref var cellLinkUpdatedEvent = ref Get<CellLinkUpdatedEvent>(pieceEntity);
-                ref var view = ref Get<Mono<MovablePieceView>>(pieceEntity).Value;
-                ref var grid = ref Get<Grid>(pieceEntity);
+                //ref var cellLinkUpdatedEvent = ref Get<CellLinkUpdatedEvent>(pieceEntity);
+                ////ref var view = ref Get<Mono<MovablePieceView>>(pieceEntity).Value;
+                //ref var grid = ref Get<Grid>(pieceEntity);
 
-                ref var cellPositionPrevious = ref Get<CellPosition>(cellLinkUpdatedEvent.PreviousCell).Value;
-                ref var cellPositionCurrent = ref Get<CellPosition>(cellLinkUpdatedEvent.CurrentCell).Value;
+                //ref var cellPositionPrevious = ref Get<CellPosition>(cellLinkUpdatedEvent.PreviousCell).Value;
+                //ref var cellPositionCurrent = ref Get<CellPosition>(cellLinkUpdatedEvent.CurrentCell).Value;
 
-                var one = new Vector3(cellPositionPrevious.x, cellPositionPrevious.y, 0f);
-                var two = new Vector3(cellPositionCurrent.x, cellPositionCurrent.y, 0f);
-                //Debug.DrawLine(one, two, Color.green, .01f);
+                //var one = new Vector3(cellPositionPrevious.x, cellPositionPrevious.y, 0f);
+                //var two = new Vector3(cellPositionCurrent.x, cellPositionCurrent.y, 0f);
+                ////Debug.DrawLine(one, two, Color.green, .01f);
             }
 
             foreach (var pieceEntity in Filter()
-            .With<Mono<MovablePieceView>>()
+            .With<MovableTag>()
             .With<CreatedEvent>()
             .End())
             {
-                //Debug.Log($"piece created {Get<Position>(pieceEntity).Value.ToVector2()}");
                 var grid = Get<Grid>(pieceEntity);
-                ref var view = ref Get<Mono<MovablePieceView>>(pieceEntity).Value;
+                var piecePrefabEntity = Get<PieceTypeId>(pieceEntity).Value;
+                var prefabView = Get<GameObjectReference>(piecePrefabEntity).Value.GetComponent<MovablePieceView>();
+                var view = Object.Instantiate(prefabView);
+
+#if DEBUG
+                EcsSystems.LinkDebugGameobject(World, pieceEntity, view.gameObject);
+#endif
+
+                Add<Mono<MovablePieceView>>(pieceEntity).Value = view;
+
                 view.SetPosition(Get<Position>(pieceEntity).Value.ToVector2());
 
                 view.Clicked += () => 

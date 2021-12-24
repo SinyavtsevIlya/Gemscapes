@@ -20,24 +20,24 @@ namespace Client.Match
                 ref var grid = ref Get<Grid>(pieceEntity);
                 var roundedPiecePosition = position.ToVector2Int();
 
-                if (grid.TryGetCell(roundedPiecePosition, out var cellEntity))
+                if (grid.TryGetCell(roundedPiecePosition, out var currentCellEntity))
                 {
-                    if (cellLink.Value == cellEntity)
+                    if (cellLink.Value == currentCellEntity)
                         continue;
 
                     later.Add<CellLinkUpdatedEvent>(pieceEntity) = new CellLinkUpdatedEvent()
                     {
                         PreviousCell = cellLink.Value,
-                        CurrentCell = cellEntity
+                        CurrentCell = currentCellEntity
                     };
 
                     Del<PieceLink>(cellLink.Value);
-                    if (!Has<PieceLink>(cellEntity))
+                    if (!Has<PieceLink>(currentCellEntity))
                     {
-                        Add<PieceLink>(cellEntity).Value = World.PackEntity(pieceEntity);
+                        Add<PieceLink>(currentCellEntity).Value = World.PackEntity(pieceEntity);
                     }
 
-                    cellLink.Value = cellEntity;
+                    cellLink.Value = currentCellEntity;
                 }
             }
         }

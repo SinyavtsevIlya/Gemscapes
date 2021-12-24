@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using Nanory.Lex;
 using Nanory.Lex.Conversion;
+#if UNITY_EDITOR
+using Nanory.Lex.UnityEditorIntegration;
+#endif
 
 namespace Client.Match
 {
@@ -10,9 +13,15 @@ namespace Client.Match
         {
             var world = converstionSystem.World;
             
-            var pieceView = GetComponent<MovablePieceView>();
-            pieceView.SetLabel(pieceEntity.ToString());
-            world.Add<Mono<MovablePieceView>>(pieceEntity).Value = pieceView;
+            //pieceView.SetLabel(pieceEntity.ToString());
+            world.Add<MovableTag>(pieceEntity);
+
+            var isPrefab = gameObject.scene.name == null;
+
+            if (isPrefab)
+            {
+                world.Add<GameObjectReference>(pieceEntity).Value = gameObject;
+            }
         }
     }
 }
