@@ -6,7 +6,7 @@ using DG.Tweening;
 
 namespace Client.Match
 {
-    public class MovablePieceView : MonoBehaviour, /*IPointerClickHandler,*/ IBeginDragHandler, IEndDragHandler, IDragHandler
+    public class MovablePieceView : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
         #region Dependencies
         [SerializeField] private TMP_Text _label;
@@ -68,10 +68,10 @@ namespace Client.Match
         #endregion
 
         #region Messages
-        //public void OnPointerClick(PointerEventData eventData)
-        //{
-        //    Clicked?.Invoke();
-        //}
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            Clicked?.Invoke();
+        }
 
         public void OnDrag(PointerEventData eventData)
         {

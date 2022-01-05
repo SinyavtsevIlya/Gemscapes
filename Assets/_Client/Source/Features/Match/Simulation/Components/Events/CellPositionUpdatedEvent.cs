@@ -4,7 +4,7 @@ namespace Client
 {
     [OneFrame]
     [Battle]
-    public struct CellLinkUpdatedEvent
+    public struct CellPositionUpdatedEvent
     {
         public int PreviousCell;
         public int CurrentCell;

@@ -73,10 +73,9 @@ namespace Client.Match
             world.Add<Grid>(pieceEntity) = grid;
             if (grid.TryGetCell((Vector2Int)pos, out var cellEntity))
             {
-                world.Add<CellLink>(pieceEntity).Value = cellEntity;
                 world.Add<PieceLink>(cellEntity).Value = world.Dst.PackEntity(pieceEntity);
             }
-            world.Add<FallingTag>(pieceEntity);
+            //world.Add<FallingTag>(pieceEntity);
         }
 
         private static void ConvertCellEntity(int boardEntity, EcsConversionWorldWrapper world, Grid grid, Vector3Int pos)

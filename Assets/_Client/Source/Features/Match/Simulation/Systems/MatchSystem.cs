@@ -4,6 +4,7 @@ using Nanory.Collections;
 namespace Client.Match
 {
     [Battle]
+    [PreserveAutoCreation]
     public sealed class MatchSystem : EcsSystemBase
     {
         private EcsFilter _fallingPieces;
@@ -134,7 +135,8 @@ namespace Client.Match
             .With<Position>()
             .End())
             {
-                ref var cellEntity = ref Get<CellLink>(pieceEntity).Value;
+                var grid = Get<Grid>(pieceEntity);
+                var cellEntity = grid.GetCellByPiece(World, pieceEntity);
                 Del<PieceLink>(cellEntity);
             }
         }

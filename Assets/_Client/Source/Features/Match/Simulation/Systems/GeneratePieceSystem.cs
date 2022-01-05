@@ -40,7 +40,6 @@ namespace Client.Match
                             Add<Position>(newPieceEntity) = position;
                             Get<Position>(newPieceEntity).Value.Value -= gravityDirection.Value * position.Value.Divisor;
 
-                            Add<CellLink>(newPieceEntity).Value = tendingCellEntity;
                             Add<CreatedEvent>(newPieceEntity);
                         }
                     }

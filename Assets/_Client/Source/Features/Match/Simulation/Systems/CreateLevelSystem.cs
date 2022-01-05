@@ -63,7 +63,6 @@ namespace Client.Match
                     pieceView.SetPosition(new Vector2Int(column, row));
                     Add<Position>(pieceEntity).Value = new Vector2IntScaled(column, row, SimConstants.GridSubdivison);
                     Add<Velocity>(pieceEntity).Value = new Vector2IntScaled(0, 0, SimConstants.GridSubdivison);
-                    Add<CellLink>(pieceEntity).Value = cellEntity;
                     Add<Grid>(pieceEntity) = grid;
                     //Add<Mono<MovablePieceView>>(pieceEntity).Value = pieceView;
                     Add<PieceLink>(cellEntity).Value = World.PackEntity(pieceEntity);

@@ -1,6 +1,6 @@
 ﻿using Nanory.Lex;
 
-namespace Client
+namespace Client.Match
 {
     [Battle]
     public sealed class SwapPieceSystem : EcsSystemBase
@@ -15,27 +15,24 @@ namespace Client
             {
                 ref var swapPieceRequest = ref Get<SwapPieceRequest>(swapRequestEntity);
 
+                var grid = Get<Grid>(swapPieceRequest.PieceA);
+
                 var positionA = Get<Position>(swapPieceRequest.PieceA);
                 var positionB = Get<Position>(swapPieceRequest.PieceB);
 
                 Get<Position>(swapPieceRequest.PieceA) = positionB;
                 Get<Position>(swapPieceRequest.PieceB) = positionA;
 
-                var cellA = Get<CellLink>(swapPieceRequest.PieceA).Value;
-                var cellB = Get<CellLink>(swapPieceRequest.PieceB).Value;
+                var cellAEntity = grid.GetCellByPiece(World, swapPieceRequest.PieceA);
+                var cellBEntity = grid.GetCellByPiece(World, swapPieceRequest.PieceB);
 
-                Get<CellLink>(swapPieceRequest.PieceA).Value = cellB;
-                Get<CellLink>(swapPieceRequest.PieceB).Value = cellA;
+                var pieceLinkA = Get<PieceLink>(cellAEntity);
+                var pieceLinkB = Get<PieceLink>(cellBEntity);
 
-                var pieceLinkA = Get<PieceLink>(cellA);
-                var pieceLinkB = Get<PieceLink>(cellB);
+                Get<PieceLink>(cellAEntity) = pieceLinkB;
+                Get<PieceLink>(cellBEntity) = pieceLinkA;
 
-                Get<PieceLink>(cellA) = pieceLinkB;
-                Get<PieceLink>(cellB) = pieceLinkA;
-
-                ref var cellEntity = ref Get<CellLink>(swapPieceRequest.PieceA).Value;
-                UnityEngine.Debug.Log("Add match request 2");
-                later.Add<MatchRequest>(Get<BoardLink>(cellEntity).Value);
+                later.Add<MatchRequest>(Get<BoardLink>(cellAEntity).Value);
             }
         }
     }

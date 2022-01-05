@@ -12,15 +12,15 @@ namespace Client.Match
 
             foreach (var pieceEntity in Filter()
             .With<Position>()
-            .With<CellLink>()
+            .With<MovableTag>()
             .With<FallingTag>()
             .End())
             {
                 ref var piecePosition = ref Get<Position>(pieceEntity).Value;
-                ref var cellEntity = ref Get<CellLink>(pieceEntity).Value;
+                var grid = Get<Grid>(pieceEntity);
+                var cellEntity = grid.GetCellByPiece(World, pieceEntity);
                 ref var cellPosition = ref Get<CellPosition>(cellEntity).Value;
                 ref var cellGravityDirection = ref Get<GravityDirection>(cellEntity).Value;
-                ref var grid = ref Get<Grid>(pieceEntity);
 
                 if (IsColliding(cellPosition, cellGravityDirection, grid, pieceEntity))
                 {

@@ -12,13 +12,13 @@ namespace Client.Match
 
             foreach (var pieceEntity in Filter()
             .With<FallingTag>()
-            .With<CellLink>()
+            .With<MovableTag>()
             .End())
             {
                 ref var grid = ref Get<Grid>(pieceEntity);
-                ref var cellEntity = ref Get<CellLink>(pieceEntity).Value;
-                ref var cellGravity = ref Get<GravityDirection>(cellEntity).Value;
-                ref var cellPosition = ref Get<CellPosition>(cellEntity).Value;
+                var cellEntity = grid.GetCellByPiece(World, pieceEntity);
+                var cellGravity = Get<GravityDirection>(cellEntity).Value;
+                var cellPosition = Get<CellPosition>(cellEntity).Value;
 
                 if (grid.TryGetCell(cellPosition - cellGravity, out var previousCellEntity))
                 {

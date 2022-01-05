@@ -14,9 +14,9 @@ namespace Client.Match
             .End())
             {
                 UnityEngine.Debug.Log("try unpin");
-                ref var cellEntity = ref Get<CellLink>(pieceEntity).Value;
-                //TODO: for now let's just pretend there is only top down gravity
                 ref var grid = ref Get<Grid>(pieceEntity);
+                var cellEntity = grid.GetCellByPiece(World, pieceEntity);
+                //TODO: for now let's just pretend there is only top down gravity
 
                 if (grid.TryGetCell(Get<CellPosition>(cellEntity).Value + UnityEngine.Vector2Int.up, out var upperCellEntity))
                 {

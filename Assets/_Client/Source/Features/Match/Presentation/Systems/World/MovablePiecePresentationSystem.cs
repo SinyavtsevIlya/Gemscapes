@@ -45,22 +45,6 @@ namespace Client.Match
             }
 
             foreach (var pieceEntity in Filter()
-            .With<CellLinkUpdatedEvent>()
-            .End())
-            {
-                //ref var cellLinkUpdatedEvent = ref Get<CellLinkUpdatedEvent>(pieceEntity);
-                ////ref var view = ref Get<Mono<MovablePieceView>>(pieceEntity).Value;
-                //ref var grid = ref Get<Grid>(pieceEntity);
-
-                //ref var cellPositionPrevious = ref Get<CellPosition>(cellLinkUpdatedEvent.PreviousCell).Value;
-                //ref var cellPositionCurrent = ref Get<CellPosition>(cellLinkUpdatedEvent.CurrentCell).Value;
-
-                //var one = new Vector3(cellPositionPrevious.x, cellPositionPrevious.y, 0f);
-                //var two = new Vector3(cellPositionCurrent.x, cellPositionCurrent.y, 0f);
-                ////Debug.DrawLine(one, two, Color.green, .01f);
-            }
-
-            foreach (var pieceEntity in Filter()
             .With<MovableTag>()
             .With<CreatedEvent>()
             .End())
@@ -80,7 +64,8 @@ namespace Client.Match
 
                 view.Clicked += () => 
                 {
-                    //Add<FallingTag>(pieceEntity); 
+                    later.Add<FallingTag>(pieceEntity);
+                    Debug.Log("Add falling tag");
                     //later.Add<DestroyedEvent>(pieceEntity);
                 };
 

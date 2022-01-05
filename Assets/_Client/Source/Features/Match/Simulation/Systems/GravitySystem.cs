@@ -14,12 +14,17 @@ namespace Client.Match
 
             foreach (var pieceEntity in Filter()
             .With<Position>()
-            .With<CellLink>()
+            .With<MovableTag>()
             .With<FallingTag>()
             .End())
             {
                 ref var velocity = ref Get<Velocity>(pieceEntity).Value;
-                ref var cellEntity = ref Get<CellLink>(pieceEntity).Value;
+                ref var position = ref Get<Position>(pieceEntity).Value;
+
+                var roundedPosition = position.ToVector2Int();
+
+                var grid = Get<Grid>(pieceEntity);
+                var cellEntity = grid.GetCellByPiece(World, pieceEntity);
                 ref var gravityDirection = ref Get<GravityDirection>(cellEntity).Value;
                 velocity.Value += gravityDirection * GravityAmount;
 
@@ -28,7 +33,16 @@ namespace Client.Match
                     velocity.SetFromVector2Int(gravityDirection);
                 }
 
-                Get<Position>(pieceEntity).Value.Value += velocity.Value;
+                position.Value += velocity.Value;
+
+                if (position.ToVector2Int() != roundedPosition)
+                {
+                    later.Add<CellPositionUpdatedEvent>(pieceEntity) = new CellPositionUpdatedEvent()
+                    {
+                        PreviousCell = cellEntity,
+                        CurrentCell = grid.GetCellByPiece(World, pieceEntity)
+                    };
+                }
             }
         }
     }
