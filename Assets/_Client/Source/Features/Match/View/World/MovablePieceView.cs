@@ -95,11 +95,12 @@ namespace Client.Match
 
         private void Update()
         {
-            if (_lerpEnabled)
-            {
-                _t += Time.deltaTime / Time.fixedDeltaTime;
-                transform.position = Vector2.Lerp(_from, _to, _t);
-            }
+            if (!_lerpEnabled)
+                return;
+
+            _t += Time.deltaTime / Time.fixedDeltaTime;
+            transform.position = Vector2.Lerp(_from, _to, _t);
+
             if (_currentDamperPhase <= _damperDuration)
             {
                 transform.position += new Vector3(0f, _damperCurve.Evaluate(_currentDamperPhase), 0f);

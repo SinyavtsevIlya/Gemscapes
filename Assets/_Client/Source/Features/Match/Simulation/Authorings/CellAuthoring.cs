@@ -8,7 +8,7 @@ namespace Client.Match
     {
         public void Convert(int cellEntity, GameObjectConversionSystem converstionSystem)
         {
-            
+            converstionSystem.World.Add<Mono<CellView>>(cellEntity).Value = GetComponent<CellView>();
         }
     }
 }

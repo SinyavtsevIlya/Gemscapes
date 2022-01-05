@@ -45,10 +45,10 @@ namespace Client.Match
                 availablePiecesBuffer.Values.Add(pieceType);
             }
 
-            foreach (var posRaw in _cells.cellBounds.allPositionsWithin)
+            foreach (Transform cellTr in _cells.transform)
             {
-                var pos = posRaw - _cells.cellBounds.min;
-                ConvertCellEntity(boardEntity, world, grid, pos);
+                var pos = _pieces.WorldToCell(cellTr.position) - _cells.cellBounds.min;
+                ConvertCellEntity(converstionSystem, boardEntity, world, grid, cellTr, pos);
             }
 
             foreach (Transform pieceTr in _pieces.transform)
@@ -78,9 +78,10 @@ namespace Client.Match
             //world.Add<FallingTag>(pieceEntity);
         }
 
-        private static void ConvertCellEntity(int boardEntity, EcsConversionWorldWrapper world, Grid grid, Vector3Int pos)
+        private static void ConvertCellEntity(GameObjectConversionSystem converstionSystem, int boardEntity, EcsConversionWorldWrapper world, Grid grid, Transform cellTr, Vector3Int pos)
         {
-            var cellEntity = world.NewEntity();
+            var cellEntity = converstionSystem.Convert(cellTr.gameObject, ConversionMode.Convert);
+            world.Add<CreatedEvent>(cellEntity);
             world.Add<GravityDirection>(cellEntity).Value = new Vector2Int(0, -1);
             grid.Value[pos.x, pos.y] = cellEntity;
             world.Add<Grid>(cellEntity) = grid;
@@ -91,6 +92,10 @@ namespace Client.Match
             {
                 world.Add<GeneratorTag>(cellEntity);
             }
+
+#if DEBUG
+            
+#endif
         }
 
         private void FillPieceTypesLookup(GameObjectConversionSystem converstionSystem)

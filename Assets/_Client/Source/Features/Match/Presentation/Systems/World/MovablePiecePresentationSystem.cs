@@ -44,6 +44,18 @@ namespace Client.Match
                 view.SetAsStopped();
             }
 
+            foreach (var cellEntity in Filter()
+            .With<CellPosition>()
+            .With<Mono<CellView>>()
+            .With<CreatedEvent>()
+            .End())
+            {
+#if DEBUG
+                var cellView = Get<Mono<CellView>>(cellEntity).Value;
+                EcsSystems.LinkDebugGameobject(World, cellEntity, cellView.gameObject);
+#endif
+            }
+
             foreach (var pieceEntity in Filter()
             .With<MovableTag>()
             .With<CreatedEvent>()
@@ -53,6 +65,7 @@ namespace Client.Match
                 var piecePrefabEntity = Get<PieceTypeId>(pieceEntity).Value;
                 var prefabView = Get<GameObjectReference>(piecePrefabEntity).Value.GetComponent<MovablePieceView>();
                 var view = Object.Instantiate(prefabView);
+                Debug.Log(World.GetEntityGen(pieceEntity));
 
 #if DEBUG
                 EcsSystems.LinkDebugGameobject(World, pieceEntity, view.gameObject);
@@ -60,12 +73,13 @@ namespace Client.Match
 
                 Add<Mono<MovablePieceView>>(pieceEntity).Value = view;
 
+
+                view.transform.position = Get<Position>(pieceEntity).Value.ToVector2();
                 view.SetPosition(Get<Position>(pieceEntity).Value.ToVector2());
 
                 view.Clicked += () => 
                 {
                     later.Add<FallingTag>(pieceEntity);
-                    Debug.Log("Add falling tag");
                     //later.Add<DestroyedEvent>(pieceEntity);
                 };
 

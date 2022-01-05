@@ -24,7 +24,7 @@ namespace Client.Match
                 if (Get<PieceLink>(cells.PreviousCell).Value.Unpack(World, out var previosCellPiece))
                 {
                     if (previosCellPiece == pieceEntity)
-                        Del<PieceLink>(cellEntity);
+                        Del<PieceLink>(cells.PreviousCell);
                 }
 
                 if (!Has<PieceLink>(cells.CurrentCell))

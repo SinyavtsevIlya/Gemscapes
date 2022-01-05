@@ -4,11 +4,12 @@ using UnityEngine;
 namespace Client.Match
 {
     [Battle]
-    [PreserveAutoCreation]
     public sealed class GeneratePieceSystem : EcsSystemBase
     {
         protected override void OnUpdate()
         {
+            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
+
             foreach (var generatorEntity in Filter()
             .With<GeneratorTag>()
             .With<CellPosition>()
@@ -39,7 +40,7 @@ namespace Client.Match
                             Add<Velocity>(newPieceEntity) = velocity;
                             Add<Position>(newPieceEntity) = position;
                             Get<Position>(newPieceEntity).Value.Value -= gravityDirection.Value * position.Value.Divisor;
-
+                            later.Add<PieceLink>(generatorEntity).Value = World.PackEntity(newPieceEntity);
                             Add<CreatedEvent>(newPieceEntity);
                         }
                     }
