@@ -17,7 +17,7 @@ namespace Client.Match
 
             foreach (var pieceEntity in Filter()
             .With<Mono<MovablePieceView>>()
-            .With<MatchedEvent>()
+            .With<DestroyedEvent>()
             .End())
             {
                 ref var view = ref Get<Mono<MovablePieceView>>(pieceEntity).Value;
@@ -79,8 +79,9 @@ namespace Client.Match
 
                 view.Clicked += () => 
                 {
-                    later.Add<FallingTag>(pieceEntity);
+                    //later.Add<FallingTag>(pieceEntity);
                     //later.Add<DestroyedEvent>(pieceEntity);
+                    //Del<PieceLink>(grid.GetCellByPiece(World, pieceEntity));
                 };
 
                 view.Draged += (dragDirection) => 

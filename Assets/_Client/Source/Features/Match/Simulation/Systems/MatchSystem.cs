@@ -1,10 +1,11 @@
 ﻿using Nanory.Lex;
 using Nanory.Collections;
-
+#if DEBUG
+using Nanory.Lex.UnityEditorIntegration;
+#endif
 namespace Client.Match
 {
     [Battle]
-    [PreserveAutoCreation]
     public sealed class MatchSystem : EcsSystemBase
     {
         private EcsFilter _fallingPieces;

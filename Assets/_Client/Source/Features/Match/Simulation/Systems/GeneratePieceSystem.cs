@@ -6,6 +6,13 @@ namespace Client.Match
     [Battle]
     public sealed class GeneratePieceSystem : EcsSystemBase
     {
+        private readonly System.Random _random;
+
+        public GeneratePieceSystem()
+        {
+            _random = new System.Random(0);
+        }        
+
         protected override void OnUpdate()
         {
             var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
@@ -31,16 +38,18 @@ namespace Client.Match
                             var position = Get<Position>(pieceEntity);
 
                             ref var availablePieces = ref Get<AvailablePieces>(boardEntity).Buffer;
-                            var index = Random.Range(0, availablePieces.Values.Count);
+                            var index = _random.Next(0, availablePieces.Values.Count);
                             var piecePrefab = availablePieces.Values[index];
                             var newPieceEntity = World.Instantiate(piecePrefab);
 
                             Add<PieceTypeId>(newPieceEntity).Value = piecePrefab;
                             Add<Grid>(newPieceEntity) = grid;
+                            velocity.Value.Value /= 2;
                             Add<Velocity>(newPieceEntity) = velocity;
                             Add<Position>(newPieceEntity) = position;
                             Get<Position>(newPieceEntity).Value.Value -= gravityDirection.Value * position.Value.Divisor;
                             later.Add<PieceLink>(generatorEntity).Value = World.PackEntity(newPieceEntity);
+                            Add<FallingTag>(newPieceEntity);
                             Add<CreatedEvent>(newPieceEntity);
                         }
                     }

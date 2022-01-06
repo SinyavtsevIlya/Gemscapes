@@ -21,6 +21,11 @@ namespace Client.Match
                 ref var cells = ref Get<CellPositionUpdatedEvent>(pieceEntity);
                 var cellEntity = grid.GetCellByPiece(World, pieceEntity);
 
+                if (Has<PieceLink>(cells.PreviousCell))
+                {
+   
+                }
+
                 if (Get<PieceLink>(cells.PreviousCell).Value.Unpack(World, out var previosCellPiece))
                 {
                     if (previosCellPiece == pieceEntity)
