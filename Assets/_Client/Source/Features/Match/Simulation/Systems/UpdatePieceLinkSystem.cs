@@ -23,7 +23,7 @@ namespace Client.Match
 
                 if (Has<PieceLink>(cells.PreviousCell))
                 {
-   
+
                 }
 
                 if (Get<PieceLink>(cells.PreviousCell).Value.Unpack(World, out var previosCellPiece))
@@ -32,10 +32,7 @@ namespace Client.Match
                         Del<PieceLink>(cells.PreviousCell);
                 }
 
-                if (!Has<PieceLink>(cells.CurrentCell))
-                {
-                    Add<PieceLink>(cells.CurrentCell).Value = World.PackEntity(pieceEntity);
-                }
+                GetOrAdd<PieceLink>(cells.CurrentCell).Value = World.PackEntity(pieceEntity);
             }
         }
     }

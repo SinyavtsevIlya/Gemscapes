@@ -216,6 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39ae653834e50ae46ae3a5d02b844c83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collider: {fileID: 3339954695097362076}
   _label: {fileID: 2524751137441966001}
   _lerpEnabled: 1
   _damperCurve:

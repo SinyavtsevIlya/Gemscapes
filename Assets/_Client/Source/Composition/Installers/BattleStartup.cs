@@ -12,7 +12,11 @@ namespace Client
         private EcsSystems _systems;
         private EcsSystemSorter<Battle> _sorter;
 
-        void Start()
+        [SerializeField] private int _jumpTicks;
+        [SerializeField] private int _tickId;
+        [SerializeField] private bool _tickManually;
+
+        private void Start()
         {
             _world = new EcsWorld();
             _systems = new EcsSystems(_world);
@@ -20,19 +24,52 @@ namespace Client
             _sorter = new EcsSystemSorter<Battle>(_world);
             _systems.Add(_sorter.GetSortedSystems());
 
-#if UNITY_EDITOR
+#if DEBUG
             _systems.Add(new Nanory.Lex.UnityEditorIntegration.EcsWorldDebugSystem());
 #endif
 
             _systems.Init();
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
-            _systems?.Run();
+#if DEBUG
+            if (_tickManually)
+            {
+                return;
+            }
+#endif
+
+            Run();
         }
 
-        void OnDestroy()
+#if DEBUG
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                while (_jumpTicks > _tickId)
+                {
+                    Run();
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                _tickManually = !_tickManually;
+            }
+
+            if (_tickManually)
+            {
+                if (Input.GetKeyDown(KeyCode.N))
+                {
+                    Run();
+                }
+            }
+        } 
+#endif
+
+        private void OnDestroy()
         {
             if (_systems != null)
             {
@@ -44,6 +81,12 @@ namespace Client
                 _world.Destroy();
                 _world = null;
             }
+        }
+
+        private void Run()
+        {
+            _systems?.Run();
+            _tickId++;
         }
     }
 }

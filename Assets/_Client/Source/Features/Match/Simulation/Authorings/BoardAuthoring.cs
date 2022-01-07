@@ -3,6 +3,7 @@ using Nanory.Lex;
 using Nanory.Lex.Conversion;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
+using System.Linq;
 #if UNITY_EDITOR
 using Nanory.Lex.UnityEditorIntegration;
 #endif
@@ -20,9 +21,10 @@ namespace Client.Match
         {
             var later = converstionSystem.GetCommandBufferFrom<BeginSimulationECBSystem>();
             var world = converstionSystem.World;
-            var size = (Vector2Int)_cells.cellBounds.size;
+            transform.Translate(-(_cells.cellSize / 2));
+            var bounds = GetBounds(_cells);
+            var size = (Vector2Int)bounds.size;
 
-            transform.Translate(-(_cells.cellBounds.min + _cells.cellSize / 2));
 
             FillPieceTypesLookup(converstionSystem);
 
@@ -47,18 +49,20 @@ namespace Client.Match
 
             foreach (Transform cellTr in _cells.transform)
             {
-                var pos = _pieces.WorldToCell(cellTr.position) - _cells.cellBounds.min;
+                var pos = Vector3Int.RoundToInt(cellTr.position) - bounds.min;
                 ConvertCellEntity(converstionSystem, boardEntity, world, grid, cellTr, pos);
             }
 
             foreach (Transform pieceTr in _pieces.transform)
             {
-                var pos = _pieces.WorldToCell(pieceTr.position) - _cells.cellBounds.min;
+                var pos = Vector3Int.RoundToInt(pieceTr.position) - bounds.min;
                 ConvertPieceEntity(converstionSystem, world, grid, pieceTr, pos);
             }
 
+            transform.Translate(-bounds.min);
+
             var halfSize = (Vector2)size / 2;
-            Camera.main.transform.position = _cells.cellBounds.center + Vector3.up * (_cells.cellSize / 2).y - Vector3.forward;
+            Camera.main.transform.position = transform.position - Vector3.right * bounds.min.x / 2 - Vector3.forward;
             Camera.main.orthographicSize = halfSize.y;
         }
 
@@ -107,6 +111,22 @@ namespace Client.Match
                 var pieceEntityPrefab = converstionSystem.Convert(piecePrefab);
                 _pieceTypeLookup[piecePrefab.name] = pieceEntityPrefab;
             }
+        }
+
+        private BoundsInt GetBounds(Tilemap tilemap)
+        {
+            var xMin = int.MaxValue;
+            var yMin = int.MaxValue;
+            var xMax = int.MinValue;
+            var yMax = int.MinValue;
+            foreach (Transform cellTr in tilemap.transform)
+            {
+                if (cellTr.position.x < xMin) xMin = Mathf.RoundToInt(cellTr.position.x);
+                if (cellTr.position.y < yMin) yMin = Mathf.RoundToInt(cellTr.position.y);
+                if (cellTr.position.x > xMax) xMax = Mathf.RoundToInt(cellTr.position.x);
+                if (cellTr.position.y > yMax) yMax = Mathf.RoundToInt(cellTr.position.y);
+            }
+            return new BoundsInt(xMin, yMin, 0, xMax - xMin + 1, yMax - yMin + 1, 0);
         }
     }
 }

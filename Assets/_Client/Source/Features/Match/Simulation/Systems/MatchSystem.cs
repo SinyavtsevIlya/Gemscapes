@@ -79,6 +79,9 @@ namespace Client.Match
                             var y = even == 0 ? row : column;
                             var cellEntity = grid.Value[x, y];
 
+                            if (Has<GeneratorTag>(cellEntity))
+                                continue;
+
                             if (TryGet<PieceLink>(cellEntity, out var pieceLink))
                             {
                                 if (pieceLink.Value.Unpack(World, out var pieceEntity))

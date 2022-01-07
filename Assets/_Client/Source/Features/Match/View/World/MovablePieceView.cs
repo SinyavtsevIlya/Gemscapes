@@ -9,6 +9,7 @@ namespace Client.Match
     public class MovablePieceView : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
         #region Dependencies
+        [SerializeField] private Collider2D _collider;
         [SerializeField] private TMP_Text _label;
         [SerializeField] private bool _lerpEnabled;
         [SerializeField] private AnimationCurve _damperCurve;
@@ -44,6 +45,10 @@ namespace Client.Match
 
         public void Destroy(float duration)
         {
+            _collider.enabled = false;
+            Clicked = null;
+            Draged = null;
+
             transform.DOScale(0f, duration)
                 .SetEase(_matchCurve)
                 .OnComplete(OnMatchAnimationComplete);
