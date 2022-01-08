@@ -17,7 +17,7 @@ namespace Client.Match
             {
                 ref var grid = ref Get<Grid>(pieceEntity);
                 var cellEntity = grid.GetCellByPiece(World, pieceEntity);
-                var cellGravity = Get<GravityDirection>(cellEntity).Value;
+                var cellGravity = Get<GravityOutputDirection>(cellEntity).Value;
                 var cellPosition = Get<CellPosition>(cellEntity).Value;
 
                 if (grid.TryGetCell(cellPosition - cellGravity, out var previousCellEntity))
@@ -28,7 +28,7 @@ namespace Client.Match
                         {
                             if (!Has<FallingTag>(upperPieceEntity))
                             {
-                                later.Add<FallingTag>(upperPieceEntity);
+                                Add<FallingTag>(upperPieceEntity);
                             }
                         }
                     }

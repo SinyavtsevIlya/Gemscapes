@@ -53,6 +53,14 @@ namespace Client.Match
                 ConvertCellEntity(converstionSystem, boardEntity, world, grid, cellTr, pos);
             }
 
+            // Apply GravityInputDirection component datas
+            foreach (Transform cellTr in _cells.transform)
+            {
+                var pos = Vector3Int.RoundToInt(cellTr.position) - bounds.min;
+                
+
+            }
+
             foreach (Transform pieceTr in _pieces.transform)
             {
                 var pos = Vector3Int.RoundToInt(pieceTr.position) - bounds.min;
@@ -62,7 +70,7 @@ namespace Client.Match
             transform.Translate(-bounds.min);
 
             var halfSize = (Vector2)size / 2;
-            Camera.main.transform.position = transform.position - Vector3.right * bounds.min.x / 2 - Vector3.forward;
+            Camera.main.transform.position = transform.position - Vector3.right * bounds.min.x / 2 - Vector3.forward + Vector3.up;
             Camera.main.orthographicSize = halfSize.y;
         }
 
@@ -86,7 +94,7 @@ namespace Client.Match
         {
             var cellEntity = converstionSystem.Convert(cellTr.gameObject, ConversionMode.Convert);
             world.Add<CreatedEvent>(cellEntity);
-            world.Add<GravityDirection>(cellEntity).Value = new Vector2Int(0, -1);
+            world.Add<GravityOutputDirection>(cellEntity).Value = new Vector2Int(/*pos.y == 3 ? -1 : */0, -1);
             grid.Value[pos.x, pos.y] = cellEntity;
             world.Add<Grid>(cellEntity) = grid;
             world.Add<BoardLink>(cellEntity).Value = boardEntity;

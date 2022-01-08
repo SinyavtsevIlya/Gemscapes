@@ -13,7 +13,6 @@ namespace Client.Match
             .With<DestroyedEvent>()
             .End())
             {
-                UnityEngine.Debug.Log("try unpin");
                 ref var grid = ref Get<Grid>(pieceEntity);
                 var cellEntity = grid.GetCellByPiece(World, pieceEntity);
                 //TODO: for now let's just pretend there is only top down gravity
@@ -28,7 +27,7 @@ namespace Client.Match
                             {
                                 if (!Has<MatchedTag>(upperPieceEntity))
                                 {
-                                    later.Add<FallingTag>(upperPieceEntity);
+                                    Add<FallingTag>(upperPieceEntity);
                                 }
                             }
                         }

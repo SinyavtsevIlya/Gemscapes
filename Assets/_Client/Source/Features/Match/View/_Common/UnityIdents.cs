@@ -3,6 +3,7 @@
     public static class SimConstants
     {
         public const int GridSubdivison = 35;
+        public const int LineMatchLength = 3;
     }
     public static class UnityIdents
     {

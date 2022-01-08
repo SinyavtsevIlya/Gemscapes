@@ -65,8 +65,6 @@ namespace Client.Match
                 var piecePrefabEntity = Get<PieceTypeId>(pieceEntity).Value;
                 var prefabView = Get<GameObjectReference>(piecePrefabEntity).Value.GetComponent<MovablePieceView>();
                 var view = Object.Instantiate(prefabView);
-                Debug.Log(World.GetEntityGen(pieceEntity));
-
 #if DEBUG
                 EcsSystems.LinkDebugGameobject(World, pieceEntity, view.gameObject);
 #endif
@@ -82,6 +80,30 @@ namespace Client.Match
                     //later.Add<FallingTag>(pieceEntity);
                     //later.Add<DestroyedEvent>(pieceEntity);
                     //Del<PieceLink>(grid.GetCellByPiece(World, pieceEntity));
+
+                    var grid = Get<Grid>(pieceEntity);
+
+                    var piecePosition = Get<CellPosition>(grid.GetCellByPiece(World, pieceEntity)).Value;
+
+                    for (int i = piecePosition.y - 2; i < piecePosition.y + 2; i++)
+                    {
+                        for (int j = piecePosition.x - 2; j < piecePosition.x + 2; j++)
+                        {
+                            var pos = new Vector2Int(j, i);
+                            if (grid.TryGetCell(pos, out var cellEntity))
+                            {
+                                if (TryGet(cellEntity, out PieceLink pieceLink))
+                                {
+                                    if (pieceLink.Value.Unpack(World, out int currentPieceEntity))
+                                    {
+                                        //later.Add<MatchedEvent>(currentPieceEntity);
+                                        later.Add<DestroyedEvent>(currentPieceEntity);
+                                        Del<PieceLink>(grid.GetCellByPiece(World, currentPieceEntity));
+                                    }
+                                }
+                            }
+                        }
+                    }
                 };
 
                 view.Draged += (dragDirection) => 

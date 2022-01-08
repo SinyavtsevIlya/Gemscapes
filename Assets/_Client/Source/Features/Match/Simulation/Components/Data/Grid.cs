@@ -15,6 +15,16 @@ namespace Client.Match
 
     public static class GridExtensions
     {
+        public static bool TryGetPiece(this EcsSystemBase ecsSystemBase, int cellEntity, out int pieceEntity) 
+        {
+            if (ecsSystemBase.World.TryGet<PieceLink>(cellEntity, out var pieceLink))
+            {
+                return pieceLink.Value.Unpack(ecsSystemBase.World, out pieceEntity);
+            }
+            pieceEntity = -1;
+            return false;
+        }
+
         public static int GetCellByPiece(this Grid grid, EcsWorld world, int pieceEntity)
         {
             var roundedPiecePosition = world.Get<Position>(pieceEntity).Value.ToVector2Int();

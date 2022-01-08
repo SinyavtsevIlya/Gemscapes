@@ -39,7 +39,7 @@ namespace Client.Match
                     var cellEntity = World.NewEntity();
                     grid.Value[column, row] = cellEntity;
                     Add<CellPosition>(cellEntity).Value = new Vector2Int(column, row);
-                    Add<GravityDirection>(cellEntity).Value = new Vector2Int(0, -1);
+                    Add<GravityOutputDirection>(cellEntity).Value = new Vector2Int(0, -1);
                     Add<Grid>(cellEntity) = grid;
                     Add<BoardLink>(cellEntity).Value = boardEntity;
 
@@ -79,7 +79,7 @@ namespace Client.Match
 
         protected override void OnUpdate()
         {
-            
+
         }
     }
 }

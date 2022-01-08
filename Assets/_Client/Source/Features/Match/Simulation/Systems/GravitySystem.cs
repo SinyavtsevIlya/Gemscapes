@@ -25,7 +25,7 @@ namespace Client.Match
 
                 var grid = Get<Grid>(pieceEntity);
                 var cellEntity = grid.GetCellByPiece(World, pieceEntity);
-                ref var gravityDirection = ref Get<GravityDirection>(cellEntity).Value;
+                ref var gravityDirection = ref Get<GravityOutputDirection>(cellEntity).Value;
                 velocity.Value += gravityDirection * GravityAmount;
 
                 if (velocity.IsGreaterThanDivisor())

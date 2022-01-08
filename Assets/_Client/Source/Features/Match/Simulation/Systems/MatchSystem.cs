@@ -10,6 +10,7 @@ namespace Client.Match
     {
         private EcsFilter _fallingPieces;
         private ResizableArray<int> _matches;
+        private int _lastMatchedTypeId;
 
         protected override void OnCreate()
         {
@@ -41,7 +42,6 @@ namespace Client.Match
                 if (_fallingPieces.GetEntitiesCount() > 0)
                 {
                     later.Del<IdleTag>(boardEntity);
-                    //later.Add<>
                 }
             }
 
@@ -50,7 +50,6 @@ namespace Client.Match
             .With<StoppedEvent>()
             .End())
             {
-                UnityEngine.Debug.Log("Add match request 1");
                 later.Add<MatchRequest>(boardEntity);
             }
 
@@ -59,10 +58,9 @@ namespace Client.Match
             .With<BoardTag>()
             .End())
             {
-                UnityEngine.Debug.Log("match board");
                 ref var grid = ref Get<Grid>(boardEntity);
 
-                var lastMatchedTypeId = -1;
+                _lastMatchedTypeId = -1;
 
                 for (var iterationIdx = 0; iterationIdx < 2; iterationIdx++)
                 {
@@ -82,49 +80,43 @@ namespace Client.Match
                             if (Has<GeneratorTag>(cellEntity))
                                 continue;
 
-                            if (TryGet<PieceLink>(cellEntity, out var pieceLink))
+                            if (this.TryGetPiece(cellEntity, out var pieceEntity))
                             {
-                                if (pieceLink.Value.Unpack(World, out var pieceEntity))
+                                var pieceTypeId = Get<PieceTypeId>(pieceEntity).Value;
+                                if (pieceTypeId != _lastMatchedTypeId)
                                 {
-                                    var pieceTypeId = Get<PieceTypeId>(pieceEntity).Value;
-                                    if (pieceTypeId == lastMatchedTypeId)
-                                    {
-                                        _matches.Add(pieceEntity);
-                                        if (_matches.Count >= 3)
-                                        {
-                                            for (int idx = 0; idx < _matches.Count; idx++)
-                                            {
-                                                var mathcedEntity = _matches[idx];
-
-                                                if (!Has<MatchedTag>(mathcedEntity))
-                                                {
-                                                    Add<MatchedTag>(mathcedEntity);
-                                                    later.AddDelayed<MatchedEvent>(10 /*+ idx * 7*/, mathcedEntity);
-                                                }
-                                            }
-                                            _matches.Clear();
-                                            lastMatchedTypeId = -1;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        _matches.Clear();
-                                        lastMatchedTypeId = pieceTypeId;
-                                        _matches.Add(pieceEntity);
-                                    }
+                                    Match();
+                                    _lastMatchedTypeId = pieceTypeId;
                                 }
+                                _matches.Add(pieceEntity);
                             }
                             else
                             {
-                                _matches.Clear();
-                                lastMatchedTypeId = -1;
+                                Match();
                             }
-
                         }
-                        _matches.Clear();
-                        lastMatchedTypeId = -1;
+                        Match();
                     }
                 }
+            }
+
+            void Match()
+            {
+                if (_matches.Count >= 3)
+                {
+                    for (int idx = 0; idx < _matches.Count; idx++)
+                    {
+                        var matchedEntity = _matches[idx];
+
+                        if (!Has<MatchedTag>(matchedEntity))
+                        {
+                            Add<MatchedTag>(matchedEntity);
+                            later.AddDelayed<MatchedEvent>(10 + idx * 4, matchedEntity);
+                        }
+                    }
+                }
+                _matches.Clear();
+                _lastMatchedTypeId = -1;
             }
 
             foreach (var pieceEntity in Filter()
@@ -144,6 +136,19 @@ namespace Client.Match
                 Del<PieceLink>(cellEntity);
             }
         }
+    }
+    
+    public class Matches
+    {
+        private readonly ResizableArray<int> _matches;
+        private int _matchTypeId;
 
+        public ResizableArray<int> GetMatches() => _matches;
+        public int MatchTypeId => _matchTypeId;
+
+        public void Add(int pieceEntity)
+        {
+
+        }
     }
 }
