@@ -14,23 +14,19 @@ namespace Client.Match
             .End())
             {
                 ref var swapPieceRequest = ref Get<SwapPieceRequest>(swapRequestEntity);
+                var pieceAEntity = swapPieceRequest.PieceA;
+                var pieceBEntity = swapPieceRequest.PieceB;
+                var grid = Get<Grid>(pieceAEntity);
 
-                var grid = Get<Grid>(swapPieceRequest.PieceA);
+                Swap<Position>(pieceAEntity, pieceBEntity);
+                Swap<Velocity>(pieceAEntity, pieceBEntity);
 
-                var positionA = Get<Position>(swapPieceRequest.PieceA);
-                var positionB = Get<Position>(swapPieceRequest.PieceB);
+                SwapTag<FallingTag>(pieceAEntity, pieceBEntity);
 
-                Get<Position>(swapPieceRequest.PieceA) = positionB;
-                Get<Position>(swapPieceRequest.PieceB) = positionA;
+                var cellAEntity = grid.GetCellByPiece(World, pieceAEntity);
+                var cellBEntity = grid.GetCellByPiece(World, pieceBEntity);
 
-                var cellAEntity = grid.GetCellByPiece(World, swapPieceRequest.PieceA);
-                var cellBEntity = grid.GetCellByPiece(World, swapPieceRequest.PieceB);
-
-                var pieceLinkA = Get<PieceLink>(cellAEntity);
-                var pieceLinkB = Get<PieceLink>(cellBEntity);
-
-                Get<PieceLink>(cellAEntity) = pieceLinkB;
-                Get<PieceLink>(cellBEntity) = pieceLinkA;
+                Swap<PieceLink>(cellAEntity, cellBEntity);
 
                 later.Add<MatchRequest>(Get<BoardLink>(cellAEntity).Value);
             }

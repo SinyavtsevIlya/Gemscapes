@@ -27,7 +27,7 @@ namespace Client.Match
             foreach (var pieceEntity in Filter()
             .With<Mono<MovablePieceView>>()
             .With<Position>()
-            .With<FallingTag>()
+            //.With<FallingTag>()
             .End())
             {
                 ref var view = ref Get<Mono<MovablePieceView>>(pieceEntity).Value;
@@ -58,7 +58,8 @@ namespace Client.Match
 
             foreach (var pieceEntity in Filter()
             .With<MovableTag>()
-            .With<CreatedEvent>()
+            .With<Position>() // TODO: check why doesn't work without Position constraint
+            .Without<Mono<MovablePieceView>>()
             .End())
             {
                 var grid = Get<Grid>(pieceEntity);
@@ -70,7 +71,6 @@ namespace Client.Match
 #endif
 
                 Add<Mono<MovablePieceView>>(pieceEntity).Value = view;
-
 
                 view.transform.position = Get<Position>(pieceEntity).Value.ToVector2();
                 view.SetPosition(Get<Position>(pieceEntity).Value.ToVector2());
@@ -96,9 +96,9 @@ namespace Client.Match
                                 {
                                     if (pieceLink.Value.Unpack(World, out int currentPieceEntity))
                                     {
-                                        //later.Add<MatchedEvent>(currentPieceEntity);
                                         later.Add<DestroyedEvent>(currentPieceEntity);
                                         Del<PieceLink>(grid.GetCellByPiece(World, currentPieceEntity));
+                                        //later.Add<MatchedEvent>(currentPieceEntity);
                                     }
                                 }
                             }

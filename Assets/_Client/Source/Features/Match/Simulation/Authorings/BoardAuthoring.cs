@@ -70,7 +70,7 @@ namespace Client.Match
             transform.Translate(-bounds.min);
 
             var halfSize = (Vector2)size / 2;
-            Camera.main.transform.position = transform.position - Vector3.right * bounds.min.x / 2 - Vector3.forward + Vector3.up;
+            Camera.main.transform.position = bounds.center - bounds.min - Vector3.forward - Vector3.one / 2;
             Camera.main.orthographicSize = halfSize.y;
         }
 
@@ -87,7 +87,10 @@ namespace Client.Match
             {
                 world.Add<PieceLink>(cellEntity).Value = world.Dst.PackEntity(pieceEntity);
             }
-            //world.Add<FallingTag>(pieceEntity);
+            if (pos.y != grid.Value.GetLength(1) - 1)
+            {
+                //world.Add<FallingTag>(pieceEntity);
+            }
         }
 
         private static void ConvertCellEntity(GameObjectConversionSystem converstionSystem, int boardEntity, EcsConversionWorldWrapper world, Grid grid, Transform cellTr, Vector3Int pos)
