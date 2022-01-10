@@ -109,11 +109,6 @@ namespace Client.Match
             _t += Time.deltaTime / Time.fixedDeltaTime;
             transform.position = Vector2.Lerp(_from, _to, _t);
 
-            Debug.Log($"_from: {_from}");
-            Debug.Log($"_to: {_to}");
-            Debug.Log($"_t: {_t}");
-            Debug.Log($"transform.position: {transform.position}");
-
             if (_currentDamperPhase <= _damperDuration)
             {
 
