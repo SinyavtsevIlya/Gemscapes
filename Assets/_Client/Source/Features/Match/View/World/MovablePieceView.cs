@@ -29,12 +29,15 @@ namespace Client.Match
         public event Action Clicked;
         public event Action<Vector2Int> Draged;
 
+        public void SetFrom(Vector2 from) => _from = from;
+        public void SetTo(Vector2 to) => _to = to;
+
         public void SetPosition(Vector2 value)
         {
             if (_lerpEnabled)
             {
                 _t = 0f;
-                _from = transform.position;
+                _from = _to;
                 _to = value;
             }
             else
@@ -106,11 +109,18 @@ namespace Client.Match
             _t += Time.deltaTime / Time.fixedDeltaTime;
             transform.position = Vector2.Lerp(_from, _to, _t);
 
-            //if (_currentDamperPhase <= _damperDuration)
-            //{
-            //    transform.position += new Vector3(0f, _damperCurve.Evaluate(_currentDamperPhase), 0f);
-            //    _currentDamperPhase += Time.deltaTime;
-            //}
+            Debug.Log($"_from: {_from}");
+            Debug.Log($"_to: {_to}");
+            Debug.Log($"_t: {_t}");
+            Debug.Log($"transform.position: {transform.position}");
+
+            if (_currentDamperPhase <= _damperDuration)
+            {
+
+            }
+
+            transform.position += new Vector3(0f, _damperCurve.Evaluate(_currentDamperPhase), 0f);
+            _currentDamperPhase += Time.deltaTime;
         }
         #endregion
     }

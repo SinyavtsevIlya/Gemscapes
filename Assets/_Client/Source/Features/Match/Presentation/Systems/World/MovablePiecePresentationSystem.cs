@@ -40,6 +40,7 @@ namespace Client.Match
             .End())
             {
                 ref var view = ref Get<Mono<MovablePieceView>>(pieceEntity).Value;
+                view.SetTo(view.transform.position);
                 view.SetPosition(Get<Position>(pieceEntity).Value.ToVector2());
                 view.SetAsStopped();
             }
@@ -73,6 +74,7 @@ namespace Client.Match
                 Add<Mono<MovablePieceView>>(pieceEntity).Value = view;
 
                 view.transform.position = Get<Position>(pieceEntity).Value.ToVector2();
+                view.SetPosition(Get<Position>(pieceEntity).Value.ToVector2());
                 view.SetPosition(Get<Position>(pieceEntity).Value.ToVector2());
 
                 view.Clicked += () => 
