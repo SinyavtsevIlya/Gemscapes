@@ -1,4 +1,4 @@
-﻿namespace Client
+﻿namespace Client.Match
 {
     public struct GeneratorTag { }
 }

@@ -1,6 +1,6 @@
 ﻿using Nanory.Lex;
 
-namespace Client
+namespace Client.Match
 {
     /// <summary>
     /// Should be added on piece entity itself

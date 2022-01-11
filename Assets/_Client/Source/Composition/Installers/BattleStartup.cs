@@ -11,7 +11,6 @@ namespace Client
     {
         private EcsWorld _world;
         private EcsSystems _systems;
-        private EcsSystemGroup _simulation;
         private EcsSystemGroup _presentation;
         private EcsSystemGroup _playback;
         private EcsSystemSorter<Battle> _sorter;
@@ -28,9 +27,8 @@ namespace Client
             _sorter = new EcsSystemSorter<Battle>(_world);
             _systems.Add(_sorter.GetSortedSystems());
 #if DEBUG
-            //_systems.Add(new Nanory.Lex.UnityEditorIntegration.EcsWorldDebugSystem());
+            _systems.Add(new Nanory.Lex.UnityEditorIntegration.EcsWorldDebugSystem());
 #endif
-            _simulation = _systems.AllSystems.FindSystem<SimulationSystemGroup>();
             _presentation = _systems.AllSystems.FindSystem<PresentationSystemGroup>();
             _playback = _systems.AllSystems.FindSystem<PlaybackSimulationSystemGroup>();
             _systems.Init();
@@ -53,8 +51,7 @@ namespace Client
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
-                _presentation.IsEnabled = false;
-                _playback.IsEnabled = true;
+                SetPresentationActive(false);
 
                 while (_jumpTicks > _tickId)
                 {
@@ -62,8 +59,7 @@ namespace Client
                     _tickId++;
                 }
 
-                _presentation.IsEnabled = true;
-                _playback.IsEnabled = false;
+                SetPresentationActive(true);
             }
 
             if (Input.GetKeyDown(KeyCode.M))
@@ -78,7 +74,13 @@ namespace Client
                     Run();
                 }
             }
-        } 
+        }
+
+        private void SetPresentationActive(bool value)
+        {
+            _presentation.IsEnabled = value;
+            _playback.IsEnabled = !value;
+        }
 #endif
 
         private void OnDestroy()

@@ -8,50 +8,12 @@ namespace Client.Match
     [Battle]
     public sealed class MatchSystem : EcsSystemBase
     {
-        private EcsFilter _fallingPieces;
-        private ResizableArray<int> _matches;
+        private ResizableArray<int> _matches = new ResizableArray<int>(8);
         private int _lastMatchedTypeId;
 
-        protected override void OnCreate()
-        {
-            _fallingPieces = World.Filter<Position>().With<FallingTag>().End();
-            _matches = new ResizableArray<int>(8);
-        }
         protected override void OnUpdate()
         {
             var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
-
-            // TODO: implement SharedComponents 
-            foreach (var boardEntity in Filter()
-            .With<BoardTag>()
-            .Without<IdleTag>()
-            .End())
-            {
-                if (_fallingPieces.GetEntitiesCount() == 0)
-                {
-                    later.Add<IdleTag>(boardEntity);
-                    later.Add<StoppedEvent>(boardEntity);
-                }
-            }
-
-            foreach (var boardEntity in Filter()
-            .With<BoardTag>()
-            .With<IdleTag>()
-            .End())
-            {
-                if (_fallingPieces.GetEntitiesCount() > 0)
-                {
-                    later.Del<IdleTag>(boardEntity);
-                }
-            }
-
-            foreach (var boardEntity in Filter()
-            .With<BoardTag>()
-            .With<StoppedEvent>()
-            .End())
-            {
-                later.Add<MatchRequest>(boardEntity);
-            }
 
             foreach (var boardEntity in Filter()
             .With<MatchRequest>()
@@ -118,37 +80,7 @@ namespace Client.Match
                 _matches.Clear();
                 _lastMatchedTypeId = -1;
             }
-
-            foreach (var pieceEntity in Filter()
-            .With<MatchedEvent>()
-            .End())
-            {
-                later.AddDelayed<DestroyedEvent>(10, pieceEntity);
-            }
-
-            foreach (var pieceEntity in Filter()
-            .With<DestroyedEvent>()
-            .With<Position>()
-            .End())
-            {
-                var grid = Get<Grid>(pieceEntity);
-                var cellEntity = grid.GetCellByPiece(World, pieceEntity);
-                Del<PieceLink>(cellEntity);
-            }
         }
     }
-    
-    public class Matches
-    {
-        private readonly ResizableArray<int> _matches;
-        private int _matchTypeId;
-
-        public ResizableArray<int> GetMatches() => _matches;
-        public int MatchTypeId => _matchTypeId;
-
-        public void Add(int pieceEntity)
-        {
-
-        }
-    }
+   
 }

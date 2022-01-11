@@ -45,21 +45,9 @@ namespace Client.Match
                 view.SetAsStopped();
             }
 
-            foreach (var cellEntity in Filter()
-            .With<CellPosition>()
-            .With<Mono<CellView>>()
-            .With<CreatedEvent>()
-            .End())
-            {
-#if DEBUG
-                var cellView = Get<Mono<CellView>>(cellEntity).Value;
-                EcsSystems.LinkDebugGameobject(World, cellEntity, cellView.gameObject);
-#endif
-            }
-
             foreach (var pieceEntity in Filter()
-            .With<MovableTag>()
-            .With<Position>() // TODO: check why doesn't work without Position constraint
+            .With<MovableTag>() // TODO: if MovableTag is the only Include component, compatible entities doesnt match the filter.
+            .With<Position>() 
             .Without<Mono<MovablePieceView>>()
             .End())
             {
@@ -79,10 +67,6 @@ namespace Client.Match
 
                 view.Clicked += () => 
                 {
-                    //later.Add<FallingTag>(pieceEntity);
-                    //later.Add<DestroyedEvent>(pieceEntity);
-                    //Del<PieceLink>(grid.GetCellByPiece(World, pieceEntity));
-
                     var grid = Get<Grid>(pieceEntity);
 
                     var piecePosition = Get<CellPosition>(grid.GetCellByPiece(World, pieceEntity)).Value;
@@ -100,7 +84,6 @@ namespace Client.Match
                                     {
                                         later.Add<DestroyedEvent>(currentPieceEntity);
                                         Del<PieceLink>(grid.GetCellByPiece(World, currentPieceEntity));
-                                        //later.Add<MatchedEvent>(currentPieceEntity);
                                     }
                                 }
                             }

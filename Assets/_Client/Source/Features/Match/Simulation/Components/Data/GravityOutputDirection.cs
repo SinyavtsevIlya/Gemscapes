@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Client
+namespace Client.Match
 {
     public struct GravityOutputDirection
     {

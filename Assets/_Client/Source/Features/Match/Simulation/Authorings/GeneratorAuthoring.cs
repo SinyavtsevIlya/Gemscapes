@@ -2,7 +2,7 @@
 using Nanory.Lex;
 using Nanory.Lex.Conversion;
 
-namespace Client
+namespace Client.Match
 {
     public class GeneratorAuthoring : MonoBehaviour, IConvertGameObjectToEntity
     {

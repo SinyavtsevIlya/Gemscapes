@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Client
+namespace Client.Match
 {
     public struct CellPosition
     {
@@ -45,7 +45,7 @@ public static class VectorScaledExtensions
 {
     public static Vector2Int ToVector2Int(this Vector2IntScaled vector2IntScaled)
     {
-        return Vector2Int.RoundToInt(ToVector2(vector2IntScaled));
+        return Vector2Int.RoundToInt(vector2IntScaled.ToVector2());
     }
 
     public static Vector2 ToVector2(this Vector2IntScaled vector2IntScaled)
