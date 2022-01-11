@@ -15,11 +15,12 @@ namespace Client.Match
             {
                 ref var grid = ref Get<Grid>(pieceEntity);
                 var cellEntity = grid.GetCellByPiece(World, pieceEntity);
-                //TODO: for now let's just pretend there is only top down gravity
 
-                if (grid.TryGetCell(Get<CellPosition>(cellEntity).Value + UnityEngine.Vector2Int.up, out var upperCellEntity))
+                if (TryGet<Buffer<GravityInputLink>>(cellEntity, out var gravityInputBuffer))
                 {
-                    if (TryGet<PieceLink>(upperCellEntity, out var upperPieceLink))
+                    var previousCellEntity = gravityInputBuffer.Values[0].Value;
+
+                    if (TryGet<PieceLink>(previousCellEntity, out var upperPieceLink))
                     {
                         if (upperPieceLink.Value.Unpack(World, out var upperPieceEntity))
                         {

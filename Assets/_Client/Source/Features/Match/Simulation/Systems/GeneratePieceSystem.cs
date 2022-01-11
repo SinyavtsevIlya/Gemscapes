@@ -25,7 +25,7 @@ namespace Client.Match
             {
                 ref var grid = ref Get<Grid>(generatorEntity);
                 ref var cellPosition = ref Get<CellPosition>(generatorEntity);
-                ref var gravityDirection = ref Get<GravityOutputDirection>(generatorEntity);
+                ref var gravityDirection = ref Get<GravityDirection>(generatorEntity);
                 ref var boardEntity = ref Get<BoardLink>(generatorEntity).Value;
 
                 if (grid.TryGetCell(cellPosition.Value + gravityDirection.Value, out var tendingCellEntity))

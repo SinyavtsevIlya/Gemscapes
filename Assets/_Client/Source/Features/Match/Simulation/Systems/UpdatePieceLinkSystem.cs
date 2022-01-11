@@ -23,14 +23,14 @@ namespace Client.Match
 
                 if (Has<PieceLink>(cells.PreviousCell))
                 {
-
+                    if (Get<PieceLink>(cells.PreviousCell).Value.Unpack(World, out var previosCellPiece))
+                    {
+                        if (previosCellPiece == pieceEntity)
+                            Del<PieceLink>(cells.PreviousCell);
+                    }
                 }
 
-                if (Get<PieceLink>(cells.PreviousCell).Value.Unpack(World, out var previosCellPiece))
-                {
-                    if (previosCellPiece == pieceEntity)
-                        Del<PieceLink>(cells.PreviousCell);
-                }
+
 
                 GetOrAdd<PieceLink>(cells.CurrentCell).Value = World.PackEntity(pieceEntity);
             }

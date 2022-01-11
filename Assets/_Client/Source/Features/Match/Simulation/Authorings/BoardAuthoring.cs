@@ -56,9 +56,30 @@ namespace Client.Match
             // Apply GravityInputDirection component datas
             foreach (Transform cellTr in _cells.transform)
             {
-                var pos = Vector3Int.RoundToInt(cellTr.position) - bounds.min;
-                
+                var pos = (Vector2Int)(Vector3Int.RoundToInt(cellTr.position) - bounds.min);
+                var cellEntity = grid.Value[pos.x, pos.y];
+                if (grid.TryGetCell(pos + world.Get<GravityDirection>(cellEntity).Value, out var tendingCellEntity))
+                {
+                    if (!world.Has<Buffer<GravityInputLink>>(tendingCellEntity))
+                    {
+                        world.Dst.AddBuffer<GravityInputLink>(tendingCellEntity);
+                    }
 
+                    world.Dst.Get<Buffer<GravityInputLink>>(tendingCellEntity).Values.Add(new GravityInputLink() 
+                    {
+                        Value = cellEntity 
+                    });
+
+                    if (!world.Has<Buffer<GravityOutputLink>>(cellEntity))
+                    {
+                        world.Dst.AddBuffer<GravityOutputLink>(cellEntity);
+                    }
+
+                    world.Dst.Get<Buffer<GravityOutputLink>>(cellEntity).Values.Add(new GravityOutputLink()
+                    {
+                        Value = tendingCellEntity
+                    });
+                }
             }
 
             foreach (Transform pieceTr in _pieces.transform)
@@ -97,19 +118,17 @@ namespace Client.Match
         {
             var cellEntity = converstionSystem.Convert(cellTr.gameObject, ConversionMode.Convert);
             world.Add<CreatedEvent>(cellEntity);
-            world.Add<GravityOutputDirection>(cellEntity).Value = new Vector2Int(/*pos.y == 3 ? -1 : */0, -1);
+            world.Add<GravityDirection>(cellEntity).Value = new Vector2Int(/*pos.y == 3 && pos.x != 0 && pos.x != grid.Value.GetLength(0) - 1 ? -1 : */0, -1);
             grid.Value[pos.x, pos.y] = cellEntity;
             world.Add<Grid>(cellEntity) = grid;
             world.Add<BoardLink>(cellEntity).Value = boardEntity;
             world.Add<CellPosition>(cellEntity).Value = new Vector2Int(pos.x, pos.y);
-
             if (pos.y == grid.Value.GetLength(1) - 1)
             {
                 world.Add<GeneratorTag>(cellEntity);
             }
-
 #if DEBUG
-            
+                
 #endif
         }
 

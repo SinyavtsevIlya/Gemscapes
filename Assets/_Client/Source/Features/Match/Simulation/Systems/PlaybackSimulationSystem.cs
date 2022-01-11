@@ -25,8 +25,6 @@ namespace Client.Match
             .End())
             {
                 ref var view = ref Get<Mono<MovablePieceView>>(pieceEntity);
-                //UnityEngine.Debug.Log($"Cleanup {view.Value.gameObject}");
-                //UnityEngine.Object.Destroy(view.Value.gameObject);
                 view.Value.gameObject.SetActive(false);
             }
         }

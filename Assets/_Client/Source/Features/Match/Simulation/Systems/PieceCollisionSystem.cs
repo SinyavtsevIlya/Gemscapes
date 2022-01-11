@@ -20,7 +20,7 @@ namespace Client.Match
                 var grid = Get<Grid>(pieceEntity);
                 var cellEntity = grid.GetCellByPiece(World, pieceEntity);
                 ref var cellPosition = ref Get<CellPosition>(cellEntity).Value;
-                ref var cellGravityDirection = ref Get<GravityOutputDirection>(cellEntity).Value;
+                ref var cellGravityDirection = ref Get<GravityDirection>(cellEntity).Value;
 
                 if (IsColliding(cellPosition, cellGravityDirection, grid, pieceEntity))
                 {

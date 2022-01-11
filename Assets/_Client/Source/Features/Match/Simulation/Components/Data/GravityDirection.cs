@@ -2,7 +2,7 @@
 
 namespace Client.Match
 {
-    public struct GravityOutputDirection
+    public struct GravityDirection
     {
         public Vector2Int Value;
     }

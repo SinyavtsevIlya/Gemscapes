@@ -17,11 +17,11 @@ namespace Client.Match
             {
                 ref var grid = ref Get<Grid>(pieceEntity);
                 var cellEntity = grid.GetCellByPiece(World, pieceEntity);
-                var cellGravity = Get<GravityOutputDirection>(cellEntity).Value;
-                var cellPosition = Get<CellPosition>(cellEntity).Value;
 
-                if (grid.TryGetCell(cellPosition - cellGravity, out var previousCellEntity))
+                if (TryGet<Buffer<GravityInputLink>>(cellEntity, out var gravityInputBuffer))
                 {
+                    var previousCellEntity = gravityInputBuffer.Values[0].Value;
+
                     if (World.TryGet<PieceLink>(previousCellEntity, out var upperPieceLink))
                     {
                         if (upperPieceLink.Value.Unpack(World, out var upperPieceEntity))
