@@ -32,6 +32,8 @@ namespace Client
             _presentation = _systems.AllSystems.FindSystem<PresentationSystemGroup>();
             _playback = _systems.AllSystems.FindSystem<PlaybackSimulationSystemGroup>();
             _systems.Init();
+
+            Playback();
         }
 
         private void FixedUpdate()
@@ -51,15 +53,7 @@ namespace Client
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
-                SetPresentationActive(false);
-
-                while (_jumpTicks > _tickId)
-                {
-                    _systems.Run();
-                    _tickId++;
-                }
-
-                SetPresentationActive(true);
+                
             }
 
             if (Input.GetKeyDown(KeyCode.M))
@@ -74,6 +68,19 @@ namespace Client
                     Run();
                 }
             }
+        }
+
+        private void Playback()
+        {
+            SetPresentationActive(false);
+
+            while (_jumpTicks > _tickId)
+            {
+                _systems.Run();
+                _tickId++;
+            }
+
+            SetPresentationActive(true);
         }
 
         private void SetPresentationActive(bool value)

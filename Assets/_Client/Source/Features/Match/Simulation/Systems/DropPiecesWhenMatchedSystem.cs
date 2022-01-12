@@ -28,6 +28,7 @@ namespace Client.Match
                             {
                                 if (!Has<MatchedTag>(upperPieceEntity))
                                 {
+                                    UnityEngine.Debug.Log("Add falling");
                                     Add<FallingTag>(upperPieceEntity);
                                 }
                             }

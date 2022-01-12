@@ -21,8 +21,9 @@ namespace Client.Match
                 var cellEntity = grid.GetCellByPiece(World, pieceEntity);
                 ref var cellPosition = ref Get<CellPosition>(cellEntity).Value;
                 ref var cellGravityDirection = ref Get<GravityDirection>(cellEntity).Value;
+                ref var pieceGravityDirection = ref Get<GravityDirection>(Get<GravityCellLink>(pieceEntity).Value).Value;
 
-                if (IsColliding(cellPosition, cellGravityDirection, grid, pieceEntity))
+                if (IsColliding(cellPosition, pieceGravityDirection, grid, pieceEntity))
                 {
                     var hasPieceArived = cellGravityDirection.sqrMagnitude >=
                                         (cellGravityDirection + cellPosition - piecePosition.ToVector2Int()).sqrMagnitude;

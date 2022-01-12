@@ -107,6 +107,7 @@ namespace Client.Match
             if (grid.TryGetCell((Vector2Int)pos, out var cellEntity))
             {
                 world.Add<PieceLink>(cellEntity).Value = world.Dst.PackEntity(pieceEntity);
+                world.Add<GravityCellLink>(pieceEntity).Value = cellEntity;
             }
             if (pos.y != grid.Value.GetLength(1) - 1)
             {
@@ -118,7 +119,9 @@ namespace Client.Match
         {
             var cellEntity = converstionSystem.Convert(cellTr.gameObject, ConversionMode.Convert);
             world.Add<CreatedEvent>(cellEntity);
-            world.Add<GravityDirection>(cellEntity).Value = new Vector2Int(/*pos.y == 3 && pos.x != 0 && pos.x != grid.Value.GetLength(0) - 1 ? -1 : */0, -1);
+            world.Add<GravityDirection>(cellEntity).Value = new Vector2Int(
+                pos.y == 3 && pos.x != 0 && pos.x != grid.Value.GetLength(0) - 1 ? -1 :
+                0, -1);
             grid.Value[pos.x, pos.y] = cellEntity;
             world.Add<Grid>(cellEntity) = grid;
             world.Add<BoardLink>(cellEntity).Value = boardEntity;
