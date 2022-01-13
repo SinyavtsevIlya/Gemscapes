@@ -12,6 +12,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2868184962348465871, guid: b44326c6dd50e16439b62d8b502b20e5, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868184962348465871, guid: b44326c6dd50e16439b62d8b502b20e5, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868184962348465871, guid: b44326c6dd50e16439b62d8b502b20e5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -61,7 +69,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7516157604549645095, guid: b44326c6dd50e16439b62d8b502b20e5, type: 3}
       propertyPath: _lerpEnabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8859060616435240553, guid: b44326c6dd50e16439b62d8b502b20e5, type: 3}
       propertyPath: m_Sprite

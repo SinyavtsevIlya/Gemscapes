@@ -29,23 +29,14 @@ namespace Client.Match
                 ref var pieceGravityDirection = ref Get<GravityDirection>(gravityCellEntity).Value;
                 ref var cellGravityDirectin = ref Get<GravityDirection>(cellEntity).Value;
 
-                if (pieceGravityDirection == cellGravityDirectin)
-                {
-                    velocity.Value += pieceGravityDirection * GravityAmount;
+                var magnitude = velocity.Value.GetDetermenistecMargnitude();
+                magnitude = Mathf.Clamp(magnitude, 0, SimConstants.GridSubdivison);
 
-                    if (velocity.IsGreaterThanDivisor())
-                    {
-                        velocity.SetFromVector2Int(pieceGravityDirection);
-                    }
-                }
-                else
+                velocity = new Vector2IntScaled()
                 {
-                    velocity = new Vector2IntScaled()
-                    {
-                        Value = pieceGravityDirection * velocity.Value.GetDetermenistecMargnitude(),
-                        Divisor = velocity.Divisor
-                    };
-                }
+                    Value = pieceGravityDirection * magnitude + pieceGravityDirection * GravityAmount,
+                    Divisor = velocity.Divisor
+                };
 
                 var gravityCellPosition = new Vector2IntScaled(Get<CellPosition>(gravityCellEntity).Value, velocity.Divisor);
                 var grivityDirectionScaled = new Vector2IntScaled(pieceGravityDirection, velocity.Divisor);
@@ -58,19 +49,21 @@ namespace Client.Match
                 else
                 {
                     gravityCellEntity = cellEntity;
-
-                    var upcomingGravityDirection = Get<GravityDirection>(cellEntity).Value;
-
-                    var remainder = pieceDelta - grivityDirectionScaled.Value;
-                    // NOTE: just take the longest side to respect deterministic approach. 
-                    var remainderMagnitude = remainder.GetDetermenistecMargnitude();
-                    var orientedRemainder = new Vector2IntScaled() 
+                    if (grid.TryGetCell(Get<CellPosition>(gravityCellEntity).Value + pieceGravityDirection, out var upcomingGravityCell))
                     {
-                        Value = upcomingGravityDirection * remainderMagnitude,
-                        Divisor = velocity.Divisor
-                    };
+                        var upcomingGravityDirection = Get<GravityDirection>(upcomingGravityCell).Value;
 
-                    position.Value = new Vector2IntScaled(Get<CellPosition>(cellEntity).Value, velocity.Divisor).Value + orientedRemainder.Value;
+                        var remainder = pieceDelta - grivityDirectionScaled.Value;
+                        // NOTE: just take the longest side to respect deterministic approach. 
+                        var remainderMagnitude = remainder.GetDetermenistecMargnitude();
+                        var orientedRemainder = new Vector2IntScaled()
+                        {
+                            Value = upcomingGravityDirection * remainderMagnitude / 4,
+                            Divisor = velocity.Divisor
+                        };
+
+                        position.Value = gravityCellPosition.Value + grivityDirectionScaled.Value + orientedRemainder.Value;
+                    }
                 }
 
 

@@ -4,6 +4,7 @@
     {
         public const int GridSubdivison = 35;
         public const int LineMatchLength = 3;
+        public static int MaxVelocity => GridSubdivison / 2;
     }
     public static class UnityIdents
     {
