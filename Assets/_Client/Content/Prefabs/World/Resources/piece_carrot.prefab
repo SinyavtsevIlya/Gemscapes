@@ -59,6 +59,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: piece_carrot
       objectReference: {fileID: 0}
+    - target: {fileID: 7516157604549645095, guid: b44326c6dd50e16439b62d8b502b20e5, type: 3}
+      propertyPath: _lerpEnabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8859060616435240553, guid: b44326c6dd50e16439b62d8b502b20e5, type: 3}
       propertyPath: m_Sprite
       value: 

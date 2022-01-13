@@ -46,7 +46,7 @@ namespace Client.Match
                             Add<Grid>(newPieceEntity) = grid;
                             velocity.Value.Value /= 2;
                             Add<Velocity>(newPieceEntity) = velocity;
-                            Add<GravityCellLink>(newPieceEntity).Value = tendingCellEntity;
+                            Add<GravityCellLink>(newPieceEntity).Value = generatorEntity;
                             Add<Position>(newPieceEntity) = position;
                             Get<Position>(newPieceEntity).Value.Value -= gravityDirection.Value * position.Value.Divisor;
                             later.Add<PieceLink>(generatorEntity).Value = World.PackEntity(newPieceEntity);

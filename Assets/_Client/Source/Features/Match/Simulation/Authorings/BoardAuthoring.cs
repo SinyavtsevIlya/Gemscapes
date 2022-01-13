@@ -120,7 +120,7 @@ namespace Client.Match
             var cellEntity = converstionSystem.Convert(cellTr.gameObject, ConversionMode.Convert);
             world.Add<CreatedEvent>(cellEntity);
             world.Add<GravityDirection>(cellEntity).Value = new Vector2Int(
-                pos.y == 3 && pos.x != 0 && pos.x != grid.Value.GetLength(0) - 1 ? -1 :
+                pos.y == 5 && pos.x != 0 && pos.x != grid.Value.GetLength(0) - 1 ? -1 :
                 0, -1);
             grid.Value[pos.x, pos.y] = cellEntity;
             world.Add<Grid>(cellEntity) = grid;

@@ -36,6 +36,10 @@ namespace Client
             Playback();
         }
 
+#if DEBUG
+        public int GetTickId() => _tickId;
+#endif
+
         private void FixedUpdate()
         {
 #if DEBUG

@@ -43,6 +43,13 @@ public struct Vector2IntScaled
 
 public static class VectorScaledExtensions
 {
+    public static int GetDetermenistecMargnitude(this Vector2Int vector2Int)
+    {
+        var lengthX = Mathf.Abs(vector2Int.x);
+        var lengthY = Mathf.Abs(vector2Int.y);
+        return lengthX > lengthY ? lengthX : lengthY;
+    }
+
     public static Vector2Int ToVector2Int(this Vector2IntScaled vector2IntScaled)
     {
         //return new Vector2Int(vector2IntScaled.Value.x / vector2IntScaled.Divisor, vector2IntScaled.Value.y / vector2IntScaled.Value.y);
