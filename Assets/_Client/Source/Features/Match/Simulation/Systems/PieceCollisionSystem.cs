@@ -23,7 +23,7 @@ namespace Client.Match
                 ref var cellGravityDirection = ref Get<GravityDirection>(cellEntity).Value;
                 ref var pieceGravityDirection = ref Get<GravityDirection>(Get<GravityCellLink>(pieceEntity).Value).Value;
 
-                if (IsColliding(cellPosition, pieceGravityDirection, grid, pieceEntity))
+                if (IsColliding(cellPosition, cellGravityDirection, grid, pieceEntity))
                 {
                     var hasPieceArived = cellGravityDirection.sqrMagnitude >=
                                         (cellGravityDirection + cellPosition - piecePosition.ToVector2Int()).sqrMagnitude;
@@ -55,12 +55,22 @@ namespace Client.Match
                             }
                             else
                             {
+
                                 ref var pieceVelocity = ref Get<Velocity>(pieceEntity).Value;
                                 ref var blockingPieceVolocity = ref Get<Velocity>(blockingPieceEntity).Value;
                                 if (pieceVelocity.Value.sqrMagnitude > blockingPieceVolocity.Value.sqrMagnitude)
                                 {
-                                    pieceVelocity.Value = blockingPieceVolocity.Value;
+                                    if (Get<GravityDirection>(nextCellEntity).Value == Get<GravityDirection>(grid.Value[cellPosition.x, cellPosition.y]).Value)
+                                    {
+                                        pieceVelocity.Value = blockingPieceVolocity.Value;
+                                    }
+                                    else
+                                    {
+                                        pieceVelocity.Value = Vector2Int.zero;
+                                    }
+                                    
                                 }
+      
                             }
                         }
                     }

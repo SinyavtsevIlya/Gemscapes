@@ -5,6 +5,8 @@
 [Bb]uilds/
 Assets/AssetStoreTools*
 Recordings/
+Logs
+*.log
 
 # Visual Studio cache directory
 .vs/

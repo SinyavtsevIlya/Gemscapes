@@ -6,8 +6,6 @@ namespace Client.Match
     [Battle]
     public sealed class GravitySystem : EcsSystemBase
     {
-        private const int GravityAmount = 1;
-
         protected override void OnUpdate()
         {
             var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
@@ -27,14 +25,15 @@ namespace Client.Match
                 var grid = Get<Grid>(pieceEntity);
                 var cellEntity = grid.GetCellByPiece(World, pieceEntity);
                 ref var pieceGravityDirection = ref Get<GravityDirection>(gravityCellEntity).Value;
-                ref var cellGravityDirectin = ref Get<GravityDirection>(cellEntity).Value;
+
+     
 
                 var magnitude = velocity.Value.GetDetermenistecMargnitude();
                 magnitude = Mathf.Clamp(magnitude, 0, SimConstants.GridSubdivison);
 
                 velocity = new Vector2IntScaled()
                 {
-                    Value = pieceGravityDirection * magnitude + pieceGravityDirection * GravityAmount,
+                    Value = pieceGravityDirection * (magnitude + SimConstants.GravityAmount),
                     Divisor = velocity.Divisor
                 };
 
@@ -66,8 +65,6 @@ namespace Client.Match
                     }
                 }
 
-
-
                 if (position.ToVector2Int() != roundedPosition)
                 {
                     later.Add<CellPositionUpdatedEvent>(pieceEntity) = new CellPositionUpdatedEvent()
@@ -75,6 +72,11 @@ namespace Client.Match
                         PreviousCell = cellEntity,
                         CurrentCell = grid.GetCellByPiece(World, pieceEntity)
                     };
+                }
+
+                if (position.Value.x == 100)
+                {
+                    throw new System.Exception();
                 }
             }
         }

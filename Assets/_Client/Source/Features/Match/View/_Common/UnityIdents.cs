@@ -2,10 +2,12 @@
 {
     public static class SimConstants
     {
-        public const int GridSubdivison = 35;
+        public const int GridSubdivison = 34;
         public const int LineMatchLength = 3;
+        public const int GravityAmount = 1;
         public static int MaxVelocity => GridSubdivison / 2;
     }
+
     public static class UnityIdents
     {
         public static class Time
