@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Client.Match
 {
-    [Battle]
+    [M3]
     public sealed class GeneratePieceSystem : EcsSystemBase
     {
         private readonly System.Random _random;
