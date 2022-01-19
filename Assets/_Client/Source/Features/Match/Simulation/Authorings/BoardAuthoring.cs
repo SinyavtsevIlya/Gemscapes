@@ -50,42 +50,26 @@ namespace Client.Match
             foreach (Transform cellTr in _cells.transform)
             {
                 var pos = Vector3Int.RoundToInt(cellTr.position) - bounds.min;
-                ConvertCellEntity(converstionSystem, boardEntity, world, grid, cellTr, pos);
+                var cellEntity = converstionSystem.Convert(cellTr.gameObject, ConversionMode.Convert);
+                CellAuthorizationUtility.Authorize(boardEntity, world.Dst, grid, (Vector2Int)pos, cellEntity);
+                if (pos.y == grid.Value.GetLength(1) - 1)
+                {
+                    //world.Add<GeneratorTag>(cellEntity);
+                }
             }
 
             // Apply GravityInputDirection component datas
             foreach (Transform cellTr in _cells.transform)
             {
                 var pos = (Vector2Int)(Vector3Int.RoundToInt(cellTr.position) - bounds.min);
-                var cellEntity = grid.Value[pos.x, pos.y];
-                if (grid.TryGetCell(pos + world.Get<GravityDirection>(cellEntity).Value, out var tendingCellEntity))
-                {
-                    if (!world.Has<Buffer<GravityInputLink>>(tendingCellEntity))
-                    {
-                        world.Dst.AddBuffer<GravityInputLink>(tendingCellEntity);
-                    }
-
-                    world.Dst.Get<Buffer<GravityInputLink>>(tendingCellEntity).Values.Add(new GravityInputLink() 
-                    {
-                        Value = cellEntity 
-                    });
-
-                    if (!world.Has<Buffer<GravityOutputLink>>(cellEntity))
-                    {
-                        world.Dst.AddBuffer<GravityOutputLink>(cellEntity);
-                    }
-
-                    world.Dst.Get<Buffer<GravityOutputLink>>(cellEntity).Values.Add(new GravityOutputLink()
-                    {
-                        Value = tendingCellEntity
-                    });
-                }
+                CellAuthorizationUtility.ApplyGravity(world.Dst, grid, pos);
             }
 
             foreach (Transform pieceTr in _pieces.transform)
             {
                 var pos = Vector3Int.RoundToInt(pieceTr.position) - bounds.min;
-                ConvertPieceEntity(converstionSystem, world, grid, pieceTr, pos);
+                var pieceEntity = converstionSystem.Convert(pieceTr.gameObject, ConversionMode.ConvertAndDestroy);
+                PieceAuthorizationUtility.Authorize(world, grid, (Vector2Int)pos, _pieceTypeLookup[pieceTr.name], pieceEntity);
             }
 
             transform.Translate(-bounds.min);
@@ -93,46 +77,6 @@ namespace Client.Match
             var halfSize = (Vector2)size / 2;
             Camera.main.transform.position = bounds.center - bounds.min - Vector3.forward - Vector3.one / 2;
             Camera.main.orthographicSize = halfSize.y;
-        }
-
-        private void ConvertPieceEntity(GameObjectConversionSystem converstionSystem, EcsConversionWorldWrapper world, Grid grid, Transform pieceTr, Vector3Int pos)
-        {
-            var pieceEntity = converstionSystem.Convert(pieceTr.gameObject, ConversionMode.ConvertAndDestroy);
-
-            world.Add<CreatedEvent>(pieceEntity);
-            world.Add<PieceTypeId>(pieceEntity).Value = _pieceTypeLookup[pieceTr.name];
-            world.Add<Position>(pieceEntity).Value = new Vector2IntScaled(pos.x, pos.y, SimConstants.GridSubdivison);
-            world.Add<Velocity>(pieceEntity).Value = new Vector2IntScaled(0, 0, SimConstants.GridSubdivison);
-            world.Add<Grid>(pieceEntity) = grid;
-            if (grid.TryGetCell((Vector2Int)pos, out var cellEntity))
-            {
-                world.Add<PieceLink>(cellEntity).Value = world.Dst.PackEntity(pieceEntity);
-                world.Add<GravityCellLink>(pieceEntity).Value = cellEntity;
-            }
-            if (pos.y != grid.Value.GetLength(1) - 1)
-            {
-                //world.Add<FallingTag>(pieceEntity);
-            }
-        }
-
-        private static void ConvertCellEntity(GameObjectConversionSystem converstionSystem, int boardEntity, EcsConversionWorldWrapper world, Grid grid, Transform cellTr, Vector3Int pos)
-        {
-            var cellEntity = converstionSystem.Convert(cellTr.gameObject, ConversionMode.Convert);
-            world.Add<CreatedEvent>(cellEntity);
-            world.Add<GravityDirection>(cellEntity).Value = new Vector2Int(
-                pos.y == 5 && pos.x != 0 && pos.x != grid.Value.GetLength(0) - 1 ? -1 :
-                0, -1);
-            grid.Value[pos.x, pos.y] = cellEntity;
-            world.Add<Grid>(cellEntity) = grid;
-            world.Add<BoardLink>(cellEntity).Value = boardEntity;
-            world.Add<CellPosition>(cellEntity).Value = new Vector2Int(pos.x, pos.y);
-            if (pos.y == grid.Value.GetLength(1) - 1)
-            {
-                world.Add<GeneratorTag>(cellEntity);
-            }
-#if DEBUG
-                
-#endif
         }
 
         private void FillPieceTypesLookup(GameObjectConversionSystem converstionSystem)

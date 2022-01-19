@@ -28,6 +28,12 @@ namespace Client.Match
         public static int GetCellByPiece(this Grid grid, EcsWorld world, int pieceEntity)
         {
             var roundedPiecePosition = world.Get<Position>(pieceEntity).Value.ToVector2Int();
+#if DEBUG
+            if (!grid.IsInsideBounds(roundedPiecePosition))
+            {
+                throw new System.IndexOutOfRangeException($"pieceEntity {pieceEntity} in {roundedPiecePosition} is outside of bounds: {grid.Value.GetLength(0)}, {grid.Value.GetLength(1)}");
+            }
+#endif
             return grid.Value[roundedPiecePosition.x, roundedPiecePosition.y];
         }
 
