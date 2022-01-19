@@ -3,7 +3,7 @@
 namespace Client.Match
 {
     [OneFrame]
-    [Battle]
+    [M3]
     public struct CellPositionUpdatedEvent
     {
         public int PreviousCell;

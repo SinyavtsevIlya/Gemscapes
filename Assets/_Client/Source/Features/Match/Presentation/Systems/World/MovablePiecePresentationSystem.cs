@@ -7,7 +7,7 @@ using Nanory.Lex.UnityEditorIntegration;
 
 namespace Client.Match
 {
-    [Battle]
+    [M3]
     [UpdateInGroup(typeof(PresentationSystemGroup))]
     public sealed class MovablePiecePresentationSystem : EcsSystemBase
     {
@@ -46,11 +46,12 @@ namespace Client.Match
             }
 
             foreach (var pieceEntity in Filter()
-            .With<MovableTag>() // TODO: if MovableTag is the only Include component, compatible entities doesnt match the filter.
+            .With<CreatedEvent>() // TODO: if MovableTag is the only Include component, compatible entities doesn't match the filter.
             .With<Position>() 
             .Without<Mono<MovablePieceView>>()
             .End())
             {
+                Debug.Log("beep");
                 var grid = Get<Grid>(pieceEntity);
                 var piecePrefabEntity = Get<PieceTypeId>(pieceEntity).Value;
                 var prefabView = Get<GameObjectReference>(piecePrefabEntity).Value.GetComponent<MovablePieceView>();

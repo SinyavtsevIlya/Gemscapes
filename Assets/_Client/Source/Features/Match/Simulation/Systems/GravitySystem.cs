@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Client.Match
 {
-    [Battle]
+    [M3]
     public sealed class GravitySystem : EcsSystemBase
     {
         protected override void OnUpdate()

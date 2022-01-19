@@ -5,7 +5,7 @@ using Nanory.Lex.UnityEditorIntegration;
 
 namespace Client.Match
 {
-    [Battle]
+    [M3]
     public sealed class RequestMatchingOnIdleSystem : EcsSystemBase
     {
         private EcsFilter _fallingPieces;

@@ -2,7 +2,7 @@
 
 namespace Client.Match
 {
-    [Battle]
+    [M3]
     public sealed class DestroyMatchPieceSystem : EcsSystemBase
     {
         protected override void OnUpdate()

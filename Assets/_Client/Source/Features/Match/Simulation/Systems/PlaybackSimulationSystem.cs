@@ -13,7 +13,7 @@ namespace Client.Match
         }
     }
 
-    [Battle]
+    [M3]
     [UpdateInGroup(typeof(PlaybackSimulationSystemGroup))]
     public sealed class PlaybackSimulationSystem : EcsSystemBase
     {

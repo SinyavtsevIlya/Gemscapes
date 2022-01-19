@@ -54,7 +54,7 @@ namespace Client.Match
                 CellAuthorizationUtility.Authorize(boardEntity, world.Dst, grid, (Vector2Int)pos, cellEntity);
                 if (pos.y == grid.Value.GetLength(1) - 1)
                 {
-                    //world.Add<GeneratorTag>(cellEntity);
+                    world.Add<GeneratorTag>(cellEntity);
                 }
             }
 

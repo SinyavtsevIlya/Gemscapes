@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Client.Match
 {
-    [Battle]
+    [M3]
     [UpdateInGroup(typeof(TimersSystemGroup))]
     public class TickTimerSystem : EcsSystemBase
     {

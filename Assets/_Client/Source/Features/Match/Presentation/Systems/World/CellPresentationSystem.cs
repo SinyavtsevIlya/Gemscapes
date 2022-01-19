@@ -7,7 +7,7 @@ using Nanory.Lex.UnityEditorIntegration;
 
 namespace Client.Match
 {
-    [Battle]
+    [M3]
     [UpdateInGroup(typeof(PresentationSystemGroup))]
     public sealed class CellPresentationSystem : EcsSystemBase
     {

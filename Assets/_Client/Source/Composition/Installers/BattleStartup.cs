@@ -5,7 +5,7 @@ using Client.Match;
 
 namespace Client
 {
-    public class Battle : TargetWorldAttribute { }
+    public class M3 : TargetWorldAttribute { }
 
     class BattleStartup : MonoBehaviour
     {
@@ -13,7 +13,7 @@ namespace Client
         private EcsSystems _systems;
         private EcsSystemGroup _presentation;
         private EcsSystemGroup _playback;
-        private EcsSystemSorter<Battle> _sorter;
+        private EcsSystemSorter<M3> _sorter;
 
         [SerializeField] private int _jumpTicks;
         [SerializeField] private int _tickId;
@@ -24,7 +24,7 @@ namespace Client
             _world = new EcsWorld();
             _systems = new EcsSystems(_world);
 
-            _sorter = new EcsSystemSorter<Battle>(_world);
+            _sorter = new EcsSystemSorter<M3>(_world);
             _systems.Add(_sorter.GetSortedSystems());
 #if DEBUG
             _systems.Add(new Nanory.Lex.UnityEditorIntegration.EcsWorldDebugSystem());

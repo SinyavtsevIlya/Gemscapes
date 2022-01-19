@@ -5,7 +5,7 @@ using UnityEngine.Assertions;
 
 namespace Client.Match
 {
-    [Battle]
+    [M3]
     public sealed class CreateLevelSystem : EcsSystemBase
     {
         protected override void OnCreate()

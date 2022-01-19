@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Client.Match
 {
-    [Battle]
+    [M3]
     public sealed class PieceCollisionSystem : EcsSystemBase
     {
         protected override void OnUpdate()
