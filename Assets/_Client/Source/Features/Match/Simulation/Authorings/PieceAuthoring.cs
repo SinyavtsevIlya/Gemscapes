@@ -12,8 +12,8 @@ namespace Client.Match
         public void Convert(int pieceEntity, GameObjectConversionSystem converstionSystem)
         {
             var world = converstionSystem.World;
-            
             //pieceView.SetLabel(pieceEntity.ToString());
+            world.Add<MovableTag>(pieceEntity);
 
             var isPrefab = gameObject.scene.name == null;
 
@@ -33,7 +33,6 @@ namespace Client.Match
             world.Add<Position>(pieceEntity).Value = new Vector2IntScaled(pos.x, pos.y, SimConstants.GridSubdivison);
             world.Add<Velocity>(pieceEntity).Value = new Vector2IntScaled(0, 0, SimConstants.GridSubdivison);
             world.Add<Grid>(pieceEntity) = grid;
-            world.Add<MovableTag>(pieceEntity);
             if (grid.TryGetCell(pos, out var cellEntity))
             {
                 world.Add<PieceLink>(cellEntity).Value = world.Dst.PackEntity(pieceEntity);
@@ -44,7 +43,7 @@ namespace Client.Match
                 //world.Add<FallingTag>(pieceEntity);
             }
 
-            world.Add<FallingTag>(pieceEntity);
+            //world.Add<FallingTag>(pieceEntity);
         }
     }
 }

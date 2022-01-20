@@ -46,8 +46,7 @@ namespace Client.Match
             }
 
             foreach (var pieceEntity in Filter()
-            .With<CreatedEvent>() // TODO: if MovableTag is the only Include component, compatible entities doesn't match the filter.
-            .With<Position>() 
+            .With<MovableTag>() 
             .Without<Mono<MovablePieceView>>()
             .End())
             {
