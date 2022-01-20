@@ -37,13 +37,35 @@ namespace Client.Match
             {
                 world.Add<PieceLink>(cellEntity).Value = world.Dst.PackEntity(pieceEntity);
                 world.Add<GravityCellLink>(pieceEntity).Value = cellEntity;
-            }
-            if (pos.y != grid.Value.GetLength(1) - 1)
-            {
-                //world.Add<FallingTag>(pieceEntity);
+
+                if (!world.Has<GeneratorTag>(cellEntity))
+                {
+                    //world.Add<FallingTag>(pieceEntity);
+                }
             }
 
-            //world.Add<FallingTag>(pieceEntity);
+            
+        }
+
+        public static void ApplyFalling(EcsWorld world, Grid grid, Vector2Int pos)
+        {
+            var cellEntity = grid.Value[pos.x, pos.y];
+            if (grid.TryGetCell(pos + world.Get<GravityDirection>(cellEntity).Value, out var tendingCellEntity))
+            {
+                if (!world.Has<PieceLink>(tendingCellEntity))
+                {
+                    if (!world.Has<GeneratorTag>(cellEntity))
+                    {
+                        if (world.TryGet<PieceLink>(cellEntity, out var pieceLink))
+                        {
+                            if (pieceLink.Value.Unpack(world, out var pieceEntity))
+                            {
+                                world.Add<FallingTag>(pieceEntity);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Client.Match
                 var cellEntity = grid.GetCellByPiece(World, pieceEntity);
                 ref var pieceGravityDirection = ref Get<GravityDirection>(gravityCellEntity).Value;
 
-     
+                
 
                 var magnitude = velocity.Value.GetDetermenistecMargnitude();
                 magnitude = Mathf.Clamp(magnitude, 0, SimConstants.GridSubdivison);
@@ -57,7 +57,7 @@ namespace Client.Match
                         var remainderMagnitude = remainder.GetDetermenistecMargnitude();
                         var orientedRemainder = new Vector2IntScaled()
                         {
-                            Value = upcomingGravityDirection * remainderMagnitude / 4,
+                            Value = upcomingGravityDirection * remainderMagnitude,
                             Divisor = velocity.Divisor
                         };
 

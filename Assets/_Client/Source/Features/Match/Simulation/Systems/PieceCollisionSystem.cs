@@ -30,6 +30,7 @@ namespace Client.Match
 
                     if (hasPieceArived)
                     {
+                        Debug.Log($"Stop {pieceEntity} ");
                         piecePosition.SetFromVector2(cellPosition);
                         Get<Velocity>(pieceEntity).Value.Value = Vector2Int.zero;
                         Del<FallingTag>(pieceEntity);
