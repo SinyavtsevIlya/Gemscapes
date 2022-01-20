@@ -18,7 +18,6 @@ namespace Client.Match.Tests
                 Systems = new EcsSystems(World);
                 Sorter = new EcsSystemSorter<TWorld>(World);
                 Systems.Add(Sorter.GetSortedSystems());
-                Systems.Init();
             }
 
             public void OnStep(Action<IEcsRunSystem> step)

@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System.Linq;
+using Nanory.Lex;
 
 namespace Client.Match.Tests
 {
@@ -14,7 +15,6 @@ namespace Client.Match.Tests
 --1-
 11-1
 ");
-
             m3.TickUntilIdle();
 
             Assert.AreEqual(expected:
@@ -28,7 +28,6 @@ namespace Client.Match.Tests
         public void TestMatchSimpleLine()
         {
             var m3 = new TestMatchStartup(pattern:
-
 
 @"
 ----

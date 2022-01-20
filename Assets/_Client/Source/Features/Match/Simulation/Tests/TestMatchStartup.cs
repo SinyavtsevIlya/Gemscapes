@@ -19,6 +19,7 @@ namespace Client.Match.Tests
                 _grid = new Grid(new int[width, height]);
                 CreateBoard(width, height);
                 Systems.AllSystems.FindSystem<PresentationSystemGroup>().IsEnabled = false;
+                Systems.Init();
             }
 
             public TestMatchStartup(string pattern) : this(GetSizeByPattern(pattern).x, GetSizeByPattern(pattern).y)
@@ -57,11 +58,13 @@ namespace Client.Match.Tests
                 return result.ToString();
             }
 
+            public Grid Grid => _grid;
+
             public void TickUntilIdle()
             {
                 while (World.Filter<BoardTag>().With<IdleTag>().End().GetEntitiesCount() == 0)
                 {
-                    Systems.Run();
+                    Tick();
                 }
             }
 
@@ -84,6 +87,7 @@ namespace Client.Match.Tests
             {
                 for (int i = 0; i < count; i++)
                 {
+                    Debug.Log($"tick: {this}");
                     Systems.Run();
                 }
             }

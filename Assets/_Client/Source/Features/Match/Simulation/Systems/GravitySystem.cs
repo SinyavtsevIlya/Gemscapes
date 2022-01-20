@@ -12,6 +12,7 @@ namespace Client.Match
 
             foreach (var pieceEntity in Filter()
             .With<Position>()
+            .With<MovableTag>()
             .With<GravityCellLink>()
             .With<FallingTag>()
             .End())
@@ -26,10 +27,8 @@ namespace Client.Match
                 var cellEntity = grid.GetCellByPiece(World, pieceEntity);
                 ref var pieceGravityDirection = ref Get<GravityDirection>(gravityCellEntity).Value;
 
-                
-
                 var magnitude = velocity.Value.GetDetermenistecMargnitude();
-                magnitude = Mathf.Clamp(magnitude, 0, SimConstants.GridSubdivison);
+                magnitude = Mathf.Clamp(magnitude, 0, SimConstants.MaxVelocity);
 
                 velocity = new Vector2IntScaled()
                 {
@@ -53,7 +52,7 @@ namespace Client.Match
                         var upcomingGravityDirection = Get<GravityDirection>(upcomingGravityCell).Value;
 
                         var remainder = pieceDelta - grivityDirectionScaled.Value;
-                        // NOTE: just take the longest side to respect deterministic approach. 
+
                         var remainderMagnitude = remainder.GetDetermenistecMargnitude();
                         var orientedRemainder = new Vector2IntScaled()
                         {
@@ -72,11 +71,6 @@ namespace Client.Match
                         PreviousCell = cellEntity,
                         CurrentCell = grid.GetCellByPiece(World, pieceEntity)
                     };
-                }
-
-                if (position.Value.x == 100)
-                {
-                    throw new System.Exception();
                 }
             }
         }

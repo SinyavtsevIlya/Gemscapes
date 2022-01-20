@@ -6,15 +6,13 @@ using UnityEngine.Assertions;
 namespace Client.Match
 {
     [M3]
+    [UpdateInGroup(typeof(PresentationSystemGroup))]
     public sealed class CreateLevelSystem : EcsSystemBase
     {
         protected override void OnCreate()
         {
-            //var level = Resources.Load<GameObject>("level");
-            //World.Convert(level, ConversionMode.Convert);
             var board =  Object.FindObjectOfType<BoardAuthoring>().gameObject;
             World.Convert(board);
-            //Generate();
         }
 
         private void Generate()
@@ -64,11 +62,8 @@ namespace Client.Match
                     Add<Position>(pieceEntity).Value = new Vector2IntScaled(column, row, SimConstants.GridSubdivison);
                     Add<Velocity>(pieceEntity).Value = new Vector2IntScaled(0, 0, SimConstants.GridSubdivison);
                     Add<Grid>(pieceEntity) = grid;
-                    //Add<Mono<MovablePieceView>>(pieceEntity).Value = pieceView;
                     Add<PieceLink>(cellEntity).Value = World.PackEntity(pieceEntity);
                     Add<CreatedEvent>(pieceEntity);
-
-                    //Add<FallingTag>(pieceEntity);
                 }
             }
 

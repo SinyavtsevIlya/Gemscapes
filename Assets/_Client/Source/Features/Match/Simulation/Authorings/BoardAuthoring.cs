@@ -86,6 +86,7 @@ namespace Client.Match
             foreach (var piecePrefab in _availablePieces)
             {
                 var pieceEntityPrefab = converstionSystem.Convert(piecePrefab);
+                converstionSystem.World.Add<MovableTag>(pieceEntityPrefab);
                 _pieceTypeLookup[piecePrefab.name] = pieceEntityPrefab;
             }
         }

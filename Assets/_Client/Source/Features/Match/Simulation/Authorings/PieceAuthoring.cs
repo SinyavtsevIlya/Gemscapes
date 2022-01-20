@@ -13,7 +13,6 @@ namespace Client.Match
         {
             var world = converstionSystem.World;
             //pieceView.SetLabel(pieceEntity.ToString());
-            world.Add<MovableTag>(pieceEntity);
 
             var isPrefab = gameObject.scene.name == null;
 
@@ -28,6 +27,7 @@ namespace Client.Match
     {
         public static void Authorize(EcsConversionWorldWrapper world, Grid grid, Vector2Int pos, int pieceTypeId, int pieceEntity)
         {
+            world.Add<MovableTag>(pieceEntity);
             world.Add<CreatedEvent>(pieceEntity);
             world.Add<PieceTypeId>(pieceEntity).Value = pieceTypeId;
             world.Add<Position>(pieceEntity).Value = new Vector2IntScaled(pos.x, pos.y, SimConstants.GridSubdivison);
@@ -40,11 +40,9 @@ namespace Client.Match
 
                 if (!world.Has<GeneratorTag>(cellEntity))
                 {
-                    //world.Add<FallingTag>(pieceEntity);
+                    world.Add<FallingTag>(pieceEntity);
                 }
             }
-
-            
         }
 
         public static void ApplyFalling(EcsWorld world, Grid grid, Vector2Int pos)

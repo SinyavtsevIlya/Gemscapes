@@ -20,6 +20,7 @@ namespace Client.Match
 
                 Swap<Position>(pieceAEntity, pieceBEntity);
                 Swap<Velocity>(pieceAEntity, pieceBEntity);
+                Swap<GravityCellLink>(pieceAEntity, pieceBEntity);
 
                 SwapTag<FallingTag>(pieceAEntity, pieceBEntity);
 
