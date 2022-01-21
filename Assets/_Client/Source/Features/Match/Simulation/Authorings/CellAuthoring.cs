@@ -14,19 +14,20 @@ namespace Client.Match
 
     public static class CellAuthorizationUtility
     {
-        public static void Authorize(int boardEntity, EcsWorld world, Grid grid, Vector2Int pos, int cellEntity)
+        public static void Authorize(int boardEntity, EcsWorld world, Grid grid, Vector2Int pos, int cellEntity, bool addGravity = false)
         {
             world.Add<CreatedEvent>(cellEntity);
-            world.Add<GravityDirection>(cellEntity).Value = new Vector2Int(
-                //pos.y == 5 && pos.x != 0 && pos.x != grid.Value.GetLength(0) - 1 ? -1 :
-                0, -1);
+            if (addGravity)
+            {
+                world.Add<GravityDirection>(cellEntity).Value = new Vector2Int(0, -1);
+            }
             grid.Value[pos.x, pos.y] = cellEntity;
             world.Add<Grid>(cellEntity) = grid;
             world.Add<BoardLink>(cellEntity).Value = boardEntity;
             world.Add<CellPosition>(cellEntity).Value = new Vector2Int(pos.x, pos.y);
         }
 
-        public static void ApplyGravity(EcsWorld world, Grid grid, Vector2Int pos)
+        public static void BuildGravityGraph(EcsWorld world, Grid grid, Vector2Int pos)
         {
             var cellEntity = grid.Value[pos.x, pos.y];
             if (grid.TryGetCell(pos + world.Get<GravityDirection>(cellEntity).Value, out var tendingCellEntity))

@@ -25,7 +25,7 @@ namespace Client.Match
 
     public static class PieceAuthorizationUtility
     {
-        public static void Authorize(EcsConversionWorldWrapper world, Grid grid, Vector2Int pos, int pieceTypeId, int pieceEntity)
+        public static int Authorize(EcsConversionWorldWrapper world, Grid grid, Vector2Int pos, int pieceTypeId, int pieceEntity, bool isFalling)
         {
             world.Add<MovableTag>(pieceEntity);
             world.Add<CreatedEvent>(pieceEntity);
@@ -38,11 +38,16 @@ namespace Client.Match
                 world.Add<PieceLink>(cellEntity).Value = world.Dst.PackEntity(pieceEntity);
                 world.Add<GravityCellLink>(pieceEntity).Value = cellEntity;
 
-                if (!world.Has<GeneratorTag>(cellEntity))
+                if (isFalling)
                 {
-                    world.Add<FallingTag>(pieceEntity);
+                    if (!world.Has<GeneratorTag>(cellEntity))
+                    {
+                        world.Add<FallingTag>(pieceEntity);
+                    }
                 }
             }
+
+            return pieceEntity;
         }
 
         public static void ApplyFalling(EcsWorld world, Grid grid, Vector2Int pos)

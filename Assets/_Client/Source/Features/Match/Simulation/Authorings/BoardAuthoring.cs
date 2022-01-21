@@ -62,21 +62,21 @@ namespace Client.Match
             foreach (Transform cellTr in _cells.transform)
             {
                 var pos = (Vector2Int)(Vector3Int.RoundToInt(cellTr.position) - bounds.min);
-                CellAuthorizationUtility.ApplyGravity(world.Dst, grid, pos);
+                CellAuthorizationUtility.BuildGravityGraph(world.Dst, grid, pos);
             }
 
             foreach (Transform pieceTr in _pieces.transform)
             {
                 var pos = Vector3Int.RoundToInt(pieceTr.position) - bounds.min;
                 var pieceEntity = converstionSystem.Convert(pieceTr.gameObject, ConversionMode.ConvertAndDestroy);
-                PieceAuthorizationUtility.Authorize(world, grid, (Vector2Int)pos, _pieceTypeLookup[pieceTr.name], pieceEntity);
+                PieceAuthorizationUtility.Authorize(world, grid, (Vector2Int)pos, _pieceTypeLookup[pieceTr.name], pieceEntity, false);
             }
 
             transform.Translate(-bounds.min);
 
             var halfSize = (Vector2)size / 2;
             Camera.main.transform.position = bounds.center - bounds.min - Vector3.forward - Vector3.one / 2;
-            Camera.main.orthographicSize = halfSize.y;
+            Camera.main.orthographicSize = Screen.width > Screen.height ? halfSize.y : size.x;
         }
 
         private void FillPieceTypesLookup(GameObjectConversionSystem converstionSystem)

@@ -39,10 +39,15 @@ namespace Client.Match
 
         public static bool TryGetCell(this Grid grid, Vector2Int position, out int cellEntity)
         {
+            return TryGetCell(grid, position.x, position.y, out cellEntity);
+        }
+
+        public static bool TryGetCell(this Grid grid, int x, int y, out int cellEntity)
+        {
             cellEntity = -1;
-            if (grid.IsInsideBounds(position))
+            if (grid.IsInsideBounds(x, y))
             {
-                cellEntity = grid.Value[position.x, position.y];
+                cellEntity = grid.Value[x, y];
 
                 if (cellEntity == -1)
                 {
@@ -69,10 +74,15 @@ namespace Client.Match
 
         public static bool IsInsideBounds(this Grid grid, Vector2Int position)
         {
-            return position.x >= 0 &&
-                   position.y >= 0 && 
-                   position.x < grid.Value.GetLength(0) &&
-                   position.y < grid.Value.GetLength(1);
+            return IsInsideBounds(grid, position.x, position.y);
+        }
+
+        public static bool IsInsideBounds(this Grid grid, int x, int y)
+        {
+            return x >= 0 &&
+                   y >= 0 &&
+                   x < grid.Value.GetLength(0) &&
+                   y < grid.Value.GetLength(1);
         }
     }
 }

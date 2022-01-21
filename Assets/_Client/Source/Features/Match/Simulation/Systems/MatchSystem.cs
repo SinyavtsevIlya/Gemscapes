@@ -37,7 +37,9 @@ namespace Client.Match
                         {
                             var x = even == 0 ? column : row;
                             var y = even == 0 ? row : column;
-                            var cellEntity = grid.Value[x, y];
+
+                            if (!grid.TryGetCell(x, y, out var cellEntity))
+                                continue;
 
                             if (Has<GeneratorTag>(cellEntity))
                                 continue;

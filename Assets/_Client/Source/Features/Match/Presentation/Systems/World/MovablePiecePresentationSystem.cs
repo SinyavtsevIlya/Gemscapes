@@ -50,7 +50,6 @@ namespace Client.Match
             .Without<Mono<MovablePieceView>>()
             .End())
             {
-                Debug.Log("beep");
                 var grid = Get<Grid>(pieceEntity);
                 var piecePrefabEntity = Get<PieceTypeId>(pieceEntity).Value;
                 var prefabView = Get<GameObjectReference>(piecePrefabEntity).Value.GetComponent<MovablePieceView>();

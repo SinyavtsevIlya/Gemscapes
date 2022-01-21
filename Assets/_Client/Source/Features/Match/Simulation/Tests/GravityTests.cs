@@ -33,20 +33,6 @@ namespace Client.Match.Tests
 ----
 1111
 ");
-            
-            m3.OnStep((system) =>   
-            {
-                Assert.That(m3.World.Filter<Position>().End().GetEntitiesCount() > 2, () => 
-                {
-                    var results = UnityEditor.AssetDatabase.FindAssets(typeof(DropPiecesWhenMatchedSystem).Name);
-                    foreach (var guid in results)
-                    {
-                        UnityEngine.Debug.Log($"<a href=\"{UnityEditor.AssetDatabase.GUIDToAssetPath(guid)}\" line=\"7\">{UnityEditor.AssetDatabase.GUIDToAssetPath(guid)}:7</a>");
-                    }
-                    
-                    return $"Failed on {system}"; 
-                });
-            });
 
             m3.TickUntilMatched();
 
@@ -55,6 +41,62 @@ namespace Client.Match.Tests
 ----
 ----
 ", m3.ToString());
+        }
+
+        [Test]
+        public void Test_FallOnBigSpeed_NoHorizontalDisplacement()
+        {
+            var m3 = new TestMatchStartup(pattern:
+@"
+1
+-
+-
+-
+-
+-
+-
+-
+-
+-
+");
+             
+            //m3.World.Get<GravityDirection>(m3.Grid.Value[0, 5]).Value = new UnityEngine.Vector2Int(-1,-1);
+
+            m3.OnStep((system) => 
+            {
+                var world = m3.World;
+
+                foreach (var pieceEntity in m3.World.Filter<Position>().End())
+                {
+                    var piecePosition = world.Get<Position>(pieceEntity).Value;
+                    var horizontalPosition = piecePosition.Value.x;
+                    var pieceIsNotDisplaced = horizontalPosition % SimConstants.GridSubdivison == 0;
+                    if (!pieceIsNotDisplaced)
+                    {
+                        if (system.TryGetSourceHyperLink(out var link))
+                        {
+                            UnityEngine.Debug.Log(link);
+                        }
+                    }
+                    Assert.That(pieceIsNotDisplaced, () => $"Failed on {system}. Piece position is {piecePosition.Value}. {m3}");
+                }
+            });
+
+            m3.TickUntilIdle();
+
+//            Assert.AreEqual(expected:
+//@"
+//-
+//-
+//-
+//-
+//-
+//-
+//-
+//-
+//-
+//1
+//", m3.ToString());
         }
     }
 }

@@ -87,15 +87,14 @@ namespace Client.Match.Tests
             {
                 for (int i = 0; i < count; i++)
                 {
-                    Debug.Log($"tick: {this}");
+                    //Debug.Log($"tick: {this}");
                     Systems.Run();
                 }
             }
 
-            public void SpawnPieceAt(int x, int y)
+            public int SpawnPieceAt(int x, int y)
             {
-                var pieceEntity = World.NewEntity();
-                PieceAuthorizationUtility.Authorize(_worldWrapper, _grid, new Vector2Int(x, y), 0, pieceEntity);
+                return PieceAuthorizationUtility.Authorize(_worldWrapper, _grid, new Vector2Int(x, y), 0, World.NewEntity(), true);
             }
 
             private void CreateBoard(int width, int height)
@@ -109,7 +108,7 @@ namespace Client.Match.Tests
                     {
                         _grid.Value[column, row] = -1;
                         var cellEntity = World.NewEntity();
-                        CellAuthorizationUtility.Authorize(boardEntity, World, _grid, new Vector2Int(column, row), cellEntity);
+                        CellAuthorizationUtility.Authorize(boardEntity, World, _grid, new Vector2Int(column, row), cellEntity, true);
                     }
                 }
                 // Apply Gravity
@@ -117,7 +116,7 @@ namespace Client.Match.Tests
                 {
                     for (var column = 0; column < width; column++)
                     {
-                        CellAuthorizationUtility.ApplyGravity(World, _grid, new Vector2Int(column, row));
+                        CellAuthorizationUtility.BuildGravityGraph(World, _grid, new Vector2Int(column, row));
                     }
                 }
 
