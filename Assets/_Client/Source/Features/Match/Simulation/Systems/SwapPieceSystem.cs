@@ -7,7 +7,7 @@ namespace Client.Match
     {
         protected override void OnUpdate()
         {
-            var later = GetCommandBufferFrom<BeginSimulationDestructionECBSystem>();
+            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
 
             foreach (var swapRequestEntity in Filter()
             .With<SwapPieceRequest>()

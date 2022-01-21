@@ -8,7 +8,7 @@ namespace Client
     {
         protected override void OnUpdate()
         {
-            var later = GetCommandBufferFrom<BeginSimulationDestructionECBSystem>();
+            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
 
             foreach (var destoyedEntity in Filter()
             .With<DestroyedEvent>()
