@@ -5,7 +5,7 @@ using Nanory.Lex;
 namespace Client.Match.Tests
 {
     [TestFixture]
-    public partial class GravityTests
+    public class GravityTests
     {
         [Test]
         public void TestGravityFall()
@@ -59,10 +59,10 @@ namespace Client.Match.Tests
 -
 -
 ");
-             
+
             //m3.World.Get<GravityDirection>(m3.Grid.Value[0, 5]).Value = new UnityEngine.Vector2Int(-1,-1);
 
-            m3.OnStep((system) => 
+            m3.OnStep((system) =>
             {
                 var world = m3.World;
 
@@ -84,20 +84,21 @@ namespace Client.Match.Tests
 
             m3.TickUntilIdle();
 
-//            Assert.AreEqual(expected:
-//@"
-//-
-//-
-//-
-//-
-//-
-//-
-//-
-//-
-//-
-//1
-//", m3.ToString());
+            //            Assert.AreEqual(expected:
+            //@"
+            //-
+            //-
+            //-
+            //-
+            //-
+            //-
+            //-
+            //-
+            //-
+            //1
+            //", m3.ToString());
         }
+
     }
 }
 

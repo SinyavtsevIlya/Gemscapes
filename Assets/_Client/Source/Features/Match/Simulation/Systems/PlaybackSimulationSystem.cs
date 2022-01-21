@@ -3,7 +3,6 @@
 namespace Client.Match
 {
     [UpdateInGroup(typeof(RootSystemGroup), OrderLast = true)]
-    //[UpdateBefore(typeof(PresentationSystemGroup))]
     public class PlaybackSimulationSystemGroup : EcsSystemGroup 
     {
         protected override void OnCreate(EcsSystems systems)
