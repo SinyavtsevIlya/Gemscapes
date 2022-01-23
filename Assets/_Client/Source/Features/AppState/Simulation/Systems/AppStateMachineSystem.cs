@@ -1,9 +1,8 @@
 ﻿using Nanory.Lex;
 using UnityEngine.SceneManagement;
 
-namespace Client
+namespace Client.AppState
 {
-    [Project]
     public sealed class AppStateMachineSystem : EcsSystemBase
     {
         protected override void OnCreate()

@@ -4,21 +4,19 @@ using System.Collections.Generic;
 
 namespace Client
 {
-    public class Project : TargetWorldAttribute { }
-
     class ProjectStartup : MonoBehaviour
     {
         private EcsWorld _world;
         private EcsSystems _systems;
-        private EcsSystemSorter<Project> _sorter;
+        private EcsSystemSorter _sorter;
 
         void Start()
         {
             _world = new EcsWorld();
             _systems = new EcsSystems(_world);
 
-            _sorter = new EcsSystemSorter<Project>(_world);
-            _systems.Add(_sorter.GetSortedSystems());
+            _sorter = new EcsSystemSorter(_world);
+            _systems.Add(_sorter.GetSortedSystems<AppState.Feature>());
 
 #if UNITY_EDITOR
             _systems.Add(new Nanory.Lex.UnityEditorIntegration.EcsWorldDebugSystem());

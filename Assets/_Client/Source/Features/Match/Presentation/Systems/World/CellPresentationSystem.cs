@@ -1,5 +1,6 @@
 ﻿using Nanory.Lex;
 using Nanory.Lex.Conversion;
+using Nanory.Lex.Lifecycle;
 using UnityEngine;
 #if DEBUG
 using Nanory.Lex.UnityEditorIntegration;
@@ -7,7 +8,7 @@ using Nanory.Lex.UnityEditorIntegration;
 
 namespace Client.Match
 {
-    [M3]
+    
     [UpdateInGroup(typeof(PresentationSystemGroup))]
     public sealed class CellPresentationSystem : EcsSystemBase
     {

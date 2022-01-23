@@ -6,12 +6,12 @@ using System.Text;
 
 namespace Client.Match.Tests
 {
-    public class TestMatchStartup : TestStartup<M3>
+    public class TestMatchStartup : TestStartup
     {
         private readonly Grid _grid;
         private readonly EcsConversionWorldWrapper _worldWrapper;
 
-        public TestMatchStartup(int width, int height) : base()
+        public TestMatchStartup(int width, int height) : base(typeof(Match.Feature))
         {
             _worldWrapper = new EcsConversionWorldWrapper(World);
             _grid = new Grid(new int[width, height]);

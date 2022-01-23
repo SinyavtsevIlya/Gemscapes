@@ -1,9 +1,10 @@
 ﻿using Nanory.Lex;
+using Nanory.Lex.Lifecycle;
 using UnityEngine;
 
 namespace Client.Match
 {
-    [M3]
+    
     public sealed class GeneratePieceSystem : EcsSystemBase
     {
         private readonly System.Random _random;

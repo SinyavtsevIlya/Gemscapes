@@ -3,7 +3,6 @@
 namespace Client.Match
 {
     [OneFrame]
-    [M3]
     public struct SwapPieceRequest
     {
         public int PieceA;                

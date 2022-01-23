@@ -1,4 +1,4 @@
-﻿namespace Client
+﻿namespace Client.AppState
 {
     public struct AppState
     {

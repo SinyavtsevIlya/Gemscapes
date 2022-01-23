@@ -1,8 +1,8 @@
 ﻿using Nanory.Lex;
+using Nanory.Lex.Lifecycle;
 
 namespace Client.Match
 {
-    [M3]
     public sealed class DestroyMatchPieceSystem : EcsSystemBase
     {
         protected override void OnUpdate()

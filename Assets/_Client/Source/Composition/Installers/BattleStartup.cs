@@ -1,19 +1,20 @@
 ﻿using UnityEngine;
 using Nanory.Lex;
-using System.Collections.Generic;
-using Client.Match;
+
+namespace Client.Match
+{
+    public class Feature : FeatureBase { }
+}
 
 namespace Client
 {
-    public class M3 : TargetWorldAttribute { }
-
     class BattleStartup : MonoBehaviour
     {
         private EcsWorld _world;
         private EcsSystems _systems;
         private EcsSystemGroup _presentation;
         private EcsSystemGroup _playback;
-        private EcsSystemSorter<M3> _sorter;
+        private EcsSystemSorter _sorter;
 
         [SerializeField] private int _jumpTicks;
         [SerializeField] private int _tickId;
@@ -24,13 +25,13 @@ namespace Client
             _world = new EcsWorld();
             _systems = new EcsSystems(_world);
 
-            _sorter = new EcsSystemSorter<M3>(_world);
-            _systems.Add(_sorter.GetSortedSystems());
+            _sorter = new EcsSystemSorter(_world);
+            _systems.Add(_sorter.GetSortedSystems<Match.Feature, Nanory.Lex.Lifecycle.Feature>());
 #if DEBUG
             _systems.Add(new Nanory.Lex.UnityEditorIntegration.EcsWorldDebugSystem());
 #endif
             _presentation = _systems.AllSystems.FindSystem<PresentationSystemGroup>();
-            _playback = _systems.AllSystems.FindSystem<PlaybackSimulationSystemGroup>();
+            _playback = _systems.AllSystems.FindSystem<Match.PlaybackSimulationSystemGroup>();
             _systems.Init();
 
             Playback();

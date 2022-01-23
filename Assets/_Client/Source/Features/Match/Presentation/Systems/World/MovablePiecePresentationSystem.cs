@@ -1,13 +1,13 @@
 ﻿using Nanory.Lex;
 using Nanory.Lex.Conversion;
 using UnityEngine;
+using Nanory.Lex.Lifecycle;
 #if DEBUG
 using Nanory.Lex.UnityEditorIntegration;
 #endif
 
 namespace Client.Match
 {
-    [M3]
     [UpdateInGroup(typeof(PresentationSystemGroup))]
     public sealed class MovablePiecePresentationSystem : EcsSystemBase
     {

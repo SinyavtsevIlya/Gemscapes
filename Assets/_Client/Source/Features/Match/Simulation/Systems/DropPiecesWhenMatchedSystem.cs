@@ -1,8 +1,9 @@
 ﻿using Nanory.Lex;
+using Nanory.Lex.Lifecycle;
 
 namespace Client.Match
 {
-    [M3]
+    
     public sealed class DropPiecesWhenMatchedSystem : EcsSystemBase
     {
         protected override void OnUpdate()

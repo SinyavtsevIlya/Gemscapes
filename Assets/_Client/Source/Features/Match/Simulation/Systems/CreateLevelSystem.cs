@@ -1,11 +1,11 @@
 ﻿using Nanory.Lex;
 using Nanory.Lex.Conversion;
+using Nanory.Lex.Lifecycle;
 using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace Client.Match
 {
-    [M3]
     [UpdateInGroup(typeof(PresentationSystemGroup))]
     public sealed class CreateLevelSystem : EcsSystemBase
     {

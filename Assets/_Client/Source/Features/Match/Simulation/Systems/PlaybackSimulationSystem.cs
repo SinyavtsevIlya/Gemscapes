@@ -1,4 +1,5 @@
 ﻿using Nanory.Lex;
+using Nanory.Lex.Lifecycle;
 
 namespace Client.Match
 {
@@ -12,7 +13,7 @@ namespace Client.Match
         }
     }
 
-    [M3]
+    
     [UpdateInGroup(typeof(PlaybackSimulationSystemGroup))]
     public sealed class PlaybackSimulationSystem : EcsSystemBase
     {

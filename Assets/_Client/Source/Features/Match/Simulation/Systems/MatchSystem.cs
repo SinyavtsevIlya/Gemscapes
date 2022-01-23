@@ -5,7 +5,7 @@ using Nanory.Lex.UnityEditorIntegration;
 #endif
 namespace Client.Match
 {
-    [M3]
+    
     public sealed class MatchSystem : EcsSystemBase
     {
         private ResizableArray<int> _matches = new ResizableArray<int>(8);

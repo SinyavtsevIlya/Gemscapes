@@ -4,31 +4,18 @@ using System;
 
 namespace Client.Match.Tests
 {
-    public class TestStartup<TWorld> where TWorld : TargetWorldAttribute
+    public class TestStartup
     {
         public EcsWorld World;
         public EcsSystems Systems;
-        protected EcsSystemSorter<TWorld> Sorter;
+        protected EcsSystemSorter Sorter;
 
-        private static IEnumerable<Type> _systemTypesCache;
-        private static IEnumerable<Type> SystemTypesCache
-        {
-            get
-            {
-                if (_systemTypesCache == null)
-                {
-                    _systemTypesCache = new EcsTypesScanner().ScanSystemTypes(typeof(TWorld));
-                }
-                return _systemTypesCache;
-            }
-        }
-
-        public TestStartup()
+        public TestStartup(params Type[] featureTypes)
         {
             World = new EcsWorld();
             Systems = new EcsSystems(World);
-            Sorter = new EcsSystemSorter<TWorld>(World, SystemTypesCache);
-            Systems.Add(Sorter.GetSortedSystems());
+            Sorter = new EcsSystemSorter(World);
+            Systems.Add(Sorter.GetSortedSystems(new EcsTypesScanner().ScanSystemTypes(featureTypes)));
         }
 
         public void OnStep(Action<IEcsRunSystem> step)
