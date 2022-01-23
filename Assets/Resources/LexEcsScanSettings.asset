@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc1303d95568da2478c59f2fb28423b3, type: 3}
   m_Name: LexEcsScanSettings
   m_EditorClassIdentifier: 
-  ClientNamespaceTag: Client
   _clientAssemblyNames:
   - Source
+  - Nanory.Lex
   _assemblyDefinitions:
   - {fileID: 5897886265953266890, guid: 24cd60a3408a07e4386390472339fa13, type: 3}
+  - {fileID: 5897886265953266890, guid: e59bf9fc7d5a44b18a819a92edd46163, type: 3}
