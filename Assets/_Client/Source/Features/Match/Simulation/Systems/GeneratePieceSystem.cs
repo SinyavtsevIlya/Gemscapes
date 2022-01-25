@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Client.Match
 {
-    
     public sealed class GeneratePieceSystem : EcsSystemBase
     {
         private readonly System.Random _random;

@@ -11,7 +11,7 @@ namespace Client.Match.Tests
         private readonly Grid _grid;
         private readonly EcsConversionWorldWrapper _worldWrapper;
 
-        public TestMatchStartup(int width, int height) : base(typeof(Match.Feature))
+        public TestMatchStartup(int width, int height) : base(typeof(Match.Feature), typeof(Nanory.Lex.Lifecycle.Feature))
         {
             _worldWrapper = new EcsConversionWorldWrapper(World);
             _grid = new Grid(new int[width, height]);

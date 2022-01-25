@@ -12,9 +12,9 @@ namespace Client
     {
         private EcsWorld _world;
         private EcsSystems _systems;
+        private EcsSystemSorter _sorter;
         private EcsSystemGroup _presentation;
         private EcsSystemGroup _playback;
-        private EcsSystemSorter _sorter;
 
         [SerializeField] private int _jumpTicks;
         [SerializeField] private int _tickId;
