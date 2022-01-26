@@ -1,0 +1,4 @@
+namespace Client.Battle
+{
+    public struct {itemname}Tag { }
+}

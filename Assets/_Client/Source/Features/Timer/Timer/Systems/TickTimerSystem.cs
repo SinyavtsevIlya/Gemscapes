@@ -1,7 +1,7 @@
 ﻿using Nanory.Lex;
 using UnityEngine;
 
-namespace Client.Match
+namespace Client.Match3
 {
     
     [UpdateInGroup(typeof(TimersSystemGroup))]

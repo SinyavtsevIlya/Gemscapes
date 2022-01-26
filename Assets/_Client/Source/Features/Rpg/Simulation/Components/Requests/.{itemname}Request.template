@@ -1,6 +1,6 @@
 using Nanory.Lex;
 
-namespace Client
+namespace Client.Rpg
 {
     [OneFrame]
     public struct {itemname}Request

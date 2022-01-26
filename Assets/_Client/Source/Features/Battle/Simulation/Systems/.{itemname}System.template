@@ -1,0 +1,12 @@
+using Nanory.Lex;
+
+namespace {itemname}
+{
+    public sealed class {itemname}System : EcsSystemBase
+    {
+        protected override void OnUpdate()
+        {
+            $
+        }
+    }
+}

@@ -1,0 +1,10 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace Client.Battle
+{
+    public class {itemname}Screen : MonoBehaviour
+    {
+        $
+    }
+}

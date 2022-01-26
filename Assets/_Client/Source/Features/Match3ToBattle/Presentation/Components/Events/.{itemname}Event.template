@@ -1,0 +1,10 @@
+using Nanory.Lex;
+
+namespace Client.Match3ToBattle
+{
+    [OneFrame]
+    public struct {itemname}Event
+    {
+        $
+    }
+}

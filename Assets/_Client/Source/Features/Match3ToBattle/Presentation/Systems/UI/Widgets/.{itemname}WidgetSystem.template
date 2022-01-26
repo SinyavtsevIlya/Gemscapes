@@ -1,0 +1,28 @@
+using UnityEngine;
+using Nanory.Lex;
+
+namespace Client.Match3ToBattle
+{
+    [UpdateInGroup(typeof(PrimaryWidgetSystemGroup))]
+    public sealed class {itemname}WidgetSystem : EcsSystemBase
+    {
+        protected override void OnUpdate()
+        {
+            foreach (var ownerEntity in Filter()
+            .With<BindEvent<{itemname}Widget>>()
+            .End())
+            {
+                var widget = Get<BindEvent<{itemname}Widget>>(ownerEntity).Value;
+                $
+            }
+
+            foreach (var ownerEntity in Filter()
+            .With<UnbindEvent<{itemname}Widget>>()
+            .End())
+            {
+                var widget = Get<UnbindEvent<{itemname}Widget>>(ownerEntity).Value;
+
+            }
+        }
+    }
+}

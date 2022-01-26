@@ -1,0 +1,38 @@
+using UnityEngine;
+using Nanory.Lex;
+using Nanory.Lex.Lifecycle;
+
+namespace Client.Match3ToBattle
+{
+    [UpdateInGroup(typeof(UIPresentationSystemGroup))]
+    public sealed class {itemname}ScreenSystem : EcsSystemBase
+    {
+        protected override void OnUpdate()
+        {
+            foreach (var ownerEntity in Filter()
+            .With<ScreensStorage>()
+            .With<CreatedEvent>()
+            .End())
+            {
+                var screen = this.GetScreen<{itemname}Screen>(ownerEntity);  
+                $    
+            }
+
+            foreach (var ownerEntity in Filter()
+            .With<OpenEvent<{itemname}Screen>>()
+            .End())
+            {
+                var screen = Get<OpenEvent<{itemname}Screen>>(ownerEntity).Value;
+                
+            }
+
+            foreach (var ownerEntity in Filter()
+            .With<CloseEvent<{itemname}Screen>>()
+            .End())
+            {
+                var screen = Get<CloseEvent<{itemname}Screen>>(ownerEntity).Value;
+
+            }
+        }
+    }
+}

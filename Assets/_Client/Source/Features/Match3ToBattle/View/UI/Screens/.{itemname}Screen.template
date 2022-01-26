@@ -1,0 +1,10 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace Client.Match3ToBattle
+{
+    public class {itemname}Screen : MonoBehaviour
+    {
+        $
+    }
+}

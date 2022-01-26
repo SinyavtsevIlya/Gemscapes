@@ -1,0 +1,9 @@
+using UnityEngine;
+
+namespace Client.Match3ToBattle
+{
+    public class {itemname}View : MonoBehaviour
+    {
+        $
+    }
+}

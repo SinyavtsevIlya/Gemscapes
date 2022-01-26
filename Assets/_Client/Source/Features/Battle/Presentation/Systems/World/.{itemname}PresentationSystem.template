@@ -1,0 +1,19 @@
+using Nanory.Lex;
+using Nanory.Lex.Conversion;
+using Nanory.Lex.Lifecycle;
+using UnityEngine;
+
+namespace Client.Battle
+{
+    
+    [UpdateInGroup(typeof(PresentationSystemGroup))]
+    public sealed class {itemname}PresentationSystem : EcsSystemBase
+    {
+        protected override void OnUpdate()
+        {
+            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
+
+            $
+        }
+    }
+}

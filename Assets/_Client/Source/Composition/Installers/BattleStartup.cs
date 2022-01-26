@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Nanory.Lex;
 
-namespace Client.Match
+namespace Client.Match3
 {
     public class Feature : FeatureBase { }
 }
@@ -26,12 +26,12 @@ namespace Client
             _systems = new EcsSystems(_world);
 
             _sorter = new EcsSystemSorter(_world);
-            _systems.Add(_sorter.GetSortedSystems<Match.Feature, Nanory.Lex.Lifecycle.Feature>());
+            _systems.Add(_sorter.GetSortedSystems<Match3.Feature, Nanory.Lex.Lifecycle.Feature>());
 #if DEBUG
             _systems.Add(new Nanory.Lex.UnityEditorIntegration.EcsWorldDebugSystem());
 #endif
             _presentation = _systems.AllSystems.FindSystem<PresentationSystemGroup>();
-            _playback = _systems.AllSystems.FindSystem<Match.PlaybackSimulationSystemGroup>();
+            _playback = _systems.AllSystems.FindSystem<Match3.PlaybackSimulationSystemGroup>();
             _systems.Init();
 
             Playback();
