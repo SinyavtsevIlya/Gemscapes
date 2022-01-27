@@ -26,7 +26,7 @@ namespace Client.Match3
                         {
                             if (!Has<FallingTag>(upperPieceEntity))
                             {
-                                if (!Has<MatchedTag>(upperPieceEntity))
+                                if (!Has<MatchedPieceTag>(upperPieceEntity))
                                 {
                                     Add<FallingTag>(upperPieceEntity);
                                 }

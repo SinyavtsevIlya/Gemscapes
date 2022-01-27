@@ -29,7 +29,7 @@ namespace Client.Match3
 
                     if (hasPieceArived)
                     {
-                        piecePosition.SetFromVector2(cellPosition);
+                        piecePosition = new Vector2IntFixed(cellPosition, piecePosition.Divisor);
                         Get<Velocity>(pieceEntity).Value.RawValue = Vector2Int.zero;
                         Del<FallingTag>(pieceEntity);
                         Add<StoppedEvent>(pieceEntity);

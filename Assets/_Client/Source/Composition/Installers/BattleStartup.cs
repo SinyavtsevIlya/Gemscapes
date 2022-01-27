@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
 using Nanory.Lex;
-
-namespace Client.Match3
-{
-    public class Feature : FeatureBase { }
-}
+using m3 = Client.Match3.Feature;
+using m3toBattle = Client.Match3ToBattle.Feature;
+using lifecycle = Nanory.Lex.Lifecycle.Feature;
 
 namespace Client
 {
@@ -26,7 +24,7 @@ namespace Client
             _systems = new EcsSystems(_world);
 
             _sorter = new EcsSystemSorter(_world);
-            _systems.Add(_sorter.GetSortedSystems<Match3.Feature, Nanory.Lex.Lifecycle.Feature>());
+            _systems.Add(_sorter.GetFeaturedSystems<m3, m3toBattle, lifecycle>());
 #if DEBUG
             _systems.Add(new Nanory.Lex.UnityEditorIntegration.EcsWorldDebugSystem());
 #endif

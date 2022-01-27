@@ -2,6 +2,9 @@ using UnityEngine;
 using Nanory.Lex;
 using System.Collections.Generic;
 
+using lifecycle = Nanory.Lex.Lifecycle.Feature;
+using rpg = Client.Rpg.Feature;
+
 namespace Client
 {
     class RpgStartup : MonoBehaviour
@@ -16,7 +19,7 @@ namespace Client
             _systems = new EcsSystems(_world);
 
             _sorter = new EcsSystemSorter(_world);
-            _systems.Add(_sorter.GetSortedSystems<Rpg.Feature>());
+            _systems.Add(_sorter.GetFeaturedSystems<rpg, lifecycle>());
 
 #if UNITY_EDITOR
             _systems.Add(new Nanory.Lex.UnityEditorIntegration.EcsWorldDebugSystem());

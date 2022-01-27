@@ -10,7 +10,7 @@ namespace Client.Match3
             var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
 
             foreach (var pieceEntity in Filter()
-            .With<MatchedEvent>()
+            .With<MatchedPieceEvent>()
             .End())
             {
                 later.AddDelayed<DestroyedEvent>(10, pieceEntity);

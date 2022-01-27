@@ -6,7 +6,7 @@ namespace Client.Match3
     /// Should be added on piece entity itself
     /// </summary>
     [OneFrame]
-    public struct MatchedEvent
+    public struct MatchedPieceEvent
     {
         [OneFrame] public struct TimerCompleted { }
     }

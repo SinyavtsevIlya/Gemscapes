@@ -16,7 +16,7 @@ namespace Client
             _systems = new EcsSystems(_world);
 
             _sorter = new EcsSystemSorter(_world);
-            _systems.Add(_sorter.GetSortedSystems<AppState.Feature>());
+            _systems.Add(_sorter.GetFeaturedSystems<AppState.Feature>());
 
 #if UNITY_EDITOR
             _systems.Add(new Nanory.Lex.UnityEditorIntegration.EcsWorldDebugSystem());

@@ -5,7 +5,7 @@ namespace Client.Rpg
     [OneFrame]
     public struct DamageEvent
     {
-        public float Value;
+        public FInt Value;
         public EcsPackedEntity Source;
     }
 }

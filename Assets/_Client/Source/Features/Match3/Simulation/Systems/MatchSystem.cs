@@ -7,7 +7,7 @@ namespace Client.Match3
 {
     public sealed class MatchSystem : EcsSystemBase
     {
-        private ResizableArray<int> _matches = new ResizableArray<int>(8);
+        private ResizableArray<int> _matchedPieces = new ResizableArray<int>(8);
         private int _lastMatchedTypeId;
 
         protected override void OnUpdate()
@@ -51,7 +51,7 @@ namespace Client.Match3
                                     Match();
                                     _lastMatchedTypeId = pieceTypeId;
                                 }
-                                _matches.Add(pieceEntity);
+                                _matchedPieces.Add(pieceEntity);
                             }
                             else
                             {
@@ -61,25 +61,30 @@ namespace Client.Match3
                         Match();
                     }
                 }
-            }
 
-            void Match()
-            {
-                if (_matches.Count >= 3)
+                void Match()
                 {
-                    for (int idx = 0; idx < _matches.Count; idx++)
+                    if (_matchedPieces.Count >= 3)
                     {
-                        var matchedEntity = _matches[idx];
+                        var matchEventEntity = NewEntity();
 
-                        if (!Has<MatchedTag>(matchedEntity))
+                        Add<MatchEvent>(matchEventEntity).Count = _matchedPieces.Count;
+                        Add<BoardLink>(matchEventEntity).Value = boardEntity;
+
+                        for (int idx = 0; idx < _matchedPieces.Count; idx++)
                         {
-                            Add<MatchedTag>(matchedEntity);
-                            later.AddDelayed<MatchedEvent>(10 + idx * 4, matchedEntity);
+                            var matchedPieceEntity = _matchedPieces[idx];
+
+                            if (!Has<MatchedPieceTag>(matchedPieceEntity))
+                            {
+                                Add<MatchedPieceTag>(matchedPieceEntity);
+                                later.AddDelayed<MatchedPieceEvent>(10 + idx * 4, matchedPieceEntity);
+                            }
                         }
                     }
+                    _matchedPieces.Clear();
+                    _lastMatchedTypeId = -1;
                 }
-                _matches.Clear();
-                _lastMatchedTypeId = -1;
             }
         }
     }

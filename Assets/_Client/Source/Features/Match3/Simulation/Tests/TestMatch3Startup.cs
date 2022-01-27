@@ -75,7 +75,7 @@ namespace Client.Match3.Tests
 
             Tick();
 
-            while (World.Filter<MatchedTag>().End().GetEntitiesCount() > 0)
+            while (World.Filter<MatchedPieceTag>().End().GetEntitiesCount() > 0)
             {
                 Systems.Run();
             }

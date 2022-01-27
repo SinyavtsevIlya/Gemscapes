@@ -2,6 +2,11 @@
 {
     public struct Health
     {
-        public float Value;
+        public FInt Value;
+
+        public static implicit operator FInt(Health src)
+        {
+            return src.Value;
+        }
     }
 }
