@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
 using Nanory.Lex;
-using m3 = Client.Match3.Feature;
-using m3toBattle = Client.Match3ToBattle.Feature;
-using lifecycle = Nanory.Lex.Lifecycle.Feature;
+using m3 =          Client.Match3.Feature;
+using battle =      Client.Battle.Feature;
+using m3toBattle =  Client.Match3.ToBattle.Feature;
+using lifecycle =   Nanory.Lex.Lifecycle.Feature;
 
 namespace Client
 {
     class BattleStartup : MonoBehaviour
     {
-        private EcsWorld _world;
+        private EcsWorldBase _world;
         private EcsSystems _systems;
         private EcsSystemSorter _sorter;
         private EcsSystemGroup _presentation;
@@ -20,11 +21,11 @@ namespace Client
 
         private void Start()
         {
-            _world = new EcsWorld();
+            _world = new EcsWorldBase();
             _systems = new EcsSystems(_world);
 
             _sorter = new EcsSystemSorter(_world);
-            _systems.Add(_sorter.GetFeaturedSystems<m3, m3toBattle, lifecycle>());
+            _systems.Add(_sorter.GetFeaturedSystems<m3, battle, m3toBattle, lifecycle>());
 #if DEBUG
             _systems.Add(new Nanory.Lex.UnityEditorIntegration.EcsWorldDebugSystem());
 #endif
@@ -34,10 +35,6 @@ namespace Client
 
             Playback();
         }
-
-#if DEBUG
-        public int GetTickId() => _tickId;
-#endif
 
         private void FixedUpdate()
         {

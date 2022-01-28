@@ -1,6 +1,6 @@
 ﻿using Nanory.Lex;
 
-namespace Client.Match3ToBattle
+namespace Client.Match3.ToBattle
 {
     public struct BoardOwnerLink
     {

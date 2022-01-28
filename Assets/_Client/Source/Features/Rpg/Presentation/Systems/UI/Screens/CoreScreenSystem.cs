@@ -2,7 +2,7 @@
 using Nanory.Lex;
 using Nanory.Lex.Lifecycle;
 
-namespace Client.Rpg.Rpg
+namespace Client.Rpg
 {
     [UpdateInGroup(typeof(ScreenSystemGroup))]
     public sealed class CoreScreenSystem : EcsSystemBase
@@ -15,7 +15,11 @@ namespace Client.Rpg.Rpg
             .End())
             {
                 var screen = this.GetScreen<CoreScreen>(ownerEntity);
-                screen.Button.onClick.AddListener(() => this.OpenScreen<AbilitiesScreen>(ownerEntity));
+                screen.BattleButton.onClick.AddListener(() => 
+                {
+                    // this.OpenScreen<AbilitiesScreen>(ownerEntity);
+                                        
+                });
             }
 
             foreach (var ownerEntity in Filter()

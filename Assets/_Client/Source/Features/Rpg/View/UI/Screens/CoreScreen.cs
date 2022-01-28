@@ -5,7 +5,7 @@ namespace Client.Rpg
 {
     public class CoreScreen : MonoBehaviour
     {
-        public Button Button;
+        public Button BattleButton;
         public AbilityWidget AbilityWidget;
     }
 }

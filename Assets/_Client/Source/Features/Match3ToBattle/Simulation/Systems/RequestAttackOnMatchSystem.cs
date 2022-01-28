@@ -2,7 +2,7 @@
 using Client.Battle;
 using Client.Match3;
 
-namespace Client.Match3ToBattle
+namespace Client.Match3.ToBattle
 {
     public sealed class RequestAttackOnMatchSystem : EcsSystemBase
     {
