@@ -53,7 +53,12 @@ namespace Client.Match3
                 var grid = Get<Grid>(pieceEntity);
                 var piecePrefabEntity = Get<PieceTypeId>(pieceEntity).Value;
                 var prefabView = Get<GameObjectReference>(piecePrefabEntity).Value.GetComponent<MovablePieceView>();
-                var view = Object.Instantiate(prefabView);
+                var cellEntity = grid.GetCellByPiece(World, pieceEntity);
+                var boardEntity = Get<BoardLink>(cellEntity).Value;
+                var boardGameobject = Get<GameObjectReference>(boardEntity).Value;
+                var piecesRoot = boardGameobject.transform.GetChild(1);
+                var view = Object.Instantiate(prefabView, piecesRoot, true);
+
 #if DEBUG
                 EcsSystems.LinkDebugGameobject(World, pieceEntity, view.gameObject);
 #endif

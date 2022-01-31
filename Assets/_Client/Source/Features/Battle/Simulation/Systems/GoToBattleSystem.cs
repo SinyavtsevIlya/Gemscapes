@@ -10,6 +10,11 @@ namespace Client.Battle
     {
         protected override void OnUpdate()
         {
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                SceneManager.UnloadSceneAsync("Wolf");
+            }
+
             foreach (var playerEntity in Filter()
             .With<BattleRequest>()
             .End())
