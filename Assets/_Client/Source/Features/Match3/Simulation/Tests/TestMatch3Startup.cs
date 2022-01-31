@@ -11,7 +11,8 @@ namespace Client.Match3.Tests
         private readonly Grid _grid;
         private readonly EcsConversionWorldWrapper _worldWrapper;
 
-        public TestMatch3Startup(int width, int height) : base(typeof(Match3.Feature), typeof(Nanory.Lex.Lifecycle.Feature))
+        public TestMatch3Startup(int width, int height) 
+            : base(typeof(Match3.Feature), typeof(Nanory.Lex.Lifecycle.Feature))
         {
             _worldWrapper = new EcsConversionWorldWrapper(World);
             _grid = new Grid(new int[width, height]);
@@ -92,7 +93,7 @@ namespace Client.Match3.Tests
 
         public int SpawnPieceAt(int x, int y)
         {
-            return PieceAuthorizationUtility.Authorize(_worldWrapper, _grid, new Vector2Int(x, y), 0, World.NewEntity(), true);
+            return PieceAuthoringUtility.Authorize(_worldWrapper, _grid, new Vector2Int(x, y), 0, World.NewEntity(), true);
         }
 
         private void CreateBoard(int width, int height)
@@ -106,7 +107,7 @@ namespace Client.Match3.Tests
                 {
                     _grid.Value[column, row] = -1;
                     var cellEntity = World.NewEntity();
-                    CellAuthorizationUtility.Authorize(boardEntity, World, _grid, new Vector2Int(column, row), cellEntity, true);
+                    CellAuthoringUtility.Authorize(boardEntity, World, _grid, new Vector2Int(column, row), cellEntity, true);
                 }
             }
             // Apply Gravity
@@ -114,7 +115,7 @@ namespace Client.Match3.Tests
             {
                 for (var column = 0; column < width; column++)
                 {
-                    CellAuthorizationUtility.BuildGravityGraph(World, _grid, new Vector2Int(column, row));
+                    CellAuthoringUtility.BuildGravityGraph(World, _grid, new Vector2Int(column, row));
                 }
             }
 

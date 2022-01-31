@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c7384f0e7eb1cb40853d0899813e972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Button: {fileID: 994830468894576457}
+  BattleButton: {fileID: 994830468894576457}
   AbilityWidget: {fileID: 1647289073198580102}
 --- !u!1 &5754154956390734325
 GameObject:

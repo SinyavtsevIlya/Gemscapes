@@ -1,6 +1,6 @@
 ﻿using Nanory.Lex;
 
-namespace Client
+namespace Client.Match3
 {
     [OneFrame]
     public struct MatchEvent

@@ -2,7 +2,7 @@ using UnityEngine;
 using Nanory.Lex;
 using Nanory.Lex.Lifecycle;
 
-namespace Client.Match3ToBattle
+namespace Client.Match3.ToBattle
 {
     [UpdateInGroup(typeof(UIPresentationSystemGroup))]
     public sealed class {itemname}ScreenSystem : EcsSystemBase

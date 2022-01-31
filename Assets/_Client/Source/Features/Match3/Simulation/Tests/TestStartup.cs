@@ -12,7 +12,7 @@ namespace Client.Match3.Tests
 
         public TestStartup(params Type[] featureTypes)
         {
-            World = new EcsWorld();
+            World = new EcsWorldBase();
             Systems = new EcsSystems(World);
             Sorter = new EcsSystemSorter(World);
             Systems.Add(Sorter.GetSortedSystems(new EcsTypesScanner().ScanSystemTypes(featureTypes)));

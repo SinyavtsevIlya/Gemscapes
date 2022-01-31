@@ -4,7 +4,7 @@ using Nanory.Lex.Conversion;
 
 namespace Client.Match3.ToBattle
 {
-    public class BoardOwnerLinkAuthoting : MonoBehaviour, IConvertGameObjectToEntity
+    public class BoardOwnerLinkAuthoring : MonoBehaviour, IConvertGameObjectToEntity
     {
         private EcsPackedEntityWithWorld _ownerEntity;
 

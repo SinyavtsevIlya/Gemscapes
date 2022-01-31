@@ -46,6 +46,8 @@ namespace Client.Match3.Tests
         [Test]
         public void Test_FallOnBigSpeed_NoHorizontalDisplacement()
         {
+            UnityEngine.Debug.Log(EcsComponent<MovableTag>.TypeIndex);
+
             var m3 = new TestMatch3Startup(pattern:
 @"
 1

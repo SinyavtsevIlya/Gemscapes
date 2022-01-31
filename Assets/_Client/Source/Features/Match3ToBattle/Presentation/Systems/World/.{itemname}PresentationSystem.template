@@ -3,7 +3,7 @@ using Nanory.Lex.Conversion;
 using Nanory.Lex.Lifecycle;
 using UnityEngine;
 
-namespace Client.Match3ToBattle
+namespace Client.Match3.ToBattle
 {
     
     [UpdateInGroup(typeof(PresentationSystemGroup))]

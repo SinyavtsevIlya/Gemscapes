@@ -1,4 +1,4 @@
-namespace Client.Match3ToBattle
+namespace Client.Match3.ToBattle
 {
     public struct {itemname}
     {

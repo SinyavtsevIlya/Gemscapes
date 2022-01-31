@@ -1,6 +1,5 @@
 ﻿using Nanory.Lex;
 using Client.Battle;
-using Client.Match3;
 
 namespace Client.Match3.ToBattle
 {
@@ -18,9 +17,11 @@ namespace Client.Match3.ToBattle
 
                 if (playerEntityLink.Unpack(out var battleWorld, out var playerEntity))
                 {
-                    // TODO: find out how to send later requests
-                    battleWorld.Add<MelleeAttackRequest>(playerEntity);
+                    (battleWorld as EcsWorldBase)
+                        .GetCommandBufferFrom<BeginSimulationECBSystem>()
+                        .AddOrSet<MelleeAttackRequest>(playerEntity);
                 }
+                UnityEngine.Debug.Log("ping");
             }
         }
     }

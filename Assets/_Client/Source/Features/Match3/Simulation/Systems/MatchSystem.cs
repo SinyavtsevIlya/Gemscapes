@@ -68,8 +68,8 @@ namespace Client.Match3
                     {
                         var matchEventEntity = NewEntity();
 
-                        Add<MatchEvent>(matchEventEntity).Count = _matchedPieces.Count;
-                        Add<BoardLink>(matchEventEntity).Value = boardEntity;
+                        later.Add<MatchEvent>(matchEventEntity).Count = _matchedPieces.Count;
+                        later.Add<BoardLink>(matchEventEntity).Value = boardEntity;
 
                         for (int idx = 0; idx < _matchedPieces.Count; idx++)
                         {

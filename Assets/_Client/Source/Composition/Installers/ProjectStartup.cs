@@ -16,10 +16,11 @@ namespace Client
             _systems = new EcsSystems(_world);
 
             _sorter = new EcsSystemSorter(_world);
-            _systems.Add(_sorter.GetFeaturedSystems<AppState.Feature>());
+            var featuredSystems = _sorter.GetFeaturedSystems<AppState.Feature>();
+            _systems.Add(featuredSystems);
 
 #if UNITY_EDITOR
-            _systems.Add(new Nanory.Lex.UnityEditorIntegration.EcsWorldDebugSystem());
+            _systems.Add(new Nanory.Lex.UnityEditorIntegration.EcsWorldDebugSystem(featuredSystems));
 #endif
 
             _systems.Init();

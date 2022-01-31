@@ -112,6 +112,8 @@ namespace Client.Match3
                         }
                     }
                 };
+
+                view.enabled = true;
             }
         }
     }

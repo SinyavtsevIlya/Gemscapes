@@ -9,9 +9,12 @@ EditorBuildSettings:
     path: Assets/_Client/Content/Scenes/Preload.unity
     guid: 6bf4816907f4ae044949be4d487e6201
   - enabled: 1
-    path: Assets/_Client/Content/Scenes/Core.unity
+    path: Assets/_Client/Content/Scenes/Rpg.unity
     guid: ea5eae13061d947458b37f604560a55e
   - enabled: 1
     path: Assets/_Client/Content/Scenes/Battle.unity
     guid: ab00e2aaa4df1484a99903ca1e4fe7cf
+  - enabled: 1
+    path: Assets/_Client/Content/Scenes/Boards/Enemies/Wolf.unity
+    guid: 1e4875d76b8de8e4dbdd0a5398e1f334
   m_configObjects: {}

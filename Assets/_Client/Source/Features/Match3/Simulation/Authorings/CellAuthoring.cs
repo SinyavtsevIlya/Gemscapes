@@ -13,7 +13,7 @@ namespace Client.Match3
         }
     }
 
-    public static class CellAuthorizationUtility
+    public static class CellAuthoringUtility
     {
         public static void Authorize(int boardEntity, EcsWorld world, Grid grid, Vector2Int pos, int cellEntity, bool addGravity = false)
         {

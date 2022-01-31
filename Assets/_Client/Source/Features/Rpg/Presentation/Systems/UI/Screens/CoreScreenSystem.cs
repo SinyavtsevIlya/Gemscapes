@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Nanory.Lex;
 using Nanory.Lex.Lifecycle;
+using Client.Battle; // TODO: think of moving battle widget to battle feature
 
 namespace Client.Rpg
 {
@@ -9,6 +10,8 @@ namespace Client.Rpg
     {
         protected override void OnUpdate()
         {
+            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
+
             foreach (var ownerEntity in Filter()
             .With<ScreensStorage>()
             .With<CreatedEvent>()
@@ -18,7 +21,7 @@ namespace Client.Rpg
                 screen.BattleButton.onClick.AddListener(() => 
                 {
                     // this.OpenScreen<AbilitiesScreen>(ownerEntity);
-                                        
+                    later.Add<BattleRequest>(ownerEntity);                                                        
                 });
             }
 

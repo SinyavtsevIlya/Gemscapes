@@ -24,7 +24,7 @@ namespace Client.Match3
         }
     }
 
-    public static class PieceAuthorizationUtility
+    public static class PieceAuthoringUtility
     {
         public static int Authorize(EcsConversionWorldWrapper world, Grid grid, Vector2Int pos, int pieceTypeId, int pieceEntity, bool isFalling)
         {

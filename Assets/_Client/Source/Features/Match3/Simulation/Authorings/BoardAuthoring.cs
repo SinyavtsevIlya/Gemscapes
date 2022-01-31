@@ -41,8 +41,6 @@ namespace Client.Match3
             world.Add<BoardTag>(boardEntity);
             world.Add<Grid>(boardEntity) = grid;
 
-            world.Add<Client.Match3.ToBattle.BoardOwnerLink>(boardEntity);
-
             ref var availablePiecesBuffer = ref world.Add<AvailablePieces>(boardEntity).Buffer;
             availablePiecesBuffer.Values = Buffer<int>.Pool.Pop();
             foreach (var pieceType in _pieceTypeLookup.Values)
@@ -54,7 +52,7 @@ namespace Client.Match3
             {
                 var pos = Vector3Int.RoundToInt(cellTr.position) - bounds.min;
                 var cellEntity = converstionSystem.Convert(cellTr.gameObject, ConversionMode.Convert);
-                CellAuthorizationUtility.Authorize(boardEntity, world.Dst, grid, (Vector2Int)pos, cellEntity);
+                CellAuthoringUtility.Authorize(boardEntity, world.Dst, grid, (Vector2Int)pos, cellEntity);
                 if (pos.y == grid.Value.GetLength(1) - 1)
                 {
                     world.Add<GeneratorTag>(cellEntity);
@@ -65,14 +63,14 @@ namespace Client.Match3
             foreach (Transform cellTr in _cells.transform)
             {
                 var pos = (Vector2Int)(Vector3Int.RoundToInt(cellTr.position) - bounds.min);
-                CellAuthorizationUtility.BuildGravityGraph(world.Dst, grid, pos);
+                CellAuthoringUtility.BuildGravityGraph(world.Dst, grid, pos);
             }
 
             foreach (Transform pieceTr in _pieces.transform)
             {
                 var pos = Vector3Int.RoundToInt(pieceTr.position) - bounds.min;
                 var pieceEntity = converstionSystem.Convert(pieceTr.gameObject, ConversionMode.ConvertAndDestroy);
-                PieceAuthorizationUtility.Authorize(world, grid, (Vector2Int)pos, _pieceTypeLookup[pieceTr.name], pieceEntity, false);
+                PieceAuthoringUtility.Authorize(world, grid, (Vector2Int)pos, _pieceTypeLookup[pieceTr.name], pieceEntity, false);
             }
 
             transform.Translate(-bounds.min);

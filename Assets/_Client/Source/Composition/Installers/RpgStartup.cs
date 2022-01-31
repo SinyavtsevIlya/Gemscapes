@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using lifecycle = Nanory.Lex.Lifecycle.Feature;
 using rpg = Client.Rpg.Feature;
+using battle = Client.Battle.Feature;
 
 namespace Client
 {
@@ -15,14 +16,15 @@ namespace Client
 
         void Start()
         {
-            _world = new EcsWorldBase();
+            _world = new EcsWorldBase(default, "Rpg");
             _systems = new EcsSystems(_world);
 
             _sorter = new EcsSystemSorter(_world);
-            _systems.Add(_sorter.GetFeaturedSystems<rpg, lifecycle>());
+            var featuredSystems = _sorter.GetFeaturedSystems<rpg, battle, lifecycle>();
+            _systems.Add(featuredSystems);
 
 #if UNITY_EDITOR
-            _systems.Add(new Nanory.Lex.UnityEditorIntegration.EcsWorldDebugSystem());
+            _systems.Add(new Nanory.Lex.UnityEditorIntegration.EcsWorldDebugSystem(featuredSystems));
 #endif
 
             _systems.Init();

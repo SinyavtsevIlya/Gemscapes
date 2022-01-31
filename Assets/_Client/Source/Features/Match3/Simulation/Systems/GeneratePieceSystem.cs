@@ -42,6 +42,8 @@ namespace Client.Match3
                             var piecePrefab = availablePieces.Values[index];
                             var newPieceEntity = World.Instantiate(piecePrefab);
 
+                            // TODO: replace with AuthoringUtility
+
                             Add<PieceTypeId>(newPieceEntity).Value = piecePrefab;
                             Add<Grid>(newPieceEntity) = grid;
                             velocity.Value.RawValue /= 2;
