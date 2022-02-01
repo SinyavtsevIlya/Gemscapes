@@ -75,21 +75,18 @@ namespace Client.Match3
 
                     var piecePosition = Get<CellPosition>(grid.GetCellByPiece(World, pieceEntity)).Value;
 
-                    for (int i = piecePosition.y - 2; i < piecePosition.y + 2; i++)
+                    for (int i = piecePosition.y - 1; i < piecePosition.y + 1; i++)
                     {
-                        for (int j = piecePosition.x - 2; j < piecePosition.x + 2; j++)
+                        for (int j = piecePosition.x - 4; j < piecePosition.x + 4; j++)
                         {
                             var pos = new Vector2Int(j, i);
-                            if (grid.TryGetCell(pos, out var cellEntity))
+
+                            if (grid.TryGetCell(pos, out var cellEntity)
+                                && TryGet(cellEntity, out PieceLink pieceLink)
+                                && pieceLink.Value.Unpack(World, out int currentPieceEntity))
                             {
-                                if (TryGet(cellEntity, out PieceLink pieceLink))
-                                {
-                                    if (pieceLink.Value.Unpack(World, out int currentPieceEntity))
-                                    {
-                                        later.Add<DestroyedEvent>(currentPieceEntity);
-                                        Del<PieceLink>(grid.GetCellByPiece(World, currentPieceEntity));
-                                    }
-                                }
+                                later.AddOrSet<DestroyedEvent>(currentPieceEntity);
+                                Del<PieceLink>(grid.GetCellByPiece(World, currentPieceEntity));
                             }
                         }
                     }
@@ -97,24 +94,18 @@ namespace Client.Match3
 
                 view.Draged += (dragDirection) => 
                 {
-                    Debug.Log($"dragDirection: {dragDirection}");
-                    if (grid.TryGetCell(Get<Position>(pieceEntity).Value.ToVector2Int() + dragDirection, out var cellEntity))
+                    if (grid.TryGetCell(Get<Position>(pieceEntity).Value.ToVector2Int() + dragDirection, out var cellEntity)
+                        && TryGet<PieceLink>(cellEntity, out var pieceLink)
+                        && pieceLink.Value.Unpack(World, out var targetPieceEntity))
                     {
-                        if (TryGet<PieceLink>(cellEntity, out var pieceLink))
+                        later.Add<SwapPieceRequest>(World.NewEntity()) = new SwapPieceRequest()
                         {
-                            if (pieceLink.Value.Unpack(World, out var targetPieceEntity))
-                            {
-                                Debug.Log("Add swap request");
-                                later.Add<SwapPieceRequest>(World.NewEntity()) = new SwapPieceRequest()
-                                {
-                                    PieceA = pieceEntity,
-                                    PieceB = targetPieceEntity
-                                };
+                            PieceA = pieceEntity,
+                            PieceB = targetPieceEntity
+                        };
 
-                                Get<Mono<MovablePieceView>>(pieceEntity).Value.SetPosition(Get<Position>(pieceEntity).Value.ToVector2Int() + dragDirection);
-                                Get<Mono<MovablePieceView>>(targetPieceEntity).Value.SetPosition(Get<Position>(pieceEntity).Value.ToVector2Int());
-                            }
-                        }
+                        Get<Mono<MovablePieceView>>(pieceEntity).Value.SetPosition(Get<Position>(pieceEntity).Value.ToVector2Int() + dragDirection);
+                        Get<Mono<MovablePieceView>>(targetPieceEntity).Value.SetPosition(Get<Position>(pieceEntity).Value.ToVector2Int());
                     }
                 };
 

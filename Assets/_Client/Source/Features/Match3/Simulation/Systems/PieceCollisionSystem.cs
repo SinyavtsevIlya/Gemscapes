@@ -22,12 +22,27 @@ namespace Client.Match3
                 ref var cellGravityDirection = ref Get<GravityDirection>(cellEntity).Value;
                 ref var pieceGravityDirection = ref Get<GravityDirection>(Get<GravityCellLink>(pieceEntity).Value).Value;
 
-                if (IsColliding(cellPosition, cellGravityDirection, grid, pieceEntity))
+                var isBlockedByUpcomingPiece =
+                    TryGetBlockingPiece(cellPosition, cellGravityDirection, grid, out var blockingPieceEntity);
+
+                if (isBlockedByUpcomingPiece)
                 {
-                    var hasPieceArived = cellGravityDirection.sqrMagnitude >=
+                    if (Has<FallingTag>(blockingPieceEntity))
+                    {
+                        PreventOvertaking(pieceEntity, grid, cellEntity, blockingPieceEntity);
+                    }
+                }
+
+                var isBlockedByLevelBounds = !grid.IsInsideBounds(cellPosition + cellGravityDirection);
+
+                var isBlockedByStoppedPiece = isBlockedByUpcomingPiece && !Has<FallingTag>(blockingPieceEntity);
+
+                if (isBlockedByStoppedPiece || isBlockedByLevelBounds)
+                {
+                    var hasPieceArrived = cellGravityDirection.sqrMagnitude >=
                                         (cellGravityDirection + cellPosition - piecePosition.ToVector2Int()).sqrMagnitude;
 
-                    if (hasPieceArived)
+                    if (hasPieceArrived)
                     {
                         piecePosition = new Vector2IntFixed(cellPosition, piecePosition.Divisor);
                         Get<Velocity>(pieceEntity).Value.RawValue = Vector2Int.zero;
@@ -38,49 +53,34 @@ namespace Client.Match3
             }
         }
 
-        private bool IsColliding(Vector2Int cellPosition, Vector2Int cellGravityDirection, Grid grid, int pieceEntity)
+        private void PreventOvertaking(int pieceEntity, Grid grid, int cellEntity, int blockingPieceEntity)
         {
-            if (grid.IsBlocking(World, cellPosition, cellGravityDirection))
+            ref var pieceVelocity = ref Get<Velocity>(pieceEntity).Value;
+            ref var blockingPieceVolocity = ref Get<Velocity>(blockingPieceEntity).Value;
+
+            var hasPieceOvertook =
+                pieceVelocity.RawValue.sqrMagnitude > blockingPieceVolocity.RawValue.sqrMagnitude;
+
+            if (hasPieceOvertook)
             {
-                if (grid.TryGetCell(cellPosition + cellGravityDirection, out var nextCellEntity))
-                {
-                    if (TryGet<PieceLink>(nextCellEntity, out var blockingPieceLink))
-                    {
-                        if (blockingPieceLink.Value.Unpack(World, out var blockingPieceEntity))
-                        {
-                            if (!Has<FallingTag>(blockingPieceEntity))
-                            {
-                                return true;
-                            }
-                            else
-                            {
+                var blockingPieceCell = grid.GetCellByPiece(World, blockingPieceEntity);
 
-                                ref var pieceVelocity = ref Get<Velocity>(pieceEntity).Value;
-                                ref var blockingPieceVolocity = ref Get<Velocity>(blockingPieceEntity).Value;
-                                if (pieceVelocity.RawValue.sqrMagnitude > blockingPieceVolocity.RawValue.sqrMagnitude)
-                                {
-                                    if (Get<GravityDirection>(nextCellEntity).Value == Get<GravityDirection>(grid.Value[cellPosition.x, cellPosition.y]).Value)
-                                    {
-                                        pieceVelocity.RawValue = blockingPieceVolocity.RawValue;
-                                    }
-                                    else
-                                    {
-                                        pieceVelocity.RawValue = Vector2Int.zero;
-                                    }
-                                    
-                                }
-      
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    return true;
-                }
+                var isDirectionSame = Get<GravityDirection>(blockingPieceCell).Value ==
+                    Get<GravityDirection>(cellEntity).Value;
+
+                pieceVelocity.RawValue = isDirectionSame ?
+                    blockingPieceVolocity.RawValue : pieceVelocity.RawValue = Vector2Int.zero;
             }
+        }
 
-            return false;
+        private bool TryGetBlockingPiece(Vector2Int cellPosition, Vector2Int cellGravityDirection, Grid grid, out int blockingPieceEntity)
+        {
+            blockingPieceEntity = -1;
+
+            return grid.IsBlocking(World, cellPosition, cellGravityDirection)
+                && grid.TryGetCell(cellPosition + cellGravityDirection, out var nextCellEntity)
+                && TryGet<PieceLink>(nextCellEntity, out var blockingPieceLink)
+                && blockingPieceLink.Value.Unpack(World, out blockingPieceEntity);
         }
     }
 }

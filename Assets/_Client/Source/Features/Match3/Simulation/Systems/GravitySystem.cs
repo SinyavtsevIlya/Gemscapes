@@ -46,7 +46,7 @@ namespace Client.Match3
                 else
                 {
                     gravityCellEntity = cellEntity;
-                    if (grid.TryGetCell(Get<CellPosition>(gravityCellEntity).Value + pieceGravityDirection, out var upcomingGravityCell))
+                    if (grid.TryGetCell(Get<CellPosition>(gravityCellEntity).Value, out var upcomingGravityCell))
                     {
                         var upcomingGravityDirection = Get<GravityDirection>(upcomingGravityCell).Value;
 

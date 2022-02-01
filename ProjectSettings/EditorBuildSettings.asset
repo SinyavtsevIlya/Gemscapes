@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/_Client/Content/Scenes/Rpg.unity
     guid: ea5eae13061d947458b37f604560a55e
   - enabled: 1
-    path: Assets/_Client/Content/Scenes/Battle.unity
+    path: Assets/_Client/Content/Scenes/Board.unity
     guid: ab00e2aaa4df1484a99903ca1e4fe7cf
   - enabled: 1
     path: Assets/_Client/Content/Scenes/Boards/Enemies/Wolf.unity

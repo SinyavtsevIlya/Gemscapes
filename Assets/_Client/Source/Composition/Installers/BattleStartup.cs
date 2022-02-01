@@ -1,112 +1,20 @@
-﻿using UnityEngine;
-using Nanory.Lex;
+﻿using System;
+
 using m3 =          Client.Match3.Feature;
 using m3toBattle =  Client.Match3.ToBattle.Feature;
 using lifecycle =   Nanory.Lex.Lifecycle.Feature;
 
 namespace Client
 {
-    class BattleStartup : MonoBehaviour
+    class BattleStartup : BoardStartup
     {
-        private EcsWorldBase _world;
-        private EcsSystems _systems;
-        private EcsSystemSorter _sorter;
-        private EcsSystemGroup _presentation;
-        private EcsSystemGroup _playback;
-
-        [SerializeField] private int _jumpTicks;
-        [SerializeField] private int _tickId;
-        [SerializeField] private bool _tickManually;
-
-        private void Start()
+        protected override Type[] FeatureTypes => new Type[] 
         {
-            _world = new EcsWorldBase(default, "Battle");
-            _systems = new EcsSystems(_world);
+            typeof(m3),
+            typeof(m3toBattle),
+            typeof(lifecycle)
+        };
 
-            _sorter = new EcsSystemSorter(_world);
-            var featuredSystems = _sorter.GetFeaturedSystems<m3, m3toBattle, lifecycle>();
-            _systems.Add(featuredSystems);
-#if DEBUG
-            _systems.Add(new Nanory.Lex.UnityEditorIntegration.EcsWorldDebugSystem(featuredSystems));
-#endif
-            _presentation = _systems.AllSystems.FindSystem<PresentationSystemGroup>();
-            _playback = _systems.AllSystems.FindSystem<Match3.PlaybackSimulationSystemGroup>();
-            _systems.Init();
-            Playback();
-        }
-
-        private void FixedUpdate()
-        {
-#if DEBUG
-            if (_tickManually)
-            {
-                return;
-            }
-#endif
-
-            Run();
-        }
-
-#if DEBUG
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                
-            }
-
-            if (Input.GetKeyDown(KeyCode.M))
-            {
-                _tickManually = !_tickManually;
-            }
-
-            if (_tickManually)
-            {
-                if (Input.GetKeyDown(KeyCode.N))
-                {
-                    Run();
-                }
-            }
-        }
-
-        private void Playback()
-        {
-            SetPresentationActive(false);
-
-            while (_jumpTicks > _tickId)
-            {
-                _systems.Run();
-                _tickId++;
-            }
-
-            SetPresentationActive(true);
-        }
-
-        private void SetPresentationActive(bool value)
-        {
-            _presentation.IsEnabled = value;
-            _playback.IsEnabled = !value;
-        }
-#endif
-
-        private void OnDestroy()
-        {
-            if (_systems != null)
-            {
-                _systems.Destroy();
-                _systems = null;
-            }
-            if (_world != null)
-            {
-                _world.Destroy();
-                _world = null;
-            }
-        }
-
-        private void Run()
-        {
-            _systems.Run();
-            _tickId++;
-        }
+        protected override string WorldName => "Battle";
     }
 }

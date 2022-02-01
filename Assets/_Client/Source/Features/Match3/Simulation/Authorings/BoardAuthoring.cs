@@ -14,6 +14,7 @@ namespace Client.Match3
         [SerializeField] GameObject[] _availablePieces;
         [SerializeField] Tilemap _cells;
         [SerializeField] Tilemap _pieces;
+        [SerializeField] Camera _camera;
 
         private Dictionary<string, int> _pieceTypeLookup;
 
@@ -77,8 +78,9 @@ namespace Client.Match3
             transform.Translate(-bounds.min);
 
             var halfSize = (Vector2)size / 2;
-            Camera.main.transform.position = bounds.center - bounds.min - Vector3.forward - Vector3.one / 2;
-            Camera.main.orthographicSize = Screen.width > Screen.height ? halfSize.y : size.x;
+
+            _camera.transform.position = bounds.center - bounds.min - Vector3.forward - Vector3.one / 2;
+            _camera.orthographicSize = Screen.width > Screen.height ? halfSize.y : size.x;
         }
 
         private void FillPieceTypesLookup(GameObjectConversionSystem converstionSystem)

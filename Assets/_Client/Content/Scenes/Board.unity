@@ -2998,6 +2998,7 @@ MonoBehaviour:
   - {fileID: 179362156182032224, guid: a93cf6cdb9980054aa38c0df40797962, type: 3}
   _cells: {fileID: 812821853}
   _pieces: {fileID: 200260926}
+  _camera: {fileID: 840489467}
 --- !u!156049354 &299192697
 Grid:
   m_ObjectHideFlags: 0
@@ -3482,7 +3483,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &423757705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3502,6 +3503,7 @@ MonoBehaviour:
   - {fileID: 179362156182032224, guid: 7895fa9c21d17bf4a8058489ea471b74, type: 3}
   _cells: {fileID: 283257919}
   _pieces: {fileID: 426903690}
+  _camera: {fileID: 840489467}
 --- !u!156049354 &423757706
 Grid:
   m_ObjectHideFlags: 0
@@ -9112,8 +9114,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1099118836}
-  - component: {fileID: 1099118834}
   - component: {fileID: 1099118835}
+  - component: {fileID: 1099118834}
   m_Layer: 0
   m_Name: Startup
   m_TagString: Untagged
@@ -9130,10 +9132,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1099118833}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aac49ab286017f0479e5801ee3c136a4, type: 3}
+  m_Script: {fileID: 11500000, guid: 3e189f56c180bb74c9feac98f2c1b946, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _jumpTicks: 0
+  _jumpTicks: 45
   _tickId: 0
   _tickManually: 1
 --- !u!222 &1099118835
@@ -13912,6 +13914,7 @@ MonoBehaviour:
   - {fileID: 179362156182032224, guid: 7895fa9c21d17bf4a8058489ea471b74, type: 3}
   _cells: {fileID: 1402052721}
   _pieces: {fileID: 1044481145}
+  _camera: {fileID: 840489467}
 --- !u!156049354 &1714950423
 Grid:
   m_ObjectHideFlags: 0
@@ -15399,13 +15402,14 @@ GameObject:
   - component: {fileID: 1911449220}
   - component: {fileID: 1911449219}
   - component: {fileID: 1911449218}
+  - component: {fileID: 1911449221}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1911449218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15425,6 +15429,7 @@ MonoBehaviour:
   - {fileID: 179362156182032224, guid: 7895fa9c21d17bf4a8058489ea471b74, type: 3}
   _cells: {fileID: 258427967}
   _pieces: {fileID: 1981116538}
+  _camera: {fileID: 840489467}
 --- !u!156049354 &1911449219
 Grid:
   m_ObjectHideFlags: 0
@@ -15453,6 +15458,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1911449221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1911449217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8941e07acba70ae4ca5ba537f2d984f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1913175684
 PrefabInstance:
   m_ObjectHideFlags: 0
