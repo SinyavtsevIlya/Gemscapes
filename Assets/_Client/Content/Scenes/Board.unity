@@ -9137,7 +9137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _jumpTicks: 45
   _tickId: 0
-  _tickManually: 1
+  _tickManually: 0
 --- !u!222 &1099118835
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -27,6 +27,7 @@ namespace Client.Match3
                 var cellBEntity = grid.GetCellByPiece(World, pieceBEntity);
 
                 Swap<PieceLink>(cellAEntity, cellBEntity);
+                Swap<IntendingPieceLink>(cellAEntity, cellBEntity);
 
                 later.Add<MatchRequest>(Get<BoardLink>(cellAEntity).Value);
             }

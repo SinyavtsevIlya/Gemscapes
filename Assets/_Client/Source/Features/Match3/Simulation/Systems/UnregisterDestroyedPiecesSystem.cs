@@ -15,6 +15,12 @@ namespace Client.Match3
                 var grid = Get<Grid>(pieceEntity);
                 var cellEntity = grid.GetCellByPiece(World, pieceEntity);
                 Del<PieceLink>(cellEntity);
+
+                ref var pieceGravityDirection = ref Get<GravityDirection>(Get<GravityCellLink>(pieceEntity).Value).Value;
+                if (grid.TryGetCell(Get<CellPosition>(cellEntity).Value + pieceGravityDirection, out var intendingCellEntity))
+                {
+                    Del<IntendingPieceLink>(intendingCellEntity);
+                }
             }
         }
     }

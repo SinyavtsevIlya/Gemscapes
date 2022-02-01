@@ -36,30 +36,38 @@ namespace Client.Match3
                 };
 
                 var gravityCellPosition = new Vector2IntFixed(Get<CellPosition>(gravityCellEntity).Value, velocity.Divisor);
-                var grivityDirectionScaled = new Vector2IntFixed(pieceGravityDirection, velocity.Divisor);
+                var gravityDirectionFixed = new Vector2IntFixed(pieceGravityDirection, velocity.Divisor);
                 var pieceDelta = position.RawValue + velocity.RawValue - gravityCellPosition.RawValue;
 
-                if (pieceDelta.sqrMagnitude < grivityDirectionScaled.RawValue.sqrMagnitude)
+                if (pieceDelta.sqrMagnitude < gravityDirectionFixed.RawValue.sqrMagnitude)
                 {
                     position.RawValue += velocity.RawValue;
                 }
                 else
                 {
                     gravityCellEntity = cellEntity;
-                    if (grid.TryGetCell(Get<CellPosition>(gravityCellEntity).Value, out var upcomingGravityCell))
+
+                    var upcomingGravityDirection = Get<GravityDirection>(gravityCellEntity).Value;
+
+                    var remainder = pieceDelta - gravityDirectionFixed.RawValue;
+
+                    var remainderMagnitude = remainder.GetDetermenistecMargnitude();
+                    var orientedRemainder = new Vector2IntFixed()
                     {
-                        var upcomingGravityDirection = Get<GravityDirection>(upcomingGravityCell).Value;
+                        RawValue = upcomingGravityDirection * remainderMagnitude,
+                        Divisor = velocity.Divisor
+                    };
 
-                        var remainder = pieceDelta - grivityDirectionScaled.RawValue;
+                    position.RawValue = gravityCellPosition.RawValue + gravityDirectionFixed.RawValue + orientedRemainder.RawValue;
 
-                        var remainderMagnitude = remainder.GetDetermenistecMargnitude();
-                        var orientedRemainder = new Vector2IntFixed()
-                        {
-                            RawValue = upcomingGravityDirection * remainderMagnitude,
-                            Divisor = velocity.Divisor
-                        };
-
-                        position.RawValue = gravityCellPosition.RawValue + grivityDirectionScaled.RawValue + orientedRemainder.RawValue;
+                    // Update intending piece link
+                    if (Has<IntendingPieceLink>(gravityCellEntity))
+                    {
+                        Del<IntendingPieceLink>(gravityCellEntity);
+                    }
+                    if (grid.TryGetCell(Get<CellPosition>(gravityCellEntity).Value + upcomingGravityDirection, out var intendingCellEntity)) 
+                    {
+                        GetOrAdd<IntendingPieceLink>(intendingCellEntity).Value = World.PackEntity(pieceEntity);
                     }
                 }
 

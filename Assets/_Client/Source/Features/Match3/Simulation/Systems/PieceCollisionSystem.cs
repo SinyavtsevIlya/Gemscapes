@@ -44,13 +44,29 @@ namespace Client.Match3
 
                     if (hasPieceArrived)
                     {
-                        piecePosition = new Vector2IntFixed(cellPosition, piecePosition.Divisor);
-                        Get<Velocity>(pieceEntity).Value.RawValue = Vector2Int.zero;
-                        Del<FallingTag>(pieceEntity);
-                        Add<StoppedEvent>(pieceEntity);
+                        StopPieceEntity(pieceEntity, cellPosition);
                     }
                 }
+
+                if (grid.TryGetCell(cellPosition + pieceGravityDirection, out var intendingCellEntity) &&
+                    TryGet<IntendingPieceLink>(intendingCellEntity, out var intendingPieceLink) &&
+                    intendingPieceLink.Value.Unpack(World, out int intendingPieceEntity) &&
+                    intendingPieceEntity != pieceEntity &&
+                    pieceGravityDirection != Get<GravityDirection>(Get<GravityCellLink>(intendingPieceEntity).Value).Value &&
+                    !Has<StoppedEvent>(pieceEntity))
+                {
+                    StopPieceEntity(pieceEntity, cellPosition);
+                }
             }
+        }
+
+        private void StopPieceEntity(int pieceEntity, Vector2Int cellPosition)
+        {
+            ref var piecePosition = ref Get<Position>(pieceEntity).Value;
+            piecePosition = new Vector2IntFixed(cellPosition, piecePosition.Divisor);
+            Get<Velocity>(pieceEntity).Value.RawValue = Vector2Int.zero;
+            Del<FallingTag>(pieceEntity);
+            Add<StoppedEvent>(pieceEntity);
         }
 
         private void PreventOvertaking(int pieceEntity, Grid grid, int cellEntity, int blockingPieceEntity)
@@ -77,8 +93,7 @@ namespace Client.Match3
         {
             blockingPieceEntity = -1;
 
-            return grid.IsBlocking(World, cellPosition, cellGravityDirection)
-                && grid.TryGetCell(cellPosition + cellGravityDirection, out var nextCellEntity)
+            return grid.TryGetCell(cellPosition + cellGravityDirection, out var nextCellEntity)
                 && TryGet<PieceLink>(nextCellEntity, out var blockingPieceLink)
                 && blockingPieceLink.Value.Unpack(World, out blockingPieceEntity);
         }
