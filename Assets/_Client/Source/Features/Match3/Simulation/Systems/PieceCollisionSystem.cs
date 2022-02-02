@@ -47,13 +47,10 @@ namespace Client.Match3
                         StopPieceEntity(pieceEntity, cellPosition);
                     }
                 }
-
-                if (grid.TryGetCell(cellPosition + pieceGravityDirection, out var intendingCellEntity) &&
+                else if (grid.TryGetCell(cellPosition + pieceGravityDirection, out var intendingCellEntity) &&
                     TryGet<IntendingPieceLink>(intendingCellEntity, out var intendingPieceLink) &&
                     intendingPieceLink.Value.Unpack(World, out int intendingPieceEntity) &&
-                    intendingPieceEntity != pieceEntity &&
-                    pieceGravityDirection != Get<GravityDirection>(Get<GravityCellLink>(intendingPieceEntity).Value).Value &&
-                    !Has<StoppedEvent>(pieceEntity))
+                    pieceGravityDirection != Get<GravityDirection>(Get<GravityCellLink>(intendingPieceEntity).Value).Value)
                 {
                     StopPieceEntity(pieceEntity, cellPosition);
                 }

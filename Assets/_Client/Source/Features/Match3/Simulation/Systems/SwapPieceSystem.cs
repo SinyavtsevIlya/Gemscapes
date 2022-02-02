@@ -29,7 +29,13 @@ namespace Client.Match3
                 Swap<PieceLink>(cellAEntity, cellBEntity);
                 Swap<IntendingPieceLink>(cellAEntity, cellBEntity);
 
-                later.Add<MatchRequest>(Get<BoardLink>(cellAEntity).Value);
+                later.Add<PieceSwappedEvent>(NewEntity()) = new PieceSwappedEvent()
+                {
+                    PieceA = pieceAEntity,
+                    PieceB = pieceBEntity
+                };
+
+                later.AddOrSet<MatchRequest>(Get<BoardLink>(cellAEntity).Value);
             }
         }
     }

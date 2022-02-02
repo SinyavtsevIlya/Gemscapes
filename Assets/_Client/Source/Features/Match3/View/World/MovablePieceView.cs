@@ -46,6 +46,34 @@ namespace Client.Match3
             }
         }
 
+        public void Swap(Vector2 value)
+        {
+            transform
+                .DOMove(value, .35f)
+                .SetEase(Ease.OutExpo)
+                .SetUpdate(UpdateType.Late);
+        }
+
+        public void FailSwap(Vector2 value)
+        {
+            Debug.Log($"Fail swap from {(int)transform.position.x} to {(int)value.x}");
+
+            var sequence = DOTween.Sequence();
+
+            var initialValue = _from;
+
+            sequence
+                .Append(
+                    transform
+                        .DOMove(value, .25f)
+                        .SetEase(Ease.OutExpo))
+                .Append(
+                    transform
+                        .DOMove(initialValue, .25f)
+                        .SetEase(Ease.OutExpo))
+                .SetUpdate(UpdateType.Late);
+        }
+
         public void Destroy(float duration)
         {
             _collider.enabled = false;

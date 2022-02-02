@@ -118,7 +118,6 @@ namespace Client
 
         private void Run()
         {
-            Debug.Log("run simulation");
             _systems.Run();
             _tickId++;
         }

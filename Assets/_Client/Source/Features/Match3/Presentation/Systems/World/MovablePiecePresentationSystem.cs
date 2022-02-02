@@ -27,7 +27,7 @@ namespace Client.Match3
             foreach (var pieceEntity in Filter()
             .With<Mono<MovablePieceView>>()
             .With<Position>()
-            //.With<FallingTag>()
+            //.With<FallingTag>() ? 
             .End())
             {
                 ref var view = ref Get<Mono<MovablePieceView>>(pieceEntity).Value;
@@ -71,6 +71,8 @@ namespace Client.Match3
 
                 view.Clicked += () => 
                 {
+                    return;
+
                     var grid = Get<Grid>(pieceEntity);
 
                     var piecePosition = Get<CellPosition>(grid.GetCellByPiece(World, pieceEntity)).Value;
@@ -94,23 +96,95 @@ namespace Client.Match3
 
                 view.Draged += (dragDirection) => 
                 {
-                    if (grid.TryGetCell(Get<Position>(pieceEntity).Value.ToVector2Int() + dragDirection, out var cellEntity)
-                        && TryGet<PieceLink>(cellEntity, out var pieceLink)
-                        && pieceLink.Value.Unpack(World, out var targetPieceEntity))
-                    {
-                        later.Add<SwapPieceRequest>(World.NewEntity()) = new SwapPieceRequest()
-                        {
-                            PieceA = pieceEntity,
-                            PieceB = targetPieceEntity
-                        };
+                    // Avoid diagonal drags
+                    bool isVerticalOrHorizontal = dragDirection.sqrMagnitude == 1;
+                    var destinationPosition = Get<Position>(pieceEntity).Value.ToVector2Int() + dragDirection;
+                    var originPosition = Get<Position>(pieceEntity).Value.ToVector2Int();
 
-                        Get<Mono<MovablePieceView>>(pieceEntity).Value.SetPosition(Get<Position>(pieceEntity).Value.ToVector2Int() + dragDirection);
-                        Get<Mono<MovablePieceView>>(targetPieceEntity).Value.SetPosition(Get<Position>(pieceEntity).Value.ToVector2Int());
+                    if (isVerticalOrHorizontal 
+                        && grid.TryGetCell(destinationPosition, out var cellEntity)
+                        && TryGet<PieceLink>(cellEntity, out var pieceLink)
+                        && pieceLink.Value.Unpack(World, out var destinationPieceEntity))
+                    {
+                        if (IsValidMove(grid, pieceEntity, destinationPosition))
+                        {
+                            later.Add<SwapPieceRequest>(World.NewEntity()) = new SwapPieceRequest()
+                            {
+                                PieceA = pieceEntity,
+                                PieceB = destinationPieceEntity
+                            };
+
+                            view.Swap(destinationPosition);
+                            Get<Mono<MovablePieceView>>(destinationPieceEntity).Value
+                            .Swap(originPosition);
+                        }
+                        else
+                        {
+                            view.FailSwap(destinationPosition);
+                            Get<Mono<MovablePieceView>>(destinationPieceEntity).Value.FailSwap(originPosition);
+                        }
                     }
                 };
 
                 view.enabled = true;
             }
+        }
+
+        private bool IsValidMove(Grid grid, int pieceEntity, Vector2Int move)
+        {
+            var pieceType = Get<PieceTypeId>(pieceEntity).Value;
+            var originPosition = Get<CellPosition>(grid.GetCellByPiece(World, pieceEntity)).Value;
+
+            var matches = 0;
+            var hasMatched = false;
+
+            for (int dimensionIdx = 0; dimensionIdx < 2; dimensionIdx++)
+            {
+                for (var distanceIdx = -SimConstants.LineMatchLength; distanceIdx < SimConstants.LineMatchLength; distanceIdx++)
+                {
+                    var currentPosition = move;
+                    currentPosition[dimensionIdx] += distanceIdx;
+
+                    if (currentPosition == originPosition)
+                        continue;
+
+                    if (currentPosition == move) // wouldn't work when last iteration
+                    {
+                        hasMatched = true;
+                    }
+                    else
+                    {
+                        if (grid.TryGetCell(currentPosition, out var cellEntity))
+                        {
+                            if (TryGet<PieceLink>(cellEntity, out var pieceLink) &&
+                                pieceLink.Value.Unpack(World, out var currentPieceEntity))
+                            {
+                                if (Get<PieceTypeId>(currentPieceEntity).Value == pieceType)
+                                {
+                                    hasMatched = true;
+                                }
+                            }
+                        }
+                    }
+
+                    // Process matching
+                    if (hasMatched)
+                    {
+                        matches++;
+                        hasMatched = false;
+                        if (matches == SimConstants.LineMatchLength)
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        matches = 0;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }
