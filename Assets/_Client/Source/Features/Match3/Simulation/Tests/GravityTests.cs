@@ -8,6 +8,29 @@ namespace Client.Match3.Tests
     public class GravityTests
     {
         [Test]
+        public void TestBigBoard()
+        {
+            var size = 25;
+            var m3 = new TestMatch3Startup(size, size);
+            var typeId = 0;
+
+            for (int row = 0; row < size; row++)
+            {
+                for (int column = 0; column < size; column++)
+                {
+                    m3.SpawnPieceAt(column, row);
+                    m3.World
+                        .Get<PieceLink>(m3.Grid.Value[column, row]).Value
+                        .Unpack(m3.World, out int pieceEntity);
+
+                    m3.World.Get<PieceTypeId>(pieceEntity).Value = typeId++;
+                }
+            }
+            m3.TickUntilMatched();
+            Assert.AreEqual(m3.World.Filter<MovableTag>().End().GetEntitiesCount(), size * size);
+        }
+
+        [Test]
         public void TestGravityFall()
         {
             var m3 = new TestMatch3Startup(pattern:

@@ -3,7 +3,8 @@
 namespace Client.Battle
 {
     [OneFrame]
-    public struct MelleeAttackRequest
+    public struct FinishBattleRequest
     {
+        
     }
 }

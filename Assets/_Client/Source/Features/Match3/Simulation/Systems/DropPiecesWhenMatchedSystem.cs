@@ -16,19 +16,25 @@ namespace Client.Match3
                 ref var grid = ref Get<Grid>(pieceEntity);
                 var cellEntity = grid.GetCellByPiece(World, pieceEntity);
 
-                if (!TryGet<Buffer<GravityInputLink>>(cellEntity, out var gravityInputBuffer)) 
+                if (!TryGet<Buffer<GravityInputLink>>(cellEntity, out var gravityInputBuffer))
                     continue;
 
-                var previousCellEntity = gravityInputBuffer.Values[0].Value;
-
-                if (TryGet<PieceLink>(previousCellEntity, out var upperPieceLink)
-                    && upperPieceLink.Value.Unpack(World, out var upperPieceEntity)
-                    && !Has<FallingTag>(upperPieceEntity)
-                    && !Has<MatchedPieceTag>(upperPieceEntity))
+                var upcomingCellEntity = gravityInputBuffer.Values[0].Value;
+                
+                if (TryGetUpcomingPieceEntity(upcomingCellEntity, out var upcomingPieceEntity))
                 {
-                    Add<FallingTag>(upperPieceEntity);
+                    Add<FallingTag>(upcomingPieceEntity);
                 }
             }
+        }
+
+        private bool TryGetUpcomingPieceEntity(int previousCellEntity, out int upperPieceEntity)
+        {
+            upperPieceEntity = -1;
+            return TryGet<PieceLink>(previousCellEntity, out var upperPieceLink)
+                                && upperPieceLink.Value.Unpack(World, out upperPieceEntity)
+                                && !Has<FallingTag>(upperPieceEntity)
+                                && !Has<MatchedPieceTag>(upperPieceEntity);
         }
     }
 }

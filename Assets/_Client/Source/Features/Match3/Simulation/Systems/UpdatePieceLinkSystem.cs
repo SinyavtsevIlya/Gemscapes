@@ -18,20 +18,13 @@ namespace Client.Match3
                 ref var position = ref Get<Position>(pieceEntity).Value;
                 ref var grid = ref Get<Grid>(pieceEntity);
                 ref var cells = ref Get<CellPositionUpdatedEvent>(pieceEntity);
-                var cellEntity = grid.GetCellByPiece(World, pieceEntity);
 
-                if (Has<PieceLink>(cells.PreviousCell))
+                if (TryGet<PieceLink>(cells.PreviousCell, out var pieceLink) 
+                    && pieceLink.Value.Unpack(World, out var previosCellPiece)
+                    && previosCellPiece == pieceEntity)
                 {
-                    if (Get<PieceLink>(cells.PreviousCell).Value.Unpack(World, out var previosCellPiece))
-                    {
-                        if (previosCellPiece == pieceEntity)
-                        {
-                            Del<PieceLink>(cells.PreviousCell);
-                        }
-                    }
+                    Del<PieceLink>(cells.PreviousCell);
                 }
-
-
 
                 GetOrAdd<PieceLink>(cells.CurrentCell).Value = World.PackEntity(pieceEntity);
             }

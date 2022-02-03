@@ -2,9 +2,9 @@
 {
     public struct Health
     {
-        public FInt Value;
+        public int Value;
 
-        public static implicit operator FInt(Health src)
+        public static implicit operator int(Health src)
         {
             return src.Value;
         }

@@ -148,7 +148,7 @@ namespace Client.Match3
                     if (currentPosition == originPosition)
                         continue;
 
-                    if (currentPosition == move) // wouldn't work when last iteration
+                    if (currentPosition == move) 
                     {
                         hasMatched = true;
                     }

@@ -3,6 +3,7 @@ using Client.Match3.ToBattle;
 using UnityEngine.SceneManagement;
 using UnityEngine.Assertions;
 using UnityEngine;
+using Client.Rpg;
 
 namespace Client.Battle
 {
@@ -10,9 +11,13 @@ namespace Client.Battle
     {
         protected override void OnUpdate()
         {
-            if (Input.GetKeyDown(KeyCode.C))
+            foreach (var playerEntity in Filter()
+            .With<FinishBattleRequest>()
+            .With<AttackableLink>()
+            .End())
             {
                 SceneManager.UnloadSceneAsync("Wolf");
+                this.OpenScreen<CoreScreen>(playerEntity);
             }
 
             foreach (var playerEntity in Filter()
@@ -36,8 +41,9 @@ namespace Client.Battle
                     var boardGameObject = sceneObjects[1];
 
                     var boardAuthoring = boardGameObject.GetComponent<BoardOwnerLinkAuthoring>();
-                    Debug.Log(boardAuthoring);
                     boardAuthoring.SetOwner(World.PackEntityWithWorld(playerEntity));
+
+                    this.OpenScreen<BattleScreen>(playerEntity);
                 };
             }
         }

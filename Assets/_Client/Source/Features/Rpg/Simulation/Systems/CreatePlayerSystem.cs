@@ -9,7 +9,7 @@ namespace Client.Rpg
     {
         protected override void OnCreate()
         {
-            var playerPrefab = GameObject.FindObjectOfType<ScreenStorageAuthoring>().gameObject;
+            var playerPrefab = Object.FindObjectOfType<PlayerAuthoring>().gameObject;
             World.Convert(playerPrefab);
         }
         protected override void OnUpdate()
