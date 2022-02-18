@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Assertions;
 using UnityEngine;
 using Client.Rpg;
+using System.Linq;
 
 namespace Client.Battle
 {
@@ -24,26 +25,27 @@ namespace Client.Battle
             .With<BattleRequest>()
             .End())
             {
-                // TODO: get enemy from selected enemy link
+                // TODO: get enemy name from the selected enemy link
                 var enemyName = "Wolf";
-                
+
+                // TODO: this is a temp solution for debugging.
+                // Enemy board scene should be loaded asynchronously 
+                // using special Match3.BoardCompression approach. 
                 var sceneHandle = SceneManager.LoadSceneAsync(enemyName, LoadSceneMode.Additive);
                 sceneHandle.completed += (_) => 
                 {
                     var scene = SceneManager.GetSceneByName(enemyName);
                     Assert.IsTrue(scene.IsValid(), $"No {enemyName} scene was found.");
-
                     var sceneObjects = scene.GetRootGameObjects();
-
-                    // TODO: this is a temp solution for debugging.
-                    // Enemy board scene should be loaded asynchronously 
-                    // using special Match3.BoardCompression approach. 
-                    var boardGameObject = sceneObjects[1];
-
-                    var boardAuthoring = boardGameObject.GetComponent<BoardOwnerLinkAuthoring>();
-                    boardAuthoring.SetOwner(World.PackEntityWithWorld(playerEntity));
-
-                    this.OpenScreen<BattleScreen>(playerEntity);
+                    foreach (var go in sceneObjects)
+                    {
+                        if (go.TryGetComponent<BoardOwnerLinkAuthoring>(out var boardAuthoring))
+                        {
+                            boardAuthoring.SetOwner(World.PackEntityWithWorld(playerEntity));
+                            this.OpenScreen<BattleScreen>(playerEntity);
+                            break;
+                        }
+                    }
                 };
             }
         }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Nanory.Lex;
+using Nanory.Lex.Lifecycle;
 
 namespace Client.Rpg
 {

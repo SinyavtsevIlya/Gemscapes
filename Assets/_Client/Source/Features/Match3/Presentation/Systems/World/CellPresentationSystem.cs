@@ -26,7 +26,9 @@ namespace Client.Match3
 #if DEBUG
                 var cellView = Get<Mono<CellView>>(cellEntity).Value;
                 cellView.SetLabel(cellEntity.ToString());
+#if UNITY_EDITOR
                 EcsSystems.LinkDebugGameobject(World, cellEntity, cellView.gameObject);
+#endif
 #endif
             }
         }

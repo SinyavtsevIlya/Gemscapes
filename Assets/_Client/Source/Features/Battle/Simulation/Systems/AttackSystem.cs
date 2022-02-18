@@ -24,8 +24,7 @@ namespace Client.Battle
                     {
                         Source = World.PackEntity(attackerEntity),
                         Value = Get<Attack>(attackerEntity).Value
-                    };
-                    UnityEngine.Debug.Log("Attack!");
+                    };                   
                 }
 
             }            

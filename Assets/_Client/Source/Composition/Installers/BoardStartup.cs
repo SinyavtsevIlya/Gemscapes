@@ -36,13 +36,15 @@ namespace Client
             var systemTypes = scanner.ScanSystemTypes(FeatureTypes);
             var featuredSystems = _sorter.GetSortedSystems(systemTypes);
             _systems.Add(featuredSystems);
-#if DEBUG
+#if UNITY_EDITOR
             _systems.Add(new Nanory.Lex.UnityEditorIntegration.EcsWorldDebugSystem(featuredSystems));
 #endif
             _presentation = _systems.AllSystems.FindSystem<PresentationSystemGroup>();
             _playback = _systems.AllSystems.FindSystem<Match3.PlaybackSimulationSystemGroup>();
             _systems.Init();
+#if DEBUG
             Playback();
+#endif
         }
 
         private void FixedUpdate()

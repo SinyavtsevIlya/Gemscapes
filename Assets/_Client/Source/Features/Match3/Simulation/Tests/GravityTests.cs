@@ -69,8 +69,6 @@ namespace Client.Match3.Tests
         [Test]
         public void Test_FallOnBigSpeed_NoHorizontalDisplacement()
         {
-            UnityEngine.Debug.Log(EcsComponent<MovableTag>.TypeIndex);
-
             var m3 = new TestMatch3Startup(pattern:
 @"
 1
@@ -109,19 +107,19 @@ namespace Client.Match3.Tests
 
             m3.TickUntilIdle();
 
-            //            Assert.AreEqual(expected:
-            //@"
-            //-
-            //-
-            //-
-            //-
-            //-
-            //-
-            //-
-            //-
-            //-
-            //1
-            //", m3.ToString());
+            Assert.AreEqual(expected:
+@"
+-
+-
+-
+-
+-
+-
+-
+-
+-
+1
+", m3.ToString());
         }
 
     }

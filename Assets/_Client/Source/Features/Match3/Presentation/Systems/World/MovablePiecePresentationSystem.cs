@@ -59,7 +59,7 @@ namespace Client.Match3
                 var piecesRoot = boardGameobject.transform.GetChild(1);
                 var view = Object.Instantiate(prefabView, piecesRoot, true);
 
-#if DEBUG
+#if UNITY_EDITOR
                 EcsSystems.LinkDebugGameobject(World, pieceEntity, view.gameObject);
 #endif
 
@@ -71,8 +71,6 @@ namespace Client.Match3
 
                 view.Clicked += () => 
                 {
-                    return;
-
                     var grid = Get<Grid>(pieceEntity);
 
                     var piecePosition = Get<CellPosition>(grid.GetCellByPiece(World, pieceEntity)).Value;

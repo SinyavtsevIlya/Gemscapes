@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using Nanory.Lex;
+﻿using Nanory.Lex;
 using Nanory.Lex.Lifecycle;
+using Client.Rpg;
 
 namespace Client.Battle
 {
@@ -18,6 +18,11 @@ namespace Client.Battle
                 screen.CloseButton.onClick.AddListener(() => 
                 {
                     var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
+                    Get<Health>(ownerEntity).Value--;
+                    later.Add<Health.Changed>(ownerEntity);
+                    later.Add<Changed<Health>>(ownerEntity);
+                    later.Add<Changed<Name>>(ownerEntity);
+                    return;
                     later.Add<FinishBattleRequest>(ownerEntity);
                 });
             }
@@ -27,7 +32,8 @@ namespace Client.Battle
             .End())
             {
                 var screen = Get<OpenEvent<BattleScreen>>(ownerEntity).Value;
-                
+
+                this.BindWidget(ownerEntity, screen.HealthWidget);
             }
 
             foreach (var ownerEntity in Filter()
@@ -36,6 +42,7 @@ namespace Client.Battle
             {
                 var screen = Get<CloseEvent<BattleScreen>>(ownerEntity).Value;
 
+                this.UnbindWidget(ownerEntity, screen.HealthWidget);
             }
         }
     }

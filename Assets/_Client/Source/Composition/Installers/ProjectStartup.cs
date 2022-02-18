@@ -12,7 +12,7 @@ namespace Client
 
         void Start()
         {
-            _world = new EcsWorld();
+            _world = new EcsWorldBase();
             _systems = new EcsSystems(_world);
 
             _sorter = new EcsSystemSorter(_world);

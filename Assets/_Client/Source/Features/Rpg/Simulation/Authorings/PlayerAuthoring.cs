@@ -11,6 +11,9 @@ namespace Client.Rpg
         {
             var world = converstionSystem.World;
 
+            world.Add<Health>(playerEntity).Value = 100;
+            world.Add<MaxHealth>(playerEntity).Value = 100;
+
             // TODO: temporary approach
             var enemyEntity = world.NewEntity();
             world.Add<Health>(enemyEntity).Value = 100;
