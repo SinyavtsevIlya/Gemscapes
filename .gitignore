@@ -8,6 +8,9 @@ Recordings/
 Logs
 *.log
 
+# User input records
+Assets/Records*
+
 # Visual Studio cache directory
 .vs/
 

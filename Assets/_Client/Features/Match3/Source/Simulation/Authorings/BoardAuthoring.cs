@@ -42,6 +42,7 @@ namespace Client.Match3
             world.Add<BoardTag>(boardEntity);
             world.Add<Grid>(boardEntity) = grid;
             world.Add<GameObjectReference>(boardEntity).Value = gameObject;
+            world.Add<InputRecord>(boardEntity).Frames = new List<InputRecord.Frame>();
 
             ref var availablePiecesBuffer = ref world.Add<AvailablePieces>(boardEntity).Buffer;
             availablePiecesBuffer.Values = Buffer<int>.Pool.Pop();

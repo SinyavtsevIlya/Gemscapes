@@ -1,4 +1,5 @@
 ﻿using System;
+using Client.Match3;
 
 using m3 =          Client.Match3.Feature;
 using m3toBattle =  Client.Match3.ToBattle.Feature;

@@ -2,7 +2,7 @@
 
 namespace Client.Match3
 {
-    [OneFrame]
+    [OneFrame, System.Serializable]
     public struct SwapPieceRequest
     {
         public int PieceA;                

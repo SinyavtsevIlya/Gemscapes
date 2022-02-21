@@ -9138,6 +9138,7 @@ MonoBehaviour:
   _jumpTicks: 45
   _tickId: 0
   _tickManually: 0
+  _recordAsset: {fileID: 4900000, guid: ff542dfba9db67148ac5236dfe1a38cf, type: 3}
 --- !u!222 &1099118835
 CanvasRenderer:
   m_ObjectHideFlags: 0
