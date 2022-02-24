@@ -17,6 +17,7 @@ namespace Client.Battle
             .With<AttackableLink>()
             .End())
             {
+                SetEventSystemActive(true);
                 SceneManager.UnloadSceneAsync("Wolf");
                 this.OpenScreen<CoreScreen>(playerEntity);
             }
@@ -32,7 +33,10 @@ namespace Client.Battle
                 // Enemy board scene should be loaded asynchronously 
                 // using special Match3.BoardCompression approach. 
                 var sceneHandle = SceneManager.LoadSceneAsync(enemyName, LoadSceneMode.Additive);
-                sceneHandle.completed += (_) => 
+
+                SetEventSystemActive(false);
+
+                sceneHandle.completed += (_) =>
                 {
                     var scene = SceneManager.GetSceneByName(enemyName);
                     Assert.IsTrue(scene.IsValid(), $"No {enemyName} scene was found.");
@@ -47,6 +51,21 @@ namespace Client.Battle
                         }
                     }
                 };
+            }
+        }
+
+        // NOTE: We don't want two event systems persisting in the exact time.
+        // And we also want to keep battle scenes testable.
+        private static void SetEventSystemActive(bool value)
+        {
+            var activeScene = SceneManager.GetSceneByName(UnityIdents.Scenes.Rpg);
+            foreach (var rootObject in activeScene.GetRootGameObjects())
+            {
+                if (rootObject.TryGetComponent<UnityEngine.EventSystems.EventSystem>(out var eventSystem))
+                {
+                    eventSystem.enabled = value;
+                    break;
+                }
             }
         }
     }

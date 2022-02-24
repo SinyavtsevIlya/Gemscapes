@@ -71,6 +71,8 @@ namespace Client.Match3
 
                 view.Clicked += () => 
                 {
+                    return;
+
                     var grid = Get<Grid>(pieceEntity);
 
                     var piecePosition = Get<CellPosition>(grid.GetCellByPiece(World, pieceEntity)).Value;
@@ -108,8 +110,8 @@ namespace Client.Match3
                         {
                             later.Add<SwapPieceRequest>(World.NewEntity()) = new SwapPieceRequest()
                             {
-                                PieceA = pieceEntity,
-                                PieceB = destinationPieceEntity
+                                PieceA = World.PackEntity(pieceEntity),
+                                PieceB = World.PackEntity(destinationPieceEntity)
                             };
 
                             view.Swap(destinationPosition);

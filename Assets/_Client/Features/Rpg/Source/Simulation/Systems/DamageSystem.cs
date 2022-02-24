@@ -19,6 +19,8 @@ namespace Client.Rpg
 
                 health.Value -= damageEvent.Value;
 
+                later.Add<Health.Changed>(damagableEntity);
+
                 if (health.Value <= 0)
                 {
                     later.Add<DestroyedEvent>(damagableEntity);

@@ -21,7 +21,6 @@ namespace Client.Match3.ToBattle
                         .GetCommandBufferFrom<BeginSimulationECBSystem>()
                         .AddOrSet<MelleeAttackRequest>(playerEntity);
                 }
-                UnityEngine.Debug.Log("ping");
             }
         }
     }

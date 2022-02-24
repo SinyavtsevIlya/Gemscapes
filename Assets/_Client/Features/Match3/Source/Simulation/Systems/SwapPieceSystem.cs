@@ -13,29 +13,32 @@ namespace Client.Match3
             .End())
             {
                 ref var swapPieceRequest = ref Get<SwapPieceRequest>(swapRequestEntity);
-                var pieceAEntity = swapPieceRequest.PieceA;
-                var pieceBEntity = swapPieceRequest.PieceB;
-                var grid = Get<Grid>(pieceAEntity);
 
-                Swap<Position>(pieceAEntity, pieceBEntity);
-                Swap<Velocity>(pieceAEntity, pieceBEntity);
-                Swap<GravityCellLink>(pieceAEntity, pieceBEntity);
-
-                SwapTag<FallingTag>(pieceAEntity, pieceBEntity);
-
-                var cellAEntity = grid.GetCellByPiece(World, pieceAEntity);
-                var cellBEntity = grid.GetCellByPiece(World, pieceBEntity);
-
-                Swap<PieceLink>(cellAEntity, cellBEntity);
-                Swap<IntendingPieceLink>(cellAEntity, cellBEntity);
-
-                later.Add<PieceSwappedEvent>(NewEntity()) = new PieceSwappedEvent()
+                if (swapPieceRequest.PieceA.Unpack(World, out var pieceAEntity) &&
+                    swapPieceRequest.PieceB.Unpack(World, out var pieceBEntity))
                 {
-                    PieceA = pieceAEntity,
-                    PieceB = pieceBEntity
-                };
+                    var grid = Get<Grid>(pieceAEntity);
 
-                later.AddOrSet<MatchRequest>(Get<BoardLink>(cellAEntity).Value);
+                    Swap<Position>(pieceAEntity, pieceBEntity);
+                    Swap<Velocity>(pieceAEntity, pieceBEntity);
+                    Swap<GravityCellLink>(pieceAEntity, pieceBEntity);
+
+                    SwapTag<FallingTag>(pieceAEntity, pieceBEntity);
+
+                    var cellAEntity = grid.GetCellByPiece(World, pieceAEntity);
+                    var cellBEntity = grid.GetCellByPiece(World, pieceBEntity);
+
+                    Swap<PieceLink>(cellAEntity, cellBEntity);
+                    Swap<IntendingPieceLink>(cellAEntity, cellBEntity);
+
+                    later.Add<PieceSwappedEvent>(NewEntity()) = new PieceSwappedEvent()
+                    {
+                        PieceA = pieceAEntity,
+                        PieceB = pieceBEntity
+                    };
+
+                    later.AddOrSet<MatchRequest>(Get<BoardLink>(cellAEntity).Value);
+                }
             }
         }
     }

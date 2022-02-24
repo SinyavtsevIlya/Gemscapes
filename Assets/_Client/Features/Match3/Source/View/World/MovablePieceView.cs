@@ -11,6 +11,7 @@ namespace Client.Match3
         #region Dependencies
         [SerializeField] private Collider2D _collider;
         [SerializeField] private TMP_Text _label;
+        [SerializeField] private ParticleSystem _DestructionPs;
         [SerializeField] private bool _lerpEnabled;
         [SerializeField] private AnimationCurve _damperCurve;
         [SerializeField] private AnimationCurve _matchCurve;
@@ -79,6 +80,9 @@ namespace Client.Match3
             _collider.enabled = false;
             Clicked = null;
             Draged = null;
+
+            _DestructionPs.transform.SetParent(null);
+            _DestructionPs.Play();
 
             transform.DOScale(0f, duration)
                 .SetEase(_matchCurve)

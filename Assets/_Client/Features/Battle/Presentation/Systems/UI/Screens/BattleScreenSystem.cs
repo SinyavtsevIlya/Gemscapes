@@ -1,6 +1,7 @@
 ﻿using Nanory.Lex;
 using Nanory.Lex.Lifecycle;
 using Client.Rpg;
+using UnityEngine;
 
 namespace Client.Battle
 {
@@ -29,6 +30,13 @@ namespace Client.Battle
                 var screen = Get<OpenEvent<BattleScreen>>(ownerEntity).Value;
 
                 this.BindWidget(ownerEntity, screen.HealthWidget);
+
+                if (Get<AttackableLink>(ownerEntity).Value.Unpack(World, out var enemyEntity))
+                {
+                    this.BindWidget(enemyEntity, screen.EnemyHealthWidget);
+                }
+
+                screen.MatchStatsWidgetArea();
             }
 
             foreach (var ownerEntity in Filter()
@@ -38,6 +46,11 @@ namespace Client.Battle
                 var screen = Get<CloseEvent<BattleScreen>>(ownerEntity).Value;
 
                 this.UnbindWidget(ownerEntity, screen.HealthWidget);
+
+                if (Get<AttackableLink>(ownerEntity).Value.Unpack(World, out var enemyEntity))
+                {
+                    this.UnbindWidget(enemyEntity, screen.EnemyHealthWidget);
+                }
             }
         }
     }

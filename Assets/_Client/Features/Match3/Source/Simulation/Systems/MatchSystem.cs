@@ -67,8 +67,15 @@ namespace Client.Match3
                     if (_matchedPieces.Count >= 3)
                     {
                         var matchEventEntity = NewEntity();
+                        ref var matchEvent = ref later.Add<MatchEvent>(matchEventEntity);
+                        ref var matchedPieces = ref matchEvent.MatchedPieces;
+                        matchedPieces = Buffer<int>.Pool.Pop();
 
-                        later.Add<MatchEvent>(matchEventEntity).Count = _matchedPieces.Count;
+                        for (int idx = 0; idx < _matchedPieces.Count; idx++)
+                        {
+                            matchedPieces.Add(_matchedPieces[idx]);
+                        }
+
                         later.Add<BoardLink>(matchEventEntity).Value = boardEntity;
 
                         for (int idx = 0; idx < _matchedPieces.Count; idx++)
@@ -78,7 +85,7 @@ namespace Client.Match3
                             if (!Has<MatchedPieceTag>(matchedPieceEntity))
                             {
                                 Add<MatchedPieceTag>(matchedPieceEntity);
-                                later.AddDelayed<MatchedPieceEvent>(10 + idx * 4, matchedPieceEntity);
+                                later.AddDelayed<MatchedPieceEvent>(idx * 3, matchedPieceEntity);
                             }
                         }
                     }

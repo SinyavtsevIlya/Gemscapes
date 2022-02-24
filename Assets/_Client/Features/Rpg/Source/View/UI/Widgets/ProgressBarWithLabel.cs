@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using Nanory.Lex.Stats;
+using DG.Tweening;
 
 namespace Client.Rpg.View
 {
@@ -19,7 +20,10 @@ namespace Client.Rpg.View
 
         public IStatView SetValue(int value)
         {
-            ProgressBar.fillAmount = (float) value / _maxValue;
+            var endColor = ProgressBar.color;
+            ProgressBar.color = Color.white;
+            ProgressBar.DOColor(endColor, 1f).SetEase(Ease.OutExpo);
+            ProgressBar.DOFillAmount((float)value / _maxValue, 1f).SetEase(Ease.OutExpo);
             Label.text = value.ToString();
             return this;
         }

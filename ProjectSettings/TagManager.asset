@@ -41,3 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Match3Board
+    uniqueID: 3352857261
+    locked: 0
+  - name: PiecesEffects
+    uniqueID: 2138832679
+    locked: 0

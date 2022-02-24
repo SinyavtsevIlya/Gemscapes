@@ -20,11 +20,27 @@ namespace Client.Battle
 
                 if (attackableEntity.Unpack(World, out var targetEntity))
                 {
-                    later.AddOrSet<DamageEvent>(targetEntity) = new DamageEvent()
+                    var isBlocked = TryGet<Blocks>(targetEntity, out var blocks);
+
+                    if (isBlocked)
                     {
-                        Source = World.PackEntity(attackerEntity),
-                        Value = Get<Attack>(attackerEntity).Value
-                    };                   
+                        blocks.Count--;
+
+                        if (blocks.Count == 0)
+                        {
+                            later.Del<Blocks>(targetEntity);
+                        }
+                    }
+                    else
+                    {
+                        later.AddOrSet<DamageEvent>(targetEntity) = new DamageEvent()
+                        {
+                            Source = World.PackEntity(attackerEntity),
+                            Value = Get<Attack>(attackerEntity).Value
+                        };
+                    }
+
+                 
                 }
 
             }            

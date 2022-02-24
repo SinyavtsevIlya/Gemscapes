@@ -44,8 +44,9 @@ namespace Client.Match3
             world.Add<GameObjectReference>(boardEntity).Value = gameObject;
             world.Add<InputRecord>(boardEntity).Frames = new List<InputRecord.Frame>();
 
-            ref var availablePiecesBuffer = ref world.Add<AvailablePieces>(boardEntity).Buffer;
-            availablePiecesBuffer.Values = Buffer<int>.Pool.Pop();
+            ref var availablePieces = ref world.Add<AvailablePieces>(boardEntity);
+            var availablePiecesBuffer = availablePieces.Buffer.Initiatize();
+            var availablePiecesWeights = availablePieces.Weights.Initiatize();
             foreach (var pieceType in _pieceTypeLookup.Values)
             {
                 availablePiecesBuffer.Values.Add(pieceType);
@@ -73,15 +74,16 @@ namespace Client.Match3
             {
                 var pos = Vector3Int.RoundToInt(pieceTr.position) - bounds.min;
                 var pieceEntity = converstionSystem.Convert(pieceTr.gameObject, ConversionMode.ConvertAndDestroy);
-                PieceAuthoringUtility.Authorize(world, grid, (Vector2Int)pos, _pieceTypeLookup[pieceTr.name], pieceEntity, false);
+                var name = new string(pieceTr.name.TakeWhile(ch => ch != ' ').ToArray());
+                PieceAuthoringUtility.Authorize(world, grid, (Vector2Int)pos, _pieceTypeLookup[name], pieceEntity, false);
             }
 
             transform.Translate(-bounds.min);
 
             var halfSize = (Vector2)size / 2;
 
-            _camera.transform.position = bounds.center - bounds.min - Vector3.forward - Vector3.one / 2;
-            _camera.orthographicSize = Screen.width > Screen.height ? halfSize.y : size.x;
+            _camera.transform.position = bounds.center - bounds.min - Vector3.forward - Vector3.one / 2 + bounds.size.y / 3 * Vector3.up;
+            _camera.orthographicSize = Screen.width > Screen.height ? halfSize.y : size.x + .25f;
         }
 
         private void FillPieceTypesLookup(GameObjectConversionSystem converstionSystem)

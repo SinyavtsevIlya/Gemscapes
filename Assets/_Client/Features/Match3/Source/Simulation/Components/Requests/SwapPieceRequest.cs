@@ -5,7 +5,7 @@ namespace Client.Match3
     [OneFrame, System.Serializable]
     public struct SwapPieceRequest
     {
-        public int PieceA;                
-        public int PieceB;                
+        public EcsPackedEntity PieceA;                
+        public EcsPackedEntity PieceB;                
     }
 }

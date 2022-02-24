@@ -16,15 +16,19 @@ namespace Client.Match3
             .End())
             {
                 ref var swapRequest = ref Get<SwapPieceRequest>(requestEntity);
-                var cellEntity = Get<Grid>(swapRequest.PieceA).GetCellByPiece(World, swapRequest.PieceA);
-                var boardEntity = Get<BoardLink>(cellEntity).Value;
-                var inputRecord = Get<InputRecord>(boardEntity);
-
-                inputRecord.Frames.Add(new InputRecord.Frame() 
+                if (swapRequest.PieceA.Unpack(World, out var pieceAEntity))
                 {
-                    Tick = _tick,
-                    Swap = swapRequest 
-                });
+                    var cellEntity = Get<Grid>(pieceAEntity).GetCellByPiece(World, pieceAEntity);
+                    var boardEntity = Get<BoardLink>(cellEntity).Value;
+                    var inputRecord = Get<InputRecord>(boardEntity);
+
+                    inputRecord.Frames.Add(new InputRecord.Frame()
+                    {
+                        Tick = _tick,
+                        Swap = swapRequest
+                    });
+                }
+
             }
         }
     }
