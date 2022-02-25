@@ -1,10 +1,8 @@
 ﻿using Nanory.Lex;
-using Client.Match3.ToBattle;
 using UnityEngine.SceneManagement;
 using UnityEngine.Assertions;
-using UnityEngine;
 using Client.Rpg;
-using System.Linq;
+using Client.Match3ToBattle;
 
 namespace Client.Battle
 {

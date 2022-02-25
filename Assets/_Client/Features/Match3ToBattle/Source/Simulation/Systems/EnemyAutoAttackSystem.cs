@@ -1,7 +1,9 @@
 ﻿using Nanory.Lex;
 using Client.Battle;
+using Client.Match3;
+using Nanory.Lex.Timer;
 
-namespace Client.Match3.ToBattle
+namespace Client.Match3ToBattle
 {
     public sealed class EnemyAutoAttackSystem : EcsSystemBase
     {
@@ -24,7 +26,7 @@ namespace Client.Match3.ToBattle
 
                         (battleWorld as EcsWorldBase)
                              .GetCommandBufferFrom<BeginSimulationECBSystem>()
-                             .AddOrSet<MelleeAttackRequest>(enemyEntity);
+                             .AddDelayed<MelleeAttackRequest>(1f, enemyEntity);
                     }
                 }
             }

@@ -2,7 +2,7 @@
 using Client.Match3;
 
 using m3 =          Client.Match3.Feature;
-using m3toBattle =  Client.Match3.ToBattle.Feature;
+using m3toBattle =  Client.Match3ToBattle.Feature;
 using lifecycle =   Nanory.Lex.Lifecycle.Feature;
 
 namespace Client

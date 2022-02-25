@@ -3,6 +3,7 @@ using Nanory.Lex;
 using System.Collections.Generic;
 
 using lifecycle = Nanory.Lex.Lifecycle.Feature;
+using timer = Nanory.Lex.Timer.Feature;
 using rpg = Client.Rpg.Feature;
 using battle = Client.Battle.Feature;
 
@@ -20,7 +21,7 @@ namespace Client
             _systems = new EcsSystems(_world);
 
             _sorter = new EcsSystemSorter(_world);
-            var featuredSystems = _sorter.GetFeaturedSystems<rpg, battle, lifecycle>();
+            var featuredSystems = _sorter.GetFeaturedSystems<rpg, battle, lifecycle, timer>();
             _systems.Add(featuredSystems);
 
 #if UNITY_EDITOR

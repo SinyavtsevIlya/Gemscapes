@@ -2,7 +2,7 @@
 using Nanory.Lex;
 using Nanory.Lex.Conversion;
 
-namespace Client.Match3.ToBattle
+namespace Client.Match3ToBattle
 {
     public class BoardOwnerLinkAuthoring : MonoBehaviour, IConvertGameObjectToEntity
     {

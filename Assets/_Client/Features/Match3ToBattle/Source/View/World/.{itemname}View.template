@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Client.Match3.ToBattle
+namespace Client.Match3ToBattle
 {
     public class {itemname}View : MonoBehaviour
     {

@@ -1,6 +1,7 @@
 using Nanory.Lex;
+using Nanory.Lex.Lifecycle;
 
-namespace {namespace}
+namespace Client.Match3ToBattle
 {
     public sealed class {itemname}System : EcsSystemBase
     {

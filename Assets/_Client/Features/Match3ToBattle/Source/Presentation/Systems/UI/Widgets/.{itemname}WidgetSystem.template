@@ -1,7 +1,8 @@
 using UnityEngine;
 using Nanory.Lex;
+using Nanory.Lex.Lifecycle;
 
-namespace Client.Match3.ToBattle
+namespace Client.Match3ToBattle
 {
     [UpdateInGroup(typeof(PrimaryWidgetSystemGroup))]
     public sealed class {itemname}WidgetSystem : EcsSystemBase

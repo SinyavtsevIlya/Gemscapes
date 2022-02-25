@@ -15,6 +15,7 @@ namespace Client.Match3
         [SerializeField] Tilemap _cells;
         [SerializeField] Tilemap _pieces;
         [SerializeField] Camera _camera;
+        [SerializeField] float _offset;
 
         private Dictionary<string, int> _pieceTypeLookup;
 
@@ -80,10 +81,25 @@ namespace Client.Match3
 
             transform.Translate(-bounds.min);
 
-            var halfSize = (Vector2)size / 2;
+            SetupCamera(bounds);
+        }
 
+#if UNITY_EDITOR
+        private void Update()
+        {
+            SetupCamera(GetBounds(_cells));
+        }
+#endif
+
+        private void SetupCamera(BoundsInt bounds)
+        {
+            var size = (Vector2Int)bounds.size;
+            var halfSize = (Vector2)size / 2;
             _camera.transform.position = bounds.center - bounds.min - Vector3.forward - Vector3.one / 2 + bounds.size.y / 3 * Vector3.up;
-            _camera.orthographicSize = Screen.width > Screen.height ? halfSize.y : size.x + .25f;
+            var rawSize = (float)(Screen.height) / Screen.width * (size.x / 2 + 1);
+            if (rawSize < 7f)
+                rawSize = 7f;
+            _camera.orthographicSize = rawSize;
         }
 
         private void FillPieceTypesLookup(GameObjectConversionSystem converstionSystem)

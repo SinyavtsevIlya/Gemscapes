@@ -18,7 +18,7 @@ namespace Client.Rpg
             var enemyEntity = world.NewEntity();
             world.Add<Health>(enemyEntity).Value = 100;
             world.Add<MaxHealth>(enemyEntity).Value = 100;
-            world.Add<Attack>(enemyEntity).Value = 15;
+            world.Add<Attack>(enemyEntity).Value = 20;
             world.Add<AttackableLink>(enemyEntity).Value = world.Dst.PackEntity(playerEntity);
             world.Add<Name>(enemyEntity).Value = "Wolf";
 

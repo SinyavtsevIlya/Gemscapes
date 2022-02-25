@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Client.Match3.ToBattle
+namespace Client.Match3ToBattle
 {
     public class {itemname}Widget : MonoBehaviour
     {

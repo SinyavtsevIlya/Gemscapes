@@ -1,10 +1,11 @@
 using UnityEngine;
 using Nanory.Lex;
+using Nanory.Lex.Lifecycle;
 using Nanory.Lex.Conversion;
 
-namespace Client.Match3.ToBattle
+namespace Client.Match3ToBattle
 {
-    public class {itemname}Authoting : MonoBehaviour, IConvertGameObjectToEntity
+    public class {itemname}Authoring : MonoBehaviour, IConvertGameObjectToEntity
     {
         public void Convert(int entity, GameObjectConversionSystem converstionSystem)
         {

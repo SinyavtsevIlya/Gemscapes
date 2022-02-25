@@ -35,8 +35,6 @@ namespace Client.Battle
                 {
                     this.BindWidget(enemyEntity, screen.EnemyHealthWidget);
                 }
-
-                screen.MatchStatsWidgetArea();
             }
 
             foreach (var ownerEntity in Filter()
