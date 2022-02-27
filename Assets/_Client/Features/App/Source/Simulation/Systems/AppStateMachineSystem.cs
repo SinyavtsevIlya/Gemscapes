@@ -13,6 +13,8 @@ namespace Client.AppState
             Add<AppState>(appEntity).Value = AppState.Type.Preload;
             // Later we can wait for asynchronous loading some assets.
             later.Add<ChangeStateRequest>(appEntity).Value = AppState.Type.Rpg;
+
+            UnityEngine.Application.targetFrameRate = 60;
         }
 
         protected override void OnUpdate()
