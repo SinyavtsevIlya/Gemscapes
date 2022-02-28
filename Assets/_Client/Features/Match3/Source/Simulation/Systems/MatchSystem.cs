@@ -40,8 +40,8 @@ namespace Client.Match3
                             if (!grid.TryGetCell(x, y, out var cellEntity))
                                 continue;
 
-                            if (Has<GeneratorTag>(cellEntity))
-                                continue;
+                            //if (Has<GeneratorTag>(cellEntity))
+                            //    continue;
 
                             if (this.TryGetPiece(cellEntity, out var pieceEntity))
                             {

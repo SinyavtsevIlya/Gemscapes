@@ -4,6 +4,10 @@ using UnityEngine;
 
 namespace Client.Match3
 {
+}
+
+namespace Client.Match3
+{
     public sealed class GeneratePieceSystem : EcsSystemBase
     {
         private readonly System.Random _random;
@@ -11,53 +15,43 @@ namespace Client.Match3
         public GeneratePieceSystem()
         {
             _random = new System.Random(0);
-        }        
+        }
 
         protected override void OnUpdate()
         {
             var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
 
-            foreach (var generatorEntity in Filter()
-            .With<GeneratorTag>()
-            .With<CellPosition>()
-            .Without<PieceLink>()
+            foreach (var cellEntity in Filter()
+            .With<GeneratePieceRequest>()
             .End())
             {
-                ref var grid = ref Get<Grid>(generatorEntity);
-                ref var cellPosition = ref Get<CellPosition>(generatorEntity);
-                ref var gravityDirection = ref Get<GravityDirection>(generatorEntity);
-                ref var boardEntity = ref Get<BoardLink>(generatorEntity).Value;
+                ref var generatePieceRequest = ref Get<GeneratePieceRequest>(cellEntity);
+                ref var grid = ref Get<Grid>(cellEntity);
+                ref var cellPosition = ref Get<CellPosition>(cellEntity);
+                ref var gravityDirection = ref Get<GravityDirection>(cellEntity);
+                ref var boardEntity = ref Get<BoardLink>(cellEntity).Value;
 
-                if (grid.TryGetCell(cellPosition.Value + gravityDirection.Value, out var tendingCellEntity))
-                {
-                    if (TryGet<PieceLink>(tendingCellEntity, out var pieceLink))
-                    {
-                        if (pieceLink.Value.Unpack(World, out var pieceEntity))
-                        {
-                            var velocity = Get<Velocity>(pieceEntity);
-                            var position = Get<Position>(pieceEntity);
+                ref var availablePieces = ref Get<AvailablePieces>(boardEntity).Buffer;
+                var index = _random.Next(0, availablePieces.Values.Count);
+                var piecePrefab = availablePieces.Values[index];
+                var newPieceEntity = World.Instantiate(piecePrefab);
 
-                            ref var availablePieces = ref Get<AvailablePieces>(boardEntity).Buffer;
-                            var index = _random.Next(0, availablePieces.Values.Count);
-                            var piecePrefab = availablePieces.Values[index];
-                            var newPieceEntity = World.Instantiate(piecePrefab);
+                // TODO: replace with AuthoringUtility
 
-                            // TODO: replace with AuthoringUtility
+                var velocity = generatePieceRequest.Velocity;
+                var position = generatePieceRequest.Position;
 
-                            Add<PieceTypeId>(newPieceEntity).Value = piecePrefab;
-                            Add<Grid>(newPieceEntity) = grid;
-                            velocity.Value.RawValue /= 2;
-                            Add<Velocity>(newPieceEntity) = velocity;
-                            Add<GravityCellLink>(newPieceEntity).Value = generatorEntity;
-                            Add<Position>(newPieceEntity) = position;
-                            Get<Position>(newPieceEntity).Value.RawValue -= gravityDirection.Value * position.Value.Divisor;
-                            later.Add<PieceLink>(generatorEntity).Value = World.PackEntity(newPieceEntity);
-                            Add<FallingTag>(newPieceEntity);
-                            Add<CreatedEvent>(newPieceEntity);
-                        }
-                    }
-                }
-            }       
+                Add<PieceTypeId>(newPieceEntity).Value = piecePrefab;
+                Add<Grid>(newPieceEntity) = grid;
+                velocity.Value.RawValue /= 2;
+                Add<Velocity>(newPieceEntity) = velocity;
+                Add<GravityCellLink>(newPieceEntity).Value = cellEntity;
+                Add<Position>(newPieceEntity) = position;
+                later.Add<PieceLink>(cellEntity).Value = World.PackEntity(newPieceEntity);
+                Add<FallingTag>(newPieceEntity);
+                Add<CreatedEvent>(newPieceEntity);
+            }
         }
     }
 }
+

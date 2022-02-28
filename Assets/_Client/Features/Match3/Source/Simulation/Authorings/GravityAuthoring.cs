@@ -8,6 +8,7 @@ namespace Client.Match3
     public class GravityAuthoring : MonoBehaviour, IConvertGameObjectToEntity
     {
         [SerializeField] private Vector2Int _value;
+        [SerializeField] private Vector2Int[] _values;
         
         public void Convert(int cellEntity, GameObjectConversionSystem converstionSystem)
         {
@@ -18,8 +19,26 @@ namespace Client.Match3
 
         private void OnDrawGizmos()
         {
-            var direction = (Vector3)(Vector2)_value;
-            DrawArrow.ForGizmo(transform.position, direction, arrowPosition: 1f);
+            //var direction = (Vector3)(Vector2)_value;
+            //DrawArrow.ForGizmo(transform.position, direction, arrowPosition: 1f);
+
+            for (var idx = 0; idx < _values.Length; idx++)
+            {
+                var dir = (Vector3)(Vector2)_values[idx];
+                DrawArrow.ForGizmo(transform.position, dir, GetColorByGravityIndex(idx), arrowPosition: 1f);
+            }
+        }
+
+        private Color GetColorByGravityIndex(int gravityIndex)
+        {
+            switch (gravityIndex)
+            {
+                case 0: return Color.cyan;
+                case 1: return Color.red;
+                case 2: return Color.green;
+                default:
+                    return Color.blue;
+            }
         }
 
         public static class DrawArrow
