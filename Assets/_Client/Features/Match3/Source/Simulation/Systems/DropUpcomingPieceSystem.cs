@@ -22,6 +22,8 @@ namespace Client.Match3
 
                 var previousCellEntity = gravityInputBuffer.Values[0].Value;
 
+                // TODO: iterate throw all gravity inputs and take first busy cell.
+
                 if (World.TryGet<PieceLink>(previousCellEntity, out var upperPieceLink)
                     && upperPieceLink.Value.Unpack(World, out var upperPieceEntity)
                     && !Has<FallingTag>(upperPieceEntity))

@@ -7,12 +7,18 @@ namespace Client.Match3
     [ExecuteInEditMode]
     public class GravityAuthoring : MonoBehaviour, IConvertGameObjectToEntity
     {
-        [SerializeField] private Vector2Int _value;
         [SerializeField] private Vector2Int[] _values;
         
         public void Convert(int cellEntity, GameObjectConversionSystem converstionSystem)
         {
-            converstionSystem.World.Add<GravityDirection>(cellEntity).Value = _value;
+            ref var gravityBuffer = ref converstionSystem.World.Dst.AddBuffer<GravityDirection>(cellEntity);
+
+            foreach (var value in _values)
+            {
+                gravityBuffer.Values.Add(new GravityDirection() { Value = value });
+            }
+
+            converstionSystem.World.Add<GravityDirection>(cellEntity).Value = _values[0];
         }
 
 #if UNITY_EDITOR

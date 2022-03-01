@@ -31,27 +31,36 @@ namespace Client.Match3
         public static void BuildGravityGraph(EcsWorld world, Grid grid, Vector2Int pos)
         {
             var cellEntity = grid.Value[pos.x, pos.y];
-            if (grid.TryGetCell(pos + world.Get<GravityDirection>(cellEntity).Value, out var tendingCellEntity))
+
+            if (world.TryGet<Buffer<GravityDirection>>(cellEntity, out var gravityDirections))
             {
-                if (!world.Has<Buffer<GravityInputLink>>(tendingCellEntity))
+                for (int idx = 0; idx < gravityDirections.Values.Count; idx++)
                 {
-                    world.AddBuffer<GravityInputLink>(tendingCellEntity);
+                    var gravityDirection = gravityDirections.Values[idx];
+
+                    if (grid.TryGetCell(pos + gravityDirection.Value, out var tendingCellEntity))
+                    {
+                        if (!world.Has<Buffer<GravityInputLink>>(tendingCellEntity))
+                        {
+                            world.AddBuffer<GravityInputLink>(tendingCellEntity);
+                        }
+
+                        world.Get<Buffer<GravityInputLink>>(tendingCellEntity).Values.Add(new GravityInputLink()
+                        {
+                            Value = cellEntity
+                        });
+
+                        if (!world.Has<Buffer<GravityOutputLink>>(cellEntity))
+                        {
+                            world.AddBuffer<GravityOutputLink>(cellEntity);
+                        }
+
+                        world.Get<Buffer<GravityOutputLink>>(cellEntity).Values.Add(new GravityOutputLink()
+                        {
+                            Value = tendingCellEntity
+                        });
+                    }
                 }
-
-                world.Get<Buffer<GravityInputLink>>(tendingCellEntity).Values.Add(new GravityInputLink()
-                {
-                    Value = cellEntity
-                });
-
-                if (!world.Has<Buffer<GravityOutputLink>>(cellEntity))
-                {
-                    world.AddBuffer<GravityOutputLink>(cellEntity);
-                }
-
-                world.Get<Buffer<GravityOutputLink>>(cellEntity).Values.Add(new GravityOutputLink()
-                {
-                    Value = tendingCellEntity
-                });
             }
         }
     }

@@ -2,6 +2,9 @@
 
 namespace Client.Match3
 {
+    /// <summary>
+    /// Discrete position of the entity in cell-coordinates.
+    /// </summary>
     public struct CellPosition
     {
         public Vector2Int Value;

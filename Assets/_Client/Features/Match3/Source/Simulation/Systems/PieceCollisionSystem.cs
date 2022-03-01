@@ -37,6 +37,8 @@ namespace Client.Match3
 
                 var isBlockedByStoppedPiece = isBlockedByUpcomingPiece && !Has<FallingTag>(blockingPieceEntity);
 
+                bool isCellAlreadyReserved = IsCellAlreadyReserved(grid, cellPosition, pieceGravityDirection);
+
                 if (isBlockedByStoppedPiece || isBlockedByLevelBounds)
                 {
                     var hasPieceArrived = cellGravityDirection.sqrMagnitude >=
@@ -47,14 +49,19 @@ namespace Client.Match3
                         StopPieceEntity(pieceEntity, cellPosition);
                     }
                 }
-                else if (grid.TryGetCell(cellPosition + pieceGravityDirection, out var intendingCellEntity) &&
-                    TryGet<IntendingPieceLink>(intendingCellEntity, out var intendingPieceLink) &&
-                    intendingPieceLink.Value.Unpack(World, out int intendingPieceEntity) &&
-                    pieceGravityDirection != Get<GravityDirection>(Get<GravityCellLink>(intendingPieceEntity).Value).Value)
+                else if (isCellAlreadyReserved)
                 {
                     StopPieceEntity(pieceEntity, cellPosition);
                 }
             }
+        }
+
+        private bool IsCellAlreadyReserved(Grid grid, Vector2Int cellPosition, Vector2Int pieceGravityDirection)
+        {
+            return grid.TryGetCell(cellPosition + pieceGravityDirection, out var intendingCellEntity) &&
+                                TryGet<IntendingPieceLink>(intendingCellEntity, out var intendingPieceLink) &&
+                                intendingPieceLink.Value.Unpack(World, out int intendingPieceEntity) &&
+                                pieceGravityDirection != Get<GravityDirection>(Get<GravityCellLink>(intendingPieceEntity).Value).Value;
         }
 
         private void StopPieceEntity(int pieceEntity, Vector2Int cellPosition)

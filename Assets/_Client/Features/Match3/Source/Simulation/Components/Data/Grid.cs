@@ -15,13 +15,15 @@ namespace Client.Match3
 
     public static class GridExtensions
     {
+        private const int InvalidEntityValue = -1;
+
         public static bool TryGetPiece(this EcsSystemBase ecsSystemBase, int cellEntity, out int pieceEntity) 
         {
             if (ecsSystemBase.World.TryGet<PieceLink>(cellEntity, out var pieceLink))
             {
                 return pieceLink.Value.Unpack(ecsSystemBase.World, out pieceEntity);
             }
-            pieceEntity = -1;
+            pieceEntity = InvalidEntityValue;
             return false;
         }
 
@@ -32,6 +34,11 @@ namespace Client.Match3
             if (!grid.IsInsideBounds(roundedPiecePosition))
             {
                 throw new System.IndexOutOfRangeException($"pieceEntity {pieceEntity} in {roundedPiecePosition} is outside of bounds: {grid.Value.GetLength(0)}, {grid.Value.GetLength(1)}");
+            }
+
+            if (grid.Value[roundedPiecePosition.x, roundedPiecePosition.y] == InvalidEntityValue)
+            {
+                throw new System.Exception($"pieceEntity {pieceEntity} has an invalid position: {roundedPiecePosition}. Raw position is {world.Get<Position>(pieceEntity).Value.RawValue}");
             }
 #endif
             return grid.Value[roundedPiecePosition.x, roundedPiecePosition.y];
@@ -44,12 +51,12 @@ namespace Client.Match3
 
         public static bool TryGetCell(this Grid grid, int x, int y, out int cellEntity)
         {
-            cellEntity = -1;
+            cellEntity = InvalidEntityValue;
             if (grid.IsInsideBounds(x, y))
             {
                 cellEntity = grid.Value[x, y];
 
-                if (cellEntity == -1)
+                if (cellEntity == InvalidEntityValue)
                 {
                     return false;
                 }
@@ -82,7 +89,8 @@ namespace Client.Match3
             return x >= 0 &&
                    y >= 0 &&
                    x < grid.Value.GetLength(0) &&
-                   y < grid.Value.GetLength(1);
+                   y < grid.Value.GetLength(1) &&
+                   grid.Value[x,y] != InvalidEntityValue;
         }
     }
 }
