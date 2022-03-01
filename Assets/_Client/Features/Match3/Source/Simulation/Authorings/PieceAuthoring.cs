@@ -41,10 +41,7 @@ namespace Client.Match3
 
                 if (isFalling)
                 {
-                    if (!world.Has<GeneratorTag>(cellEntity))
-                    {
-                        world.Add<FallingTag>(pieceEntity);
-                    }
+                    world.Add<FallingTag>(pieceEntity);
                 }
             }
 

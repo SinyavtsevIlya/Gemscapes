@@ -20,7 +20,9 @@ namespace Client.Match3
             world.Add<CreatedEvent>(cellEntity);
             if (addGravity)
             {
-                world.Add<GravityDirection>(cellEntity).Value = new Vector2Int(0, -1);
+                var gravity = new GravityDirection() { Value = new Vector2Int(0, -1) };
+                world.Add<GravityDirection>(cellEntity) = gravity;
+                world.AddBuffer(cellEntity, gravity);
             }
             grid.Value[pos.x, pos.y] = cellEntity;
             world.Add<Grid>(cellEntity) = grid;
