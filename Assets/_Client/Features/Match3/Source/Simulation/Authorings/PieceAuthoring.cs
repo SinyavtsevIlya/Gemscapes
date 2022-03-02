@@ -37,36 +37,16 @@ namespace Client.Match3
             if (grid.TryGetCell(pos, out var cellEntity))
             {
                 world.Add<PieceLink>(cellEntity).Value = world.Dst.PackEntity(pieceEntity);
-                world.Add<GravityCellLink>(pieceEntity).Value = cellEntity;
+                world.Add<GravityDirection>(pieceEntity);
 
                 if (isFalling)
                 {
                     world.Add<FallingTag>(pieceEntity);
+                    world.Add<FallingStartedEvent>(pieceEntity);
                 }
             }
 
             return pieceEntity;
-        }
-
-        public static void ApplyFalling(EcsWorld world, Grid grid, Vector2Int pos)
-        {
-            var cellEntity = grid.Value[pos.x, pos.y];
-            if (grid.TryGetCell(pos + world.Get<GravityDirection>(cellEntity).Value, out var tendingCellEntity))
-            {
-                if (!world.Has<PieceLink>(tendingCellEntity))
-                {
-                    if (!world.Has<GeneratorTag>(cellEntity))
-                    {
-                        if (world.TryGet<PieceLink>(cellEntity, out var pieceLink))
-                        {
-                            if (pieceLink.Value.Unpack(world, out var pieceEntity))
-                            {
-                                world.Add<FallingTag>(pieceEntity);
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 }

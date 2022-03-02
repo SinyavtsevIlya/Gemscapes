@@ -21,7 +21,7 @@ namespace Client.Match3
 
                     Swap<Position>(pieceAEntity, pieceBEntity);
                     Swap<Velocity>(pieceAEntity, pieceBEntity);
-                    Swap<GravityCellLink>(pieceAEntity, pieceBEntity);
+                    Swap<GravityDirection>(pieceAEntity, pieceBEntity);
 
                     SwapTag<FallingTag>(pieceAEntity, pieceBEntity);
 

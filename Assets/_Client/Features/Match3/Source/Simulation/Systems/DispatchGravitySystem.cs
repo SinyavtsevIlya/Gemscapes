@@ -7,28 +7,56 @@ namespace Client.Match3
     {
         protected override void OnUpdate()
         {
-            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
-
             foreach (var pieceEntity in Filter()
             .With<CellPositionUpdatedEvent>()
             .Without<FallingTag>()
             .End())
             {
                 ref var cells = ref Get<CellPositionUpdatedEvent>(pieceEntity);
+                var cellEntity = cells.PreviousCell;
+                DispatchGravity(cellEntity);
 
-                ref var gravity = ref Get<GravityDirection>(cells.PreviousCell);
-                var gravitiesOutputs = Get<Buffer<GravityOutputLink>>(cells.PreviousCell).Values;
+                ref var gravity = ref Get<GravityDirection>(pieceEntity).Value;
+                ref var grid = ref Get<Grid>(pieceEntity);
+                var roundedPosition = Get<CellPosition>(cellEntity).Value;
 
-                for (int idx = 0; idx < gravitiesOutputs.Count; idx++)
+                if (grid.TryGetCell(roundedPosition - gravity, out var cellEntityToDispatch))
                 {
-                    var outputCellEntity = gravitiesOutputs[idx].Value;
+                    DispatchGravity(cellEntityToDispatch);
+                }
+            }
 
-                    if (!Has<PieceLink>(outputCellEntity))
-                    {
-                        later.Set<GravityDirection>(cells.PreviousCell) = Get<Buffer<GravityDirection>>(cells.PreviousCell).Values[idx];
-                        //gravity = Get<Buffer<GravityDirection>>(cells.PreviousCell).Values[idx];
-                        break;
-                    }
+            foreach (var pieceEntity in Filter()
+            .With<DestroyedEvent>()
+            .End())
+            {
+                ref var gravity = ref Get<GravityDirection>(pieceEntity).Value;
+                ref var grid = ref Get<Grid>(pieceEntity);
+                var roundedPosition = Get<Position>(pieceEntity).Value.ToVector2Int();
+
+                if (grid.TryGetCell(roundedPosition - gravity, out var cellEntityToDispatch))
+                {
+                    DispatchGravity(cellEntityToDispatch);
+                }
+            }
+        }
+
+        private void DispatchGravity(int dispatchCell)
+        {
+            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
+
+            ref var gravity = ref Get<GravityDirection>(dispatchCell);
+            var gravitiesOutputs = Get<Buffer<GravityOutputLink>>(dispatchCell).Values;
+
+            for (int idx = 0; idx < gravitiesOutputs.Count; idx++)
+            {
+                var outputCellEntity = gravitiesOutputs[idx].Value;
+
+                if (!TryGet<PieceLink>(outputCellEntity, out var pieceLink) || 
+                    (pieceLink.Value.Unpack(World, out var pieceEntity)) && Has<DestroyedEvent>(pieceEntity))
+                {
+                    later.Set<GravityDirection>(dispatchCell) = Get<Buffer<GravityDirection>>(dispatchCell).Values[idx];
+                    break;
                 }
             }
         }

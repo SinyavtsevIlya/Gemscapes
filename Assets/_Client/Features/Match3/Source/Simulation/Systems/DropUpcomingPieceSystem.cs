@@ -20,15 +20,18 @@ namespace Client.Match3
                 if (!TryGet<Buffer<GravityInputLink>>(cellEntity, out var gravityInputBuffer))
                     continue;
 
-                var previousCellEntity = gravityInputBuffer.Values[0].Value;
-
-                // TODO: iterate throw all gravity inputs and take first busy cell.
-
-                if (World.TryGet<PieceLink>(previousCellEntity, out var upperPieceLink)
-                    && upperPieceLink.Value.Unpack(World, out var upperPieceEntity)
-                    && !Has<FallingTag>(upperPieceEntity))
+                foreach (var gravityInput in gravityInputBuffer.Values)
                 {
-                    Add<FallingTag>(upperPieceEntity);
+                    var previousCellEntity = gravityInput.Value;
+
+                    if (World.TryGet<PieceLink>(previousCellEntity, out var previousPieceLink)
+                        && previousPieceLink.Value.Unpack(World, out var previousPieceEntity)
+                        && !Has<FallingTag>(previousPieceEntity))
+                    {
+                        Add<FallingTag>(previousPieceEntity);
+                        Add<FallingStartedEvent>(previousPieceEntity);
+                        break;
+                    }
                 }
             }
         }

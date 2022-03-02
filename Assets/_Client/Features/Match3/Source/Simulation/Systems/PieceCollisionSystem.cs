@@ -20,7 +20,7 @@ namespace Client.Match3
                 var cellEntity = grid.GetCellByPiece(World, pieceEntity);
                 ref var cellPosition = ref Get<CellPosition>(cellEntity).Value;
                 ref var cellGravityDirection = ref Get<GravityDirection>(cellEntity).Value;
-                ref var pieceGravityDirection = ref Get<GravityDirection>(Get<GravityCellLink>(pieceEntity).Value).Value;
+                ref var pieceGravityDirection = ref Get<GravityDirection>(pieceEntity).Value;
 
                 var isBlockedByUpcomingPiece =
                     TryGetBlockingPiece(cellPosition, cellGravityDirection, grid, out var blockingPieceEntity);
@@ -61,7 +61,7 @@ namespace Client.Match3
             return grid.TryGetCell(cellPosition + pieceGravityDirection, out var intendingCellEntity) &&
                                 TryGet<IntendingPieceLink>(intendingCellEntity, out var intendingPieceLink) &&
                                 intendingPieceLink.Value.Unpack(World, out int intendingPieceEntity) &&
-                                pieceGravityDirection != Get<GravityDirection>(Get<GravityCellLink>(intendingPieceEntity).Value).Value;
+                                pieceGravityDirection != Get<GravityDirection>(intendingPieceEntity).Value;
         }
 
         private void StopPieceEntity(int pieceEntity, Vector2Int cellPosition)

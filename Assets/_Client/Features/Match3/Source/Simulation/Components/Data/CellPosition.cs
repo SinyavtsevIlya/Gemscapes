@@ -33,6 +33,17 @@ namespace Client
 
     public static class FixedMathExtensions
     {
+        public static Vector2Int Normalize(this Vector2IntFixed vector2IntFixed)
+        {
+            var x = 1;
+            if (vector2IntFixed.RawValue.x == 0) x = 0;
+            if (vector2IntFixed.RawValue.x < 0) x = -1;
+            var y = 1;
+            if (vector2IntFixed.RawValue.y == 0) y = 0;
+            if (vector2IntFixed.RawValue.y < 0) y = -1;
+
+            return new Vector2Int(x, y);
+        }
         public static int RoundToClosest(int input, int divisor)
         {
             var remainder = input % divisor;

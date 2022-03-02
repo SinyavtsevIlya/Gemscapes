@@ -45,10 +45,11 @@ namespace Client.Match3
                 Add<Grid>(newPieceEntity) = grid;
                 velocity.Value.RawValue /= 2;
                 Add<Velocity>(newPieceEntity) = velocity;
-                Add<GravityCellLink>(newPieceEntity).Value = cellEntity;
+                Add<GravityDirection>(newPieceEntity) = Get<GravityDirection>(cellEntity);
                 Add<Position>(newPieceEntity) = position;
                 later.Add<PieceLink>(cellEntity).Value = World.PackEntity(newPieceEntity);
                 Add<FallingTag>(newPieceEntity);
+                Add<FallingStartedEvent>(newPieceEntity);
                 Add<CreatedEvent>(newPieceEntity);
             }
         }

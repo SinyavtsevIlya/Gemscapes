@@ -24,6 +24,7 @@ namespace Client.Match3
                 if (TryGetUpcomingPieceEntity(upcomingCellEntity, out var upcomingPieceEntity))
                 {
                     Add<FallingTag>(upcomingPieceEntity);
+                    Add<FallingStartedEvent>(upcomingPieceEntity);
                 }
             }
         }
