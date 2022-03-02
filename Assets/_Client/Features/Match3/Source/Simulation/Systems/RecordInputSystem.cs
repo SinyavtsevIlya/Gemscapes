@@ -22,10 +22,13 @@ namespace Client.Match3
                     var boardEntity = Get<BoardLink>(cellEntity).Value;
                     var inputRecord = Get<InputRecord>(boardEntity);
 
+                    swapRequest.PieceA.Unpack(World, out var a);
+                    swapRequest.PieceB.Unpack(World, out var b);
+
                     inputRecord.Frames.Add(new InputRecord.Frame()
                     {
                         Tick = _tick,
-                        Swap = swapRequest
+                        Swap = new InputRecord.Frame.SwapPieceRequestSerialized() { A = a, B = b }
                     });
                 }
 

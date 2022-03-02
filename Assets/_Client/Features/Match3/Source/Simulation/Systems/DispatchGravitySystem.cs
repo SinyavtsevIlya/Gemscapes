@@ -16,13 +16,9 @@ namespace Client.Match3
                 var cellEntity = cells.PreviousCell;
                 DispatchGravity(cellEntity);
 
-                ref var gravity = ref Get<GravityDirection>(pieceEntity).Value;
-                ref var grid = ref Get<Grid>(pieceEntity);
-                var roundedPosition = Get<CellPosition>(cellEntity).Value;
-
-                if (grid.TryGetCell(roundedPosition - gravity, out var cellEntityToDispatch))
+                foreach (var gravityInput in Get<Buffer<GravityInputLink>>(cellEntity).Values)
                 {
-                    DispatchGravity(cellEntityToDispatch);
+                    DispatchGravity(gravityInput.Value);
                 }
             }
 
@@ -30,13 +26,25 @@ namespace Client.Match3
             .With<DestroyedEvent>()
             .End())
             {
-                ref var gravity = ref Get<GravityDirection>(pieceEntity).Value;
                 ref var grid = ref Get<Grid>(pieceEntity);
-                var roundedPosition = Get<Position>(pieceEntity).Value.ToVector2Int();
+                var cellEntity = grid.GetCellByPiece(World, pieceEntity);
 
-                if (grid.TryGetCell(roundedPosition - gravity, out var cellEntityToDispatch))
+                foreach (var gravityInput in Get<Buffer<GravityInputLink>>(cellEntity).Values)
                 {
-                    DispatchGravity(cellEntityToDispatch);
+                    DispatchGravity(gravityInput.Value);
+                }
+            }
+
+            foreach (var pieceEntity in Filter()
+            .With<Position>()
+            .End())
+            {
+                ref var grid = ref Get<Grid>(pieceEntity);
+                var cellEntity = grid.GetCellByPiece(World, pieceEntity);
+
+                foreach (var gravityInput in Get<Buffer<GravityInputLink>>(cellEntity).Values)
+                {
+                    DispatchGravity(gravityInput.Value);
                 }
             }
         }
@@ -53,9 +61,16 @@ namespace Client.Match3
                 var outputCellEntity = gravitiesOutputs[idx].Value;
 
                 if (!TryGet<PieceLink>(outputCellEntity, out var pieceLink) || 
-                    (pieceLink.Value.Unpack(World, out var pieceEntity)) && Has<DestroyedEvent>(pieceEntity))
+                    (pieceLink.Value.Unpack(World, out var pieceEntity)) && (Has<DestroyedEvent>(pieceEntity) || Has<FallingTag>(pieceEntity)))
                 {
                     later.Set<GravityDirection>(dispatchCell) = Get<Buffer<GravityDirection>>(dispatchCell).Values[idx];
+                    if (TryGet<PieceLink>(dispatchCell, out var dPieceLink))
+                    {
+                        if (dPieceLink.Value.Unpack(World, out var dPieceEntity))
+                        {
+                            later.AddOrSet<FallingTag>(dPieceEntity);
+                        }
+                    }
                     break;
                 }
             }

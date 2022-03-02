@@ -194,8 +194,8 @@ namespace Client.Match3
                     .GetCommandBufferFrom<BeginSimulationECBSystem>()
                     .Add<SwapPieceRequest>(_world.NewEntity()) = new SwapPieceRequest()
                     {
-                        PieceA = nextFrame.Swap.PieceA,
-                        PieceB = nextFrame.Swap.PieceB
+                        PieceA = _world.PackEntity(nextFrame.Swap.A),
+                        PieceB = _world.PackEntity(nextFrame.Swap.B)
                     };
             }
         }

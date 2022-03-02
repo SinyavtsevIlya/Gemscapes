@@ -457,6 +457,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8958205140148126887, guid: 11ddcca77169e014a91d6b8fc5bd3044, type: 3}
+      propertyPath: _values.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8958205140148126887, guid: 11ddcca77169e014a91d6b8fc5bd3044, type: 3}
+      propertyPath: _values.Array.data[1].x
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8958205140148126887, guid: 11ddcca77169e014a91d6b8fc5bd3044, type: 3}
+      propertyPath: _values.Array.data[1].y
+      value: -1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11ddcca77169e014a91d6b8fc5bd3044, type: 3}
 --- !u!1001 &232455339
@@ -2563,7 +2575,7 @@ MonoBehaviour:
   _jumpTicks: 0
   _tickId: 0
   _tickManually: 0
-  _recordAsset: {fileID: 0}
+  _recordAsset: {fileID: 4900000, guid: 1635b9b29160b824e91b795332d945cb, type: 3}
 --- !u!222 &1099118835
 CanvasRenderer:
   m_ObjectHideFlags: 0

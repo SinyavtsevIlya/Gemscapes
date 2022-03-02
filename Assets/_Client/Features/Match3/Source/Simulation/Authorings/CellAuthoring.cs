@@ -28,6 +28,8 @@ namespace Client.Match3
             world.Add<Grid>(cellEntity) = grid;
             world.Add<BoardLink>(cellEntity).Value = boardEntity;
             world.Add<CellPosition>(cellEntity).Value = new Vector2Int(pos.x, pos.y);
+            world.AddBuffer<GravityInputLink>(cellEntity);
+            world.AddBuffer<GravityOutputLink>(cellEntity);
         }
 
         public static void BuildGravityGraph(EcsWorld world, Grid grid, Vector2Int pos)
@@ -42,20 +44,10 @@ namespace Client.Match3
 
                     if (grid.TryGetCell(pos + gravityDirection.Value, out var tendingCellEntity))
                     {
-                        if (!world.Has<Buffer<GravityInputLink>>(tendingCellEntity))
-                        {
-                            world.AddBuffer<GravityInputLink>(tendingCellEntity);
-                        }
-
                         world.Get<Buffer<GravityInputLink>>(tendingCellEntity).Values.Add(new GravityInputLink()
                         {
                             Value = cellEntity
                         });
-
-                        if (!world.Has<Buffer<GravityOutputLink>>(cellEntity))
-                        {
-                            world.AddBuffer<GravityOutputLink>(cellEntity);
-                        }
 
                         world.Get<Buffer<GravityOutputLink>>(cellEntity).Values.Add(new GravityOutputLink()
                         {

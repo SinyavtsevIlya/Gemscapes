@@ -20,8 +20,15 @@ namespace Client.Match3
         public struct Frame
         {
             public int Tick;
-            public SwapPieceRequest Swap;
+            public SwapPieceRequestSerialized Swap;
             // NOTE: more input can be stored here.
+
+            [Serializable]
+            public struct SwapPieceRequestSerialized
+            {
+                public int A;
+                public int B;
+            }
         }
     }
 }
