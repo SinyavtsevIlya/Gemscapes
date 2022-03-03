@@ -58,10 +58,10 @@ namespace Client.Match3
                 var pos = Vector3Int.RoundToInt(cellTr.position) - bounds.min;
                 var cellEntity = converstionSystem.Convert(cellTr.gameObject, ConversionMode.Convert);
                 CellAuthoringUtility.Authorize(boardEntity, world.Dst, grid, (Vector2Int)pos, cellEntity);
-                if (pos.y == grid.Value.GetLength(1) - 1)
-                {
-                    world.Add<GeneratorTag>(cellEntity);
-                }
+                //if (pos.y == grid.Value.GetLength(1) - 1)
+                //{
+                //    world.Add<GeneratorTag>(cellEntity);
+                //}
             }
 
             // Apply GravityInputDirection component datas

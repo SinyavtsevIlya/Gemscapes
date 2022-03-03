@@ -32,7 +32,7 @@ namespace Client.Match3
                     {
                         _record = JsonUtility.FromJson<InputRecord>(_recordAsset.text);
                     }
-                    return null;
+                    return _record;
                 }
 
                 return _record;
@@ -46,6 +46,14 @@ namespace Client.Match3
             typeof(m3),
             typeof(lifecycle)
         };
+
+        private void OnGUI()
+        {
+            if (Record.HasValue)
+            {
+                DisplayReplayLabel();
+            }
+        }
 
         private void Start()
         {
@@ -63,8 +71,12 @@ namespace Client.Match3
             _presentation = _systems.AllSystems.FindSystem<PresentationSystemGroup>();
             _playback = _systems.AllSystems.FindSystem<PlaybackSimulationSystemGroup>();
             _systems.Init();
-#if DEBUG
-            //Playback();
+#if UNITY_EDITOR
+            Debug.Log(1);
+            if (Record.HasValue)
+            {
+                DisableInput();
+            }
 #endif
         }
 
@@ -149,8 +161,8 @@ namespace Client.Match3
         {
             try
             {
-                _systems.Run();
                 TryApplyInputRecord();
+                _systems.Run();
                 _tickId++;
             }
             catch (Exception ex)
@@ -198,6 +210,29 @@ namespace Client.Match3
                         PieceB = _world.PackEntity(nextFrame.Swap.B)
                     };
             }
+        }
+
+        private void DisplayReplayLabel()
+        {
+            var style = new GUIStyle();
+            style.normal.textColor = Color.Lerp(Color.red, Color.clear, (Mathf.Sin(Time.time * 2f) + 1f) / 2f);
+            style.fontSize = 100;
+            style.alignment = TextAnchor.MiddleCenter;
+            var rect = new Rect(Screen.width / 2, Screen.height / 3, 0, 0);
+            GUI.Label(rect, "REPLAY", style);
+
+            var tickLabelStyle = new GUIStyle(style);
+            tickLabelStyle.normal.textColor = Color.white;
+            tickLabelStyle.fontSize = 50;
+            var tickLabelRect = new Rect(rect);
+            tickLabelRect.y += 80;
+            GUI.Label(tickLabelRect, $"tick: {_tickId}", tickLabelStyle);
+        }
+
+        private static void DisableInput()
+        {
+            Debug.Log("disable input");
+            FindObjectOfType<UnityEngine.EventSystems.EventSystem>().enabled = false;
         }
     }
 }
