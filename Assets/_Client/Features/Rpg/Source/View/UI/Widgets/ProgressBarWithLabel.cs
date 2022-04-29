@@ -28,5 +28,9 @@ namespace Client.Rpg.View
             Label.text = $"{value}<color=#FFB4B4> / {_maxValue}</color>";
             return this;
         }
+
+        public void Dispose()
+        {
+        }
     }
 }
