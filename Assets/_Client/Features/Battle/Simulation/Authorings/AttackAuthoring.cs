@@ -4,11 +4,11 @@ using Nanory.Lex.Conversion;
 
 namespace Client.Battle
 {
-    public class AttackAuthoring : MonoBehaviour, IConvertGameObjectToEntity
+    public class AttackAuthoring : MonoBehaviour, IConvertToEntity
     {
         [SerializeField] int _value;
 
-        public void Convert(int entity, GameObjectConversionSystem converstionSystem)
+        public void Convert(int entity, ConvertToEntitySystem converstionSystem)
         {
             converstionSystem.World.Add<Attack>(entity).Value = _value;
         }

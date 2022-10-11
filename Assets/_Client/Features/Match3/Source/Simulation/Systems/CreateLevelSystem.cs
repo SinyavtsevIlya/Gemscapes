@@ -12,7 +12,7 @@ namespace Client.Match3
         protected override void OnCreate()
         {
             var board =  Object.FindObjectOfType<BoardAuthoring>().gameObject;
-            World.Convert(board);
+            World.Convert(board.GetComponent<ConvertToEntity>(), ConversionMode.Instanced);
         }
 
         private void Generate()

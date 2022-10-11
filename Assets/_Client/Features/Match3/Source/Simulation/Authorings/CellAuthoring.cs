@@ -5,9 +5,9 @@ using Nanory.Lex.Lifecycle;
 
 namespace Client.Match3
 {
-    public class CellAuthoring : MonoBehaviour, IConvertGameObjectToEntity
+    public class CellAuthoring : MonoBehaviour, IConvertToEntity
     {
-        public void Convert(int cellEntity, GameObjectConversionSystem converstionSystem)
+        public void Convert(int cellEntity, ConvertToEntitySystem converstionSystem)
         {
             converstionSystem.World.Add<Mono<CellView>>(cellEntity).Value = GetComponent<CellView>();
         }

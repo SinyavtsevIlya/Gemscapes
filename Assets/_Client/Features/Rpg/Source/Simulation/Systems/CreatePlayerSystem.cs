@@ -10,7 +10,7 @@ namespace Client.Rpg
         protected override void OnCreate()
         {
             var playerPrefab = Object.FindObjectOfType<PlayerAuthoring>().gameObject;
-            World.Convert(playerPrefab);
+            World.Convert(playerPrefab.GetComponent<ConvertToEntity>(), ConversionMode.Instanced);
         }
         protected override void OnUpdate()
         {

@@ -9,7 +9,7 @@ using Nanory.Lex.UnityEditorIntegration;
 #endif
 namespace Client.Match3
 {
-    public class BoardAuthoring : MonoBehaviour, IConvertGameObjectToEntity
+    public class BoardAuthoring : MonoBehaviour, IConvertToEntity
     {
         [SerializeField] GameObject[] _availablePieces;
         [SerializeField] Tilemap _cells;
@@ -19,7 +19,7 @@ namespace Client.Match3
 
         private Dictionary<string, int> _pieceTypeLookup;
 
-        public void Convert(int boardEntity, GameObjectConversionSystem converstionSystem)
+        public void Convert(int boardEntity, ConvertToEntitySystem converstionSystem)
         {
             var later = converstionSystem.GetCommandBufferFrom<BeginSimulationECBSystem>();
             var world = converstionSystem.World;
@@ -46,8 +46,8 @@ namespace Client.Match3
             world.Add<InputRecord>(boardEntity).Frames = new List<InputRecord.Frame>();
 
             ref var availablePieces = ref world.Add<AvailablePieces>(boardEntity);
-            var availablePiecesBuffer = availablePieces.Buffer.Initiatize();
-            var availablePiecesWeights = availablePieces.Weights.Initiatize();
+            ref var availablePiecesBuffer = ref availablePieces.Buffer;
+            ref var availablePiecesWeights =  ref availablePieces.Weights;
             foreach (var pieceType in _pieceTypeLookup.Values)
             {
                 availablePiecesBuffer.Values.Add(pieceType);
@@ -56,7 +56,7 @@ namespace Client.Match3
             foreach (Transform cellTr in _cells.transform)
             {
                 var pos = Vector3Int.RoundToInt(cellTr.position) - bounds.min;
-                var cellEntity = converstionSystem.Convert(cellTr.gameObject, ConversionMode.Convert);
+                var cellEntity = converstionSystem.ConvertAsInstansedEntity(cellTr.GetComponent<ConvertToEntity>());
                 CellAuthoringUtility.Authorize(boardEntity, world.Dst, grid, (Vector2Int)pos, cellEntity);
                 //if (pos.y == grid.Value.GetLength(1) - 1)
                 //{
@@ -74,7 +74,7 @@ namespace Client.Match3
             foreach (Transform pieceTr in _pieces.transform)
             {
                 var pos = Vector3Int.RoundToInt(pieceTr.position) - bounds.min;
-                var pieceEntity = converstionSystem.Convert(pieceTr.gameObject, ConversionMode.ConvertAndDestroy);
+                var pieceEntity = converstionSystem.ConvertAsInstansedEntity(pieceTr.GetComponent<ConvertToEntity>());
                 var name = new string(pieceTr.name.TakeWhile(ch => ch != ' ').ToArray());
                 PieceAuthoringUtility.Authorize(world, grid, (Vector2Int)pos, _pieceTypeLookup[name], pieceEntity, false);
             }
@@ -102,13 +102,13 @@ namespace Client.Match3
             _camera.orthographicSize = rawSize;
         }
 
-        private void FillPieceTypesLookup(GameObjectConversionSystem converstionSystem)
+        private void FillPieceTypesLookup(ConvertToEntitySystem converstionSystem)
         {
             _pieceTypeLookup = new Dictionary<string, int>();
 
             foreach (var piecePrefab in _availablePieces)
             {
-                var pieceEntityPrefab = converstionSystem.Convert(piecePrefab);
+                var pieceEntityPrefab = converstionSystem.ConvertOrGetAsPrefabEntity(piecePrefab.GetComponent<ConvertToEntity>());
                 converstionSystem.World.Add<MovableTag>(pieceEntityPrefab);
                 _pieceTypeLookup[piecePrefab.name] = pieceEntityPrefab;
             }

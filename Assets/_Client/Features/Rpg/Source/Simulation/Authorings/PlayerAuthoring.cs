@@ -5,9 +5,9 @@ using Client.Battle;
 
 namespace Client.Rpg
 {
-    public class PlayerAuthoring : MonoBehaviour, IConvertGameObjectToEntity
+    public class PlayerAuthoring : MonoBehaviour, IConvertToEntity
     {
-        public void Convert(int playerEntity, GameObjectConversionSystem converstionSystem)
+        public void Convert(int playerEntity, ConvertToEntitySystem converstionSystem)
         {
             var world = converstionSystem.World;
 

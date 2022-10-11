@@ -18,8 +18,7 @@ namespace Client.Battle
                 var screen = this.GetScreen<BattleScreen>(ownerEntity);
                 screen.CloseButton.onClick.AddListener(() => 
                 {
-                    var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
-                    later.Add<FinishBattleRequest>(ownerEntity);
+                    Later.Add<FinishBattleRequest>(ownerEntity);
                 });
             }
 

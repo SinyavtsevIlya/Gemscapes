@@ -13,7 +13,10 @@ namespace Client
         {
             typeof(m3),
             typeof(m3toBattle),
-            typeof(lifecycle)
+            typeof(lifecycle),
+            #if UNITY_EDITOR
+            typeof(Nanory.Lex.UnityEditorIntegration.Feature),
+            #endif
         };
 
         protected override string WorldName => "Battle";

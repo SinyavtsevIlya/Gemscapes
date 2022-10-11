@@ -5,9 +5,9 @@ using Nanory.Lex.Lifecycle;
 
 namespace Client.Rpg
 {
-    public class CreatedEventAuthoring : MonoBehaviour, IConvertGameObjectToEntity
+    public class CreatedEventAuthoring : MonoBehaviour, IConvertToEntity
     {
-        public void Convert(int entity, GameObjectConversionSystem converstionSystem)
+        public void Convert(int entity, ConvertToEntitySystem converstionSystem)
         {
             var later = converstionSystem.GetCommandBufferFrom<BeginSimulationECBSystem>();
             later.Add<CreatedEvent>(entity);

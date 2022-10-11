@@ -1,6 +1,7 @@
 using UnityEngine;
 using Nanory.Lex;
 using System.Collections.Generic;
+using System;
 
 namespace Client
 {
@@ -10,18 +11,24 @@ namespace Client
         private EcsSystems _systems;
         private EcsSystemSorter _sorter;
 
+        protected virtual Type[] FeatureTypes => new Type[]
+        {
+            typeof(AppState.Feature),
+            #if UNITY_EDITOR
+            typeof(Nanory.Lex.UnityEditorIntegration.Feature),
+            #endif
+        };
+
         void Start()
         {
             _world = new EcsWorldBase();
             _systems = new EcsSystems(_world);
 
             _sorter = new EcsSystemSorter(_world);
-            var featuredSystems = _sorter.GetFeaturedSystems<AppState.Feature>();
+            var scanner = new EcsTypesScanner();
+            var systemTypes = scanner.ScanSystemTypes(FeatureTypes);
+            var featuredSystems = _sorter.GetSortedSystems(systemTypes);
             _systems.Add(featuredSystems);
-
-#if UNITY_EDITOR
-            _systems.Add(new Nanory.Lex.UnityEditorIntegration.EcsWorldDebugSystem(featuredSystems));
-#endif
 
             _systems.Init();
 

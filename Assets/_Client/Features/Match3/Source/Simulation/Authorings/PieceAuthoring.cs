@@ -8,9 +8,9 @@ using Nanory.Lex.UnityEditorIntegration;
 
 namespace Client.Match3
 {
-    public class PieceAuthoring : MonoBehaviour, IConvertGameObjectToEntity
+    public class PieceAuthoring : MonoBehaviour, IConvertToEntity
     {
-        public void Convert(int pieceEntity, GameObjectConversionSystem converstionSystem)
+        public void Convert(int pieceEntity, ConvertToEntitySystem converstionSystem)
         {
             var world = converstionSystem.World;
             //pieceView.SetLabel(pieceEntity.ToString());

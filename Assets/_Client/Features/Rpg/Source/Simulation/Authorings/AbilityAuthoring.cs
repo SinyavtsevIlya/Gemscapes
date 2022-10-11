@@ -4,9 +4,9 @@ using Nanory.Lex.Conversion;
 
 namespace Client.Rpg
 {
-    public class MovableAuthoting : MonoBehaviour, IConvertGameObjectToEntity
+    public class MovableAuthoting : MonoBehaviour, IConvertToEntity
     {
-        public void Convert(int entity, GameObjectConversionSystem converstionSystem)
+        public void Convert(int entity, ConvertToEntitySystem converstionSystem)
         {
             
         }

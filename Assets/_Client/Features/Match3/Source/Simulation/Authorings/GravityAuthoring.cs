@@ -5,11 +5,11 @@ using Nanory.Lex.Conversion;
 namespace Client.Match3
 {
     [ExecuteInEditMode]
-    public class GravityAuthoring : MonoBehaviour, IConvertGameObjectToEntity
+    public class GravityAuthoring : MonoBehaviour, IConvertToEntity
     {
         [SerializeField] private Vector2Int[] _values;
         
-        public void Convert(int cellEntity, GameObjectConversionSystem converstionSystem)
+        public void Convert(int cellEntity, ConvertToEntitySystem converstionSystem)
         {
             ref var gravityBuffer = ref converstionSystem.World.Dst.AddBuffer<GravityDirection>(cellEntity);
 

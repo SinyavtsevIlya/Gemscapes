@@ -1,6 +1,7 @@
 using UnityEngine;
 using Nanory.Lex;
 using System.Collections.Generic;
+using System;
 
 using lifecycle = Nanory.Lex.Lifecycle.Feature;
 using timer = Nanory.Lex.Timer.Feature;
@@ -15,18 +16,28 @@ namespace Client
         private EcsSystems _systems;
         private EcsSystemSorter _sorter;
 
+        protected virtual Type[] FeatureTypes => new Type[]
+        {
+            typeof(rpg),
+            typeof(battle),
+            typeof(lifecycle),
+            typeof(timer),
+            #if UNITY_EDITOR
+            typeof(Nanory.Lex.UnityEditorIntegration.Feature)
+            #endif
+        };
+
         void Start()
         {
             _world = new EcsWorldBase(default, "Rpg");
             _systems = new EcsSystems(_world);
 
             _sorter = new EcsSystemSorter(_world);
-            var featuredSystems = _sorter.GetFeaturedSystems<rpg, battle, lifecycle, timer>();
-            _systems.Add(featuredSystems);
+            var scanner = new EcsTypesScanner();
+            var systemTypes = scanner.ScanSystemTypes(FeatureTypes);
+            var featuredSystems = _sorter.GetSortedSystems(systemTypes);
 
-#if UNITY_EDITOR
-            _systems.Add(new Nanory.Lex.UnityEditorIntegration.EcsWorldDebugSystem(featuredSystems));
-#endif
+            _systems.Add(featuredSystems);
 
             _systems.Init();
         }

@@ -44,7 +44,10 @@ namespace Client.Match3
         protected virtual Type[] FeatureTypes => new Type[] 
         {
             typeof(m3),
-            typeof(lifecycle)
+            typeof(lifecycle),
+            #if UNITY_EDITOR
+            typeof(Nanory.Lex.UnityEditorIntegration.Feature),
+            #endif
         };
 
         private void OnGUI()
@@ -65,14 +68,10 @@ namespace Client.Match3
             var systemTypes = scanner.ScanSystemTypes(FeatureTypes);
             var featuredSystems = _sorter.GetSortedSystems(systemTypes);
             _systems.Add(featuredSystems);
-#if UNITY_EDITOR
-            _systems.Add(new Nanory.Lex.UnityEditorIntegration.EcsWorldDebugSystem(featuredSystems));
-#endif
             _presentation = _systems.AllSystems.FindSystem<PresentationSystemGroup>();
             _playback = _systems.AllSystems.FindSystem<PlaybackSimulationSystemGroup>();
             _systems.Init();
 #if UNITY_EDITOR
-            Debug.Log(1);
             if (Record.HasValue)
             {
                 DisableInput();

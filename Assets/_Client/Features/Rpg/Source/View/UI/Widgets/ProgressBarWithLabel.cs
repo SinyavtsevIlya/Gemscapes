@@ -20,7 +20,7 @@ namespace Client.Rpg.View
         }
 
         public IStatView SetValue(int value)
-        {
+        {   
             ProgressBar.color = Color.white;
             ProgressBar.DOKill();
             ProgressBar.DOColor(_endColor, 1f).SetEase(Ease.OutExpo);
