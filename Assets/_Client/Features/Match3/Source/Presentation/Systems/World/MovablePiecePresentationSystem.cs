@@ -13,8 +13,6 @@ namespace Client.Match3
     {
         protected override void OnUpdate()
         {
-            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
-
             foreach (var pieceEntity in Filter()
             .With<Mono<MovablePieceView>>()
             .With<DestroyedEvent>()
@@ -87,7 +85,7 @@ namespace Client.Match3
                                 && TryGet(cellEntity, out PieceLink pieceLink)
                                 && pieceLink.Value.Unpack(World, out int currentPieceEntity))
                             {
-                                later.AddOrSet<DestroyedEvent>(currentPieceEntity);
+                                Later.AddOrSet<DestroyedEvent>(currentPieceEntity);
                                 Del<PieceLink>(grid.GetCellByPiece(World, currentPieceEntity));
                             }
                         }
@@ -108,7 +106,7 @@ namespace Client.Match3
                     {
                         if (IsValidMove(grid, pieceEntity, destinationPosition))
                         {
-                            later.Add<SwapPieceRequest>(World.NewEntity()) = new SwapPieceRequest()
+                            Later.Add<SwapPieceRequest>(World.NewEntity()) = new SwapPieceRequest()
                             {
                                 PieceA = World.PackEntity(pieceEntity),
                                 PieceB = World.PackEntity(destinationPieceEntity)

@@ -7,8 +7,6 @@ namespace Client.Rpg
     {
         protected override void OnUpdate()
         {
-            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
-
             foreach (var damagableEntity in Filter()
             .With<DamageEvent>()
             .With<Health>()
@@ -19,11 +17,11 @@ namespace Client.Rpg
 
                 health.Value -= damageEvent.Value;
 
-                later.Add<Health.Changed>(damagableEntity);
+                Later.Add<Health.Changed>(damagableEntity);
 
                 if (health.Value <= 0)
                 {
-                    later.Add<DestroyedEvent>(damagableEntity);
+                    Later.Add<DestroyedEvent>(damagableEntity);
 
                     if (damageEvent.Source.Unpack(World, out var sourceEntity))
                     {

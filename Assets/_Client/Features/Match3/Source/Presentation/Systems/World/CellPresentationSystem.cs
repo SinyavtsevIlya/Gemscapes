@@ -14,9 +14,6 @@ namespace Client.Match3
     {
         protected override void OnUpdate()
         {
-            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
-
-
             foreach (var cellEntity in Filter()
                 .With<CellPosition>()
                 .With<Mono<CellView>>()

@@ -7,8 +7,6 @@ namespace Client.Match3
     {
         protected override void OnUpdate()
         {
-            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
-
             foreach (var pieceEntity in Filter()
             .With<DestroyedEvent>()
             .With<Position>()
@@ -21,7 +19,7 @@ namespace Client.Match3
                 if (!Has<GeneratorTag>(cellEntity))
                     continue;
 
-                later.AddOrSet<GeneratePieceRequest>(cellEntity) = new GeneratePieceRequest()
+                Later.AddOrSet<GeneratePieceRequest>(cellEntity) = new GeneratePieceRequest()
                 {
                     Velocity = new Velocity() { Value = new Vector2IntFixed(0, 0, SimConstants.GridSubdivison) },
                     Position = new Position() { Value = new Vector2IntFixed(cellPosition.x, cellPosition.y, SimConstants.GridSubdivison) }

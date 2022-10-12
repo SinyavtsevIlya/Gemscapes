@@ -7,8 +7,6 @@ namespace Client.Match3
     {
         protected override void OnUpdate()
         {
-            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
-
             foreach (var pieceEntity in Filter()
             .With<DestroyedEvent>()
             .End())

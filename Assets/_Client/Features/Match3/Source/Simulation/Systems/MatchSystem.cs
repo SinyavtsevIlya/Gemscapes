@@ -12,8 +12,6 @@ namespace Client.Match3
 
         protected override void OnUpdate()
         {
-            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
-
             foreach (var boardEntity in Filter()
             .With<MatchRequest>()
             .With<BoardTag>()
@@ -67,7 +65,7 @@ namespace Client.Match3
                     if (_matchedPieces.Count >= 3)
                     {
                         var matchEventEntity = NewEntity();
-                        ref var matchEvent = ref later.Add<MatchEvent>(matchEventEntity);
+                        ref var matchEvent = ref Later.Add<MatchEvent>(matchEventEntity);
                         ref var matchedPieces = ref matchEvent.MatchedPieces;
                         matchedPieces = Buffer<int>.Pool.Pop();
 
@@ -76,7 +74,7 @@ namespace Client.Match3
                             matchedPieces.Add(_matchedPieces[idx]);
                         }
 
-                        later.Add<BoardLink>(matchEventEntity).Value = boardEntity;
+                        Later.Add<BoardLink>(matchEventEntity).Value = boardEntity;
 
                         for (int idx = 0; idx < _matchedPieces.Count; idx++)
                         {
@@ -85,7 +83,7 @@ namespace Client.Match3
                             if (!Has<MatchedPieceTag>(matchedPieceEntity))
                             {
                                 Add<MatchedPieceTag>(matchedPieceEntity);
-                                later.AddDelayed<MatchedPieceEvent>(idx * 3, matchedPieceEntity);
+                                Later.AddDelayed<MatchedPieceEvent>(idx * 3, matchedPieceEntity);
                             }
                         }
                     }

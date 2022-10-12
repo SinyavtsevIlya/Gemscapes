@@ -7,8 +7,6 @@ namespace Client.Battle
     {
         protected override void OnUpdate()
         {
-            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
-
             foreach (var attackerEntity in Filter()
             .With<MelleeAttackRequest>()
             .With<AttackableLink>()
@@ -28,12 +26,12 @@ namespace Client.Battle
 
                         if (blocks.Count == 0)
                         {
-                            later.Del<Blocks>(targetEntity);
+                            Later.Del<Blocks>(targetEntity);
                         }
                     }
                     else
                     {
-                        later.AddOrSet<DamageEvent>(targetEntity) = new DamageEvent()
+                        Later.AddOrSet<DamageEvent>(targetEntity) = new DamageEvent()
                         {
                             Source = World.PackEntity(attackerEntity),
                             Value = Get<Attack>(attackerEntity).Value

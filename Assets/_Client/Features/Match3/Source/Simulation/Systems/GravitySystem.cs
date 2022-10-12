@@ -7,8 +7,6 @@ namespace Client.Match3
     {
         protected override void OnUpdate()
         {
-            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
-
             foreach (var pieceEntity in Filter()
             .With<Position>()
             .With<MovableTag>()
@@ -72,7 +70,7 @@ namespace Client.Match3
 
                 if (position.ToVector2Int() != roundedPosition)
                 {
-                    later.Add<CellPositionUpdatedEvent>(pieceEntity) = new CellPositionUpdatedEvent()
+                    Later.Add<CellPositionUpdatedEvent>(pieceEntity) = new CellPositionUpdatedEvent()
                     {
                         PreviousCell = cellEntity,
                         CurrentCell = grid.GetCellByPiece(World, pieceEntity)

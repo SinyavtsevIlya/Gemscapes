@@ -6,8 +6,6 @@ namespace Client.Match3
     {
         protected override void OnUpdate()
         {
-            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
-
             foreach (var swapRequestEntity in Filter()
             .With<SwapPieceRequest>()
             .End())
@@ -31,13 +29,13 @@ namespace Client.Match3
                     Swap<PieceLink>(cellAEntity, cellBEntity);
                     Swap<IntendingPieceLink>(cellAEntity, cellBEntity);
 
-                    later.Add<PieceSwappedEvent>(NewEntity()) = new PieceSwappedEvent()
+                    Later.Add<PieceSwappedEvent>(NewEntity()) = new PieceSwappedEvent()
                     {
                         PieceA = pieceAEntity,
                         PieceB = pieceBEntity
                     };
 
-                    later.AddOrSet<MatchRequest>(Get<BoardLink>(cellAEntity).Value);
+                    Later.AddOrSet<MatchRequest>(Get<BoardLink>(cellAEntity).Value);
                 }
             }
         }

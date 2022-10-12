@@ -51,8 +51,6 @@ namespace Client.Match3
 
         private void DispatchGravity(int dispatchCell)
         {
-            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
-
             ref var gravity = ref Get<GravityDirection>(dispatchCell);
             var gravitiesOutputs = Get<Buffer<GravityOutputLink>>(dispatchCell).Values;
 
@@ -63,12 +61,12 @@ namespace Client.Match3
                 if (!TryGet<PieceLink>(outputCellEntity, out var pieceLink) || 
                     (pieceLink.Value.Unpack(World, out var pieceEntity)) && (Has<DestroyedEvent>(pieceEntity) || Has<FallingTag>(pieceEntity)))
                 {
-                    later.Set<GravityDirection>(dispatchCell) = Get<Buffer<GravityDirection>>(dispatchCell).Values[idx];
+                    Later.Set<GravityDirection>(dispatchCell) = Get<Buffer<GravityDirection>>(dispatchCell).Values[idx];
                     if (TryGet<PieceLink>(dispatchCell, out var dPieceLink))
                     {
                         if (dPieceLink.Value.Unpack(World, out var dPieceEntity))
                         {
-                            later.AddOrSet<FallingTag>(dPieceEntity);
+                            Later.AddOrSet<FallingTag>(dPieceEntity);
                         }
                     }
                     break;

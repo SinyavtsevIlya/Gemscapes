@@ -8,11 +8,10 @@ namespace Client.AppState
         protected override void OnCreate()
         {
             var appEntity = World.NewEntity();
-            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
 
             Add<AppState>(appEntity).Value = AppState.Type.Preload;
             // Later we can wait for asynchronous loading some assets.
-            later.Add<ChangeStateRequest>(appEntity).Value = AppState.Type.Rpg;
+            Later.Add<ChangeStateRequest>(appEntity).Value = AppState.Type.Rpg;
 
             UnityEngine.Application.targetFrameRate = 60;
         }

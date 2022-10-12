@@ -16,8 +16,6 @@ namespace Client.Match3
 
         protected override void OnUpdate()
         {
-            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
-
             // TODO: implement SharedComponents 
             foreach (var boardEntity in Filter()
             .With<BoardTag>()
@@ -26,8 +24,8 @@ namespace Client.Match3
             {
                 if (_fallingPieces.GetEntitiesCount() == 0)
                 {
-                    later.Add<IdleTag>(boardEntity);
-                    later.Add<StoppedEvent>(boardEntity);
+                    Later.Add<IdleTag>(boardEntity);
+                    Later.Add<StoppedEvent>(boardEntity);
                 }
             }
 
@@ -38,7 +36,7 @@ namespace Client.Match3
             {
                 if (_fallingPieces.GetEntitiesCount() > 0)
                 {
-                    later.Del<IdleTag>(boardEntity);
+                    Later.Del<IdleTag>(boardEntity);
                 }
             }
 
@@ -47,7 +45,7 @@ namespace Client.Match3
             .With<StoppedEvent>()
             .End())
             {
-                later.Add<MatchRequest>(boardEntity);
+                Later.Add<MatchRequest>(boardEntity);
             }
         }
     }

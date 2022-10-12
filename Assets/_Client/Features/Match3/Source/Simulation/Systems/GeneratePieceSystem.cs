@@ -19,8 +19,6 @@ namespace Client.Match3
 
         protected override void OnUpdate()
         {
-            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
-
             foreach (var cellEntity in Filter()
             .With<GeneratePieceRequest>()
             .End())
@@ -47,7 +45,7 @@ namespace Client.Match3
                 Add<Velocity>(newPieceEntity) = velocity;
                 Add<GravityDirection>(newPieceEntity) = Get<GravityDirection>(cellEntity);
                 Add<Position>(newPieceEntity) = position;
-                later.Add<PieceLink>(cellEntity).Value = World.PackEntity(newPieceEntity);
+                Later.Add<PieceLink>(cellEntity).Value = World.PackEntity(newPieceEntity);
                 Add<FallingTag>(newPieceEntity);
                 Add<FallingStartedEvent>(newPieceEntity);
                 Add<CreatedEvent>(newPieceEntity);

@@ -10,8 +10,6 @@ namespace Client.Rpg
     {
         protected override void OnUpdate()
         {
-            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
-
             foreach (var ownerEntity in Filter()
             .With<ScreensStorage>()
             .With<CreatedEvent>()
@@ -21,7 +19,7 @@ namespace Client.Rpg
                 screen.BattleButton.onClick.AddListener(() => 
                 {
                     // this.OpenScreen<AbilitiesScreen>(ownerEntity);
-                    later.Add<BattleRequest>(ownerEntity);                                                        
+                    Later.Add<BattleRequest>(ownerEntity);                                                        
                 });
             }
 

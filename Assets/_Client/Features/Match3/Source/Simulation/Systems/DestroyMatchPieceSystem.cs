@@ -7,13 +7,11 @@ namespace Client.Match3
     {
         protected override void OnUpdate()
         {
-            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
-
             foreach (var pieceEntity in Filter()
             .With<MatchedPieceEvent>()
             .End())
             {
-                later.AddDelayed<DestroyedEvent>(10, pieceEntity);
+                Later.AddDelayed<DestroyedEvent>(10, pieceEntity);
             }
         }
     }

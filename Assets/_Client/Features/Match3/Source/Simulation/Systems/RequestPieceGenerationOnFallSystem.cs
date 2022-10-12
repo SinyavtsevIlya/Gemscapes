@@ -13,8 +13,6 @@ namespace Client.Match3
 
         protected override void OnUpdate()
         {
-            var later = GetCommandBufferFrom<BeginSimulationECBSystem>();
-
             foreach (var generatorEntity in Filter()
             .With<GeneratorTag>()
             .With<CellPosition>()
@@ -36,7 +34,7 @@ namespace Client.Match3
                             var velocity = Get<Velocity>(pieceEntity);
                             var position = Get<Position>(pieceEntity);
                             position.Value.RawValue -= gravityDirection.Value * position.Value.Divisor;
-                            later.AddOrSet<GeneratePieceRequest>(generatorEntity) = new GeneratePieceRequest()
+                            Later.AddOrSet<GeneratePieceRequest>(generatorEntity) = new GeneratePieceRequest()
                             {
                                 Velocity = velocity,
                                 Position = position
