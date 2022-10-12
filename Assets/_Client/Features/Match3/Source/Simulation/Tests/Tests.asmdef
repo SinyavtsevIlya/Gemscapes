@@ -2,18 +2,24 @@
     "name": "Tests",
     "rootNamespace": "",
     "references": [
-        "GUID:24cd60a3408a07e4386390472339fa13",
-        "GUID:e59bf9fc7d5a44b18a819a92edd46163"
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner",
+        "Client",
+        "Nanory.Lex"
     ],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
     "versionDefines": [],
     "noEngineReferences": false
 }

@@ -86,7 +86,6 @@ namespace Client.Match3.Tests
         {
             for (int i = 0; i < count; i++)
             {
-                //Debug.Log($"tick: {this}");
                 Systems.Run();
             }
         }

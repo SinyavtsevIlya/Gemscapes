@@ -11,11 +11,11 @@ namespace Client.Match3
 {
     public class BoardAuthoring : MonoBehaviour, IConvertToEntity
     {
-        [SerializeField] GameObject[] _availablePieces;
-        [SerializeField] Tilemap _cells;
-        [SerializeField] Tilemap _pieces;
-        [SerializeField] Camera _camera;
-        [SerializeField] float _offset;
+        [SerializeField] private GameObject[] _availablePieces;
+        [SerializeField] private Tilemap _cells;
+        [SerializeField] private Tilemap _pieces;
+        [SerializeField] private Camera _camera;
+        [SerializeField] private float _offset;
 
         private Dictionary<string, int> _pieceTypeLookup;
 
