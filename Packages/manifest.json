@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.nanory.lex": "file:E:/Nanory/LexUnity/Assets/Plugins/Lex",
+    "com.nanory.lex": "https://github.com/SinyavtsevIlya/Lex.git",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.2d.tilemap.extras": "2.2.2",
     "com.unity.collab-proxy": "1.15.16",

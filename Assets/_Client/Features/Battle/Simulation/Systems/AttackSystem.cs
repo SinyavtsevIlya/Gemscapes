@@ -23,6 +23,7 @@ namespace Client.Battle
                     if (isBlocked)
                     {
                         blocks.Count--;
+                        Later.Set<Blocks>(targetEntity) = blocks;
 
                         if (blocks.Count == 0)
                         {
@@ -37,10 +38,7 @@ namespace Client.Battle
                             Value = Get<Attack>(attackerEntity).Value
                         };
                     }
-
-                 
                 }
-
             }            
         }
     }

@@ -1,10 +1,11 @@
 {
   "dependencies": {
     "com.nanory.lex": {
-      "version": "file:E:/Nanory/LexUnity/Assets/Plugins/Lex",
+      "version": "https://github.com/SinyavtsevIlya/Lex.git",
       "depth": 0,
-      "source": "local",
-      "dependencies": {}
+      "source": "git",
+      "dependencies": {},
+      "hash": "b23d25aee5a3781bf7f78b7e14e2bc835fddde42"
     },
     "com.unity.2d.tilemap": {
       "version": "1.0.0",
